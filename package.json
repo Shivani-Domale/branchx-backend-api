@@ -5,14 +5,13 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon src/index.js",
-    "start": "nodemon index.js",
     "migrate": "npx sequelize-cli db:migrate --migrations-path src/migrations --models-path src/models --config src/config/config.json",
     "seed": "npx sequelize-cli db:seed:all --seeders-path src/seeders --models-path src/models --config src/config/config.json"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "\"# branchx-backend-api\"",
   "dependencies": {
     "bcryptjs": "^3.0.2",
     "express": "^5.1.0",
@@ -21,5 +20,13 @@
     "pg-hstore": "^2.3.4",
     "redis": "^5.1.0",
     "sequelize": "^6.37.7"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shivani-Domale/branchx-backend-api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Shivani-Domale/branchx-backend-api/issues"
+  },
+  "homepage": "https://github.com/Shivani-Domale/branchx-backend-api#readme"
 }
