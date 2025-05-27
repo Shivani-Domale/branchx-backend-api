@@ -10,7 +10,6 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
       Campaign.belongsTo(models.CampaignType, {
         foreignKey: 'campaignTypeId',
         as: 'campaignType'
@@ -29,7 +28,8 @@ module.exports = (sequelize, DataTypes) => {
         as: 'timeSlot'
       });
     }
-  }
+    }
+  
   Campaign.init({
     campaignName: DataTypes.STRING,
     campaignTypeId: DataTypes.INTEGER,
