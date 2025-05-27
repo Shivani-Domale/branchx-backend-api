@@ -15,18 +15,10 @@ module.exports = (sequelize, DataTypes) => {
         as: 'campaign'
       });
     }
-  }
+    }
+  
   CampaignDemographic.init({
-    campaignId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'Campaigns',
-        key: 'id'
-      },
-      onDelete: 'CASCADE',
-    },
-    
+    campaignId: DataTypes.INTEGER,
     ageRange: DataTypes.STRING,
     buyers: DataTypes.STRING
   }, {
