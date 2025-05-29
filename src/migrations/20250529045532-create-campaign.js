@@ -12,35 +12,59 @@ module.exports = {
       campaignName: {
         type: Sequelize.STRING
       },
-      campaignTypeId: {
+      campaignDescription: {
+        type: Sequelize.TEXT
+      },
+      campaignObjective: {
+        type: Sequelize.STRING
+      },
+      campaignType: {
+        type: Sequelize.STRING
+      },
+      duration: {
         type: Sequelize.INTEGER
       },
-      storeTypeId: {
-        type: Sequelize.INTEGER
+      demographic: {
+        type: Sequelize.STRING
       },
-      targetRegionId: {
-        type: Sequelize.INTEGER
+      timeSlot: {
+        type: Sequelize.STRING
       },
-      timeSlotId: {
-        type: Sequelize.INTEGER
-      },
-      startDate: {
+      date: {
         type: Sequelize.BIGINT
       },
-      endDate: {
-        type: Sequelize.BIGINT
-      },
-      bidPerSecond: {
+      interval: {
         type: Sequelize.INTEGER
       },
-      estimatedDevices: {
+      baseBid: {
         type: Sequelize.INTEGER
+      },
+      budgetLimit: {
+        type: Sequelize.INTEGER
+      },
+      estimatedReach: {
+        type: Sequelize.INTEGER
+      },
+      paymentMethod: {
+        type: Sequelize.STRING
+      },
+      targetRegions: {
+        type: Sequelize.STRING
+      },
+      cities: {
+        type: Sequelize.STRING
+      },
+      ageGroups: {
+        type: Sequelize.STRING
+      },
+      selectedDays: {
+        type: Sequelize.STRING
       },
       creativeUrl: {
         type: Sequelize.STRING
       },
-      paymentMode: {
-        type: Sequelize.STRING
+      status: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
