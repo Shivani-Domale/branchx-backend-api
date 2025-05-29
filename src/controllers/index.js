@@ -1,3 +1,3 @@
 module.exports = {
-    CampaignController: require('./campaign-controllers/campaign-controller'),
+    CampaignController: require('./advertiser/campaign-controllers/campaign-controller'),
 }

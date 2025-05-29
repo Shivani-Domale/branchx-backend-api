@@ -10,38 +10,29 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Campaign.belongsTo(models.CampaignType, {
-        foreignKey: 'campaignTypeId',
-        as: 'campaignType'
-      });
-      Campaign.belongsTo(models.StoreType, {
-        foreignKey: 'storeTypeId',
-        as: 'storeType'
-      });
-      Campaign.belongsTo(models.Region, {
-        foreignKey: 'targetRegionId',
-        as: 'targetRegion'
-      });
-     
-      Campaign.belongsTo(models.TimeSlot, {
-        foreignKey: 'timeSlotId',
-        as: 'timeSlot'
-      });
+      // define association here
     }
-    }
-  
+  }
   Campaign.init({
     campaignName: DataTypes.STRING,
-    campaignTypeId: DataTypes.INTEGER,
-    storeTypeId: DataTypes.INTEGER,
-    targetRegionId: DataTypes.INTEGER,
-    timeSlotId: DataTypes.INTEGER,
-    startDate: DataTypes.BIGINT,
-    endDate: DataTypes.BIGINT,
-    bidPerSecond: DataTypes.INTEGER,
-    estimatedDevices: DataTypes.INTEGER,
+    campaignDescription: DataTypes.TEXT,
+    campaignObjective: DataTypes.STRING,
+    campaignType: DataTypes.STRING,
+    duration: DataTypes.INTEGER,
+    demographic: DataTypes.STRING,
+    timeSlot: DataTypes.STRING,
+    date: DataTypes.BIGINT,
+    interval: DataTypes.INTEGER,
+    baseBid: DataTypes.INTEGER,
+    budgetLimit: DataTypes.INTEGER,
+    estimatedReach: DataTypes.INTEGER,
+    paymentMethod: DataTypes.STRING,
+    targetRegions: DataTypes.STRING,
+    cities: DataTypes.STRING,
+    ageGroups: DataTypes.STRING,
+    selectedDays: DataTypes.STRING,
     creativeUrl: DataTypes.STRING,
-    paymentMode: DataTypes.STRING
+    status: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Campaign',
