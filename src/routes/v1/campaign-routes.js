@@ -9,6 +9,6 @@ const router = express.Router();
 
 router.post('/createCampaign', upload.single('creativeFile'), validateCampaign, CampaignController.createCampaign);
 router.get('/getCampaigns', CampaignController.getCampaigns);
-router.put('/update/:id/status/', CampaignController.updateCampaignStatus);
+router.put('/:id/status', CampaignController.updateCampaignStatus);
 
 module.exports = router;
