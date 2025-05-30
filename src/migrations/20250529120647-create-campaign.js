@@ -9,32 +9,11 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      campaignName: {
+      adDeviceShow: {
         type: Sequelize.STRING
       },
-      campaignDescription: {
-        type: Sequelize.TEXT
-      },
-      campaignObjective: {
+      ageGroups: {
         type: Sequelize.STRING
-      },
-      campaignType: {
-        type: Sequelize.STRING
-      },
-      duration: {
-        type: Sequelize.INTEGER
-      },
-      demographic: {
-        type: Sequelize.STRING
-      },
-      timeSlot: {
-        type: Sequelize.STRING
-      },
-      date: {
-        type: Sequelize.BIGINT
-      },
-      interval: {
-        type: Sequelize.INTEGER
       },
       baseBid: {
         type: Sequelize.INTEGER
@@ -42,25 +21,52 @@ module.exports = {
       budgetLimit: {
         type: Sequelize.INTEGER
       },
-      estimatedReach: {
+      campaignName: {
+        type: Sequelize.STRING
+      },
+      campaignDescription: {
+        type: Sequelize.STRING
+      },
+      campaignObjective: {
+        type: Sequelize.STRING
+      },
+      campaignType: {
+        type: Sequelize.STRING
+      },
+      creativeFile: {
+        type: Sequelize.STRING
+      },
+      creativeType: {
+        type: Sequelize.STRING
+      },
+      demographic: {
+        type: Sequelize.STRING
+      },
+      duration: {
         type: Sequelize.INTEGER
       },
-      paymentMethod: {
+      interval: {
+        type: Sequelize.INTEGER
+      },
+      maxBidCap: {
+        type: Sequelize.INTEGER
+      },
+      scheduleDate: {
         type: Sequelize.STRING
       },
-      targetRegions: {
-        type: Sequelize.STRING
-      },
-      cities: {
-        type: Sequelize.STRING
-      },
-      ageGroups: {
+      scheduleEndDate: {
         type: Sequelize.STRING
       },
       selectedDays: {
         type: Sequelize.STRING
       },
-      creativeUrl: {
+      slopePreference: {
+        type: Sequelize.STRING
+      },
+      targetRegions: {
+        type: Sequelize.STRING
+      },
+      timeSlot: {
         type: Sequelize.STRING
       },
       status: {

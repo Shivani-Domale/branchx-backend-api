@@ -1,3 +1,3 @@
 module.exports = {
-   CampaignService : require("./campaign-services"), 
+   CampaignService :require("./advertiser/campaign-services"), 
 }
