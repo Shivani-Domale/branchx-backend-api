@@ -4,6 +4,7 @@ const upload = multer();
 const { Logger } = require("../../../config");
 const fs = require("fs");
 const path = require("path");
+const { STATUS_CODES } = require("http");
 
 const createCampaign = async (req, res) => {
 
@@ -50,7 +51,7 @@ const createCampaign = async (req, res) => {
 const getCampaigns = async (req, res) => {
   console.log("Fetching campaigns");
   const campaigns = await CampaignService.getAllCampaigns();
-  return res.status(200).json(campaigns);
+  return res.json(campaigns);
 }
 
 
@@ -65,7 +66,7 @@ const updateCampaignStatus = async (req, res) => {
     const campaign = await CampaignService.updateCampaignStatus(id,status);
 
     return res.json({
-      message: `${campaign.campaignName} upated successfully`,
+     message: `${campaign.campaignName} Ad ${status === true ? 'Activated' : 'Deactivated'} successfully`,
       success: true,
       status: 200
     });
