@@ -34,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
     slopePreference: DataTypes.STRING,
     targetRegions: DataTypes.STRING,
     timeSlot: DataTypes.STRING,
-    status: DataTypes.INTEGER
+    status: DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'Campaign',
