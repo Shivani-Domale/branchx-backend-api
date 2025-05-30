@@ -85,9 +85,9 @@ const updateCampaignStatus = async (id, status) => {
             throw new Error("Campaign not found");
         }
 
-        if (status === "Active") {
+        if (status === true) {
             campaign.status = true;
-        } else if (status === "Inactive") {
+        } else if (status === false) {
             campaign.status = false;
         }
 
