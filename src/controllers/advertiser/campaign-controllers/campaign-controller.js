@@ -6,8 +6,9 @@ const fs = require("fs");
 const path = require("path");
 
 const createCampaign = async (req, res) => {
+
   try {
-    //console.info(req.body);
+     console.log(req.body);
     Logger.info("------------");
     Logger.info("Received request to create campaign");
 
@@ -47,7 +48,9 @@ const createCampaign = async (req, res) => {
 };
 
 const getCampaigns = async (req, res) => {  
-    return res.status(501).json({ message: " get campaign" });
+  console.log("Fetching campaigns");
+ const campaigns = await CampaignService.getAllCampaigns();
+    return res.status(200).json(campaigns);
 }
 
 module.exports = { createCampaign,getCampaigns };

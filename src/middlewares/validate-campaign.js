@@ -2,21 +2,26 @@ const { body, validationResult } = require("express-validator");
 const errorResponse = require("../utils/errorReponse");
 
 const validateCampaign = [
+  body("adDeviceShow").notEmpty().withMessage("Ad device show is required"),
+  body("ageGroups").notEmpty().withMessage("Age groups are required"),
+  body("baseBid").isInt({ min: 1 }).withMessage("Base bid must be greater than 0"),
+  body("budgetLimit").isInt({ min: 1 }).withMessage("Budget limit must be a positive integer"),
   body("campaignName").notEmpty().withMessage("Campaign name is required"),
   body("campaignDescription").notEmpty().withMessage("Campaign description is required"),
   body("campaignObjective").notEmpty().withMessage("Campaign objective is required"),
   body("campaignType").notEmpty().withMessage("Campaign type is required"),
-  body("duration").isInt({ min: 1 }).withMessage("Duration must be a positive integer"),
+  body("creativeFile").optional().isString(),
+  body("creativeType").optional().isString(),
   body("demographic").notEmpty().withMessage("Demographic is required"),
-  body("timeSlot").notEmpty().withMessage("Time slot is required"),
-  body("baseBid").isInt({ min: 1 }).withMessage("Base bid must be a greater than 1"),
-  body("budgetLimit").isInt({ min: 1 }).withMessage("Budget limit must be a positive integer"),
-  body("estimatedReach").isInt({ min: 1 }).withMessage("Estimated reach must be a positive integer"),
-  body("paymentMethod").notEmpty().withMessage("Payment method is required"),
-  body("targetRegions").notEmpty().withMessage("Target regions are required"),
-  body("cities").notEmpty().withMessage("Cities are required"),
-  body("ageGroups").notEmpty().withMessage("Age groups are required"),
+  body("duration").isInt({ min: 1 }).withMessage("Duration must be a positive integer"),
+  body("interval").optional().isInt({ min: 0 }),
+  body("maxBidCap").optional().isInt({ min: 0 }),
+  body("scheduleDate").optional().isString(),
+  body("scheduleEndDate").optional().isString(),
   body("selectedDays").notEmpty().withMessage("Selected days are required"),
+  body("slopePreference").optional().isString(),
+  body("targetRegions").notEmpty().withMessage("Target regions are required"),
+  body("timeSlot").notEmpty().withMessage("Time slot is required"),
 
   // Final validation middleware
   (req, res, next) => {
@@ -36,7 +41,6 @@ const validateCampaign = [
         }
       });
 
-     //Logger.error("Validation errors:", formattedErrors);
       return errorResponse(res, "Validation failed", 422, formattedErrors);
     }
 
