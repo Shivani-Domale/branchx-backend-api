@@ -56,12 +56,16 @@ const getCampaigns = async (req, res) => {
 
 const updateCampaignStatus = async (req, res) => {
   const { id } = req.params;
+   const {status} = req.body;
+
+  console.log(status +"  "+ id);
+
+
   try {
-    const campaign = await CampaignService.updateCampaignStatus(id);
+    const campaign = await CampaignService.updateCampaignStatus(id,status);
 
     return res.json({
       message: `${campaign.campaignName} upated successfully`,
-      data: campaign,
       success: true,
       status: 200
     });

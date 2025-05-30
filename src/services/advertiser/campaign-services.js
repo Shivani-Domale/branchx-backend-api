@@ -42,28 +42,56 @@ const createCampaign = async (data, fileBuffer, originalName) => {
 }
 
 const getAllCampaigns = async () => {
-
     try {
         const campaigns = await campaignRepository.findAll();
-        return campaigns;
+        const data = [];
+
+        campaigns.forEach(campaign => {
+            // Convert string to Date object
+            const date = new Date(campaign.scheduleDate);
+
+            // Format in IST
+            const formattedDate = date.toLocaleString("en-IN", {
+                timeZone: "Asia/Kolkata",
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit"
+            });
+
+            data.push({
+                id: campaign.id,
+                campaignName: campaign.campaignName,
+                scheduleDate: formattedDate, // formatted in IST
+                timeSlot: campaign.timeSlot,
+                campaignObjective: campaign.campaignObjective,
+                creativeFile: campaign.creativeFile,
+                status: campaign.status
+            });
+        });
+
+
+        return data;
     } catch (error) {
         throw new Error(`Error fetching campaigns: ${error.message}`);
     }
-}
+};
 
 
-const updateCampaignStatus = async (id) => {
+const updateCampaignStatus = async (id, status) => {
     try {
         const campaign = await campaignRepository.findById(id);
 
         if (!campaign) {
             throw new Error("Campaign not found");
         }
-        if (campaign.status === true) {
-            campaign.status = false;
-        } else {
+
+        if (status === "Active") {
             campaign.status = true;
+        } else if (status === "Inactive") {
+            campaign.status = false;
         }
+
+        
         await campaign.save();
         return campaign;
 
