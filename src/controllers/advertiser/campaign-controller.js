@@ -1,7 +1,7 @@
-const { CampaignService } = require("../../../services");
+const { CampaignService } = require("../../services");
 const multer = require("multer");
 const upload = multer();
-const { Logger } = require("../../../config");
+const { Logger } = require("../../config");
 const fs = require("fs");
 const path = require("path");
 const { STATUS_CODES } = require("http");
