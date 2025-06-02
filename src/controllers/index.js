@@ -1,4 +1,5 @@
 module.exports = {
-    CampaignController: require('./advertiser/campaign-controllers/campaign-controller'),
+    CampaignController: require('./advertiser/campaign-controller'),
     UserController: require('./contactus/user-controller'),
+
 }
