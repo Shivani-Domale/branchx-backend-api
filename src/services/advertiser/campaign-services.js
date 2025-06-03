@@ -1,6 +1,7 @@
 const { Logger } = require("../../config");
 const { CampaignRepository } = require("../../repositories");
 const { uploadFileToS3 } = require("../../utils/s3Uploader");
+const { Op } = require("sequelize");
 
 const campaignRepository = new CampaignRepository();
 
@@ -20,6 +21,8 @@ const createCampaign = async (data, fileBuffer, originalName) => {
         Logger.info(`File uploaded successfully: ${url}`);
         campaign.creativeFile = url;
         campaign.status = false;
+        campaign.isApproved = "PENDING";
+        campaign.isPayment = false;
 
         campaign.ageGroups = Array.isArray(data.ageGroups)
             ? data.ageGroups.join(",")
@@ -43,7 +46,15 @@ const createCampaign = async (data, fileBuffer, originalName) => {
 
 const getAllCampaigns = async () => {
     try {
-        const campaigns = await campaignRepository.findAll();
+  
+        const campaigns = await campaignRepository.findAll({
+            where:{
+                isApproved:{
+                [Op.ne]:'PENDING'
+                }
+            }
+    });
+    
         const data = [];
 
         campaigns.forEach(campaign => {
@@ -65,7 +76,9 @@ const getAllCampaigns = async () => {
                 timeSlot: campaign.timeSlot,
                 campaignObjective: campaign.campaignObjective,
                 creativeFile: campaign.creativeFile,
-                status: campaign.status
+                status: campaign.status,
+                isApproved: campaign.isApproved,
+                isPayment: campaign.isPayment
             });
         });
 
