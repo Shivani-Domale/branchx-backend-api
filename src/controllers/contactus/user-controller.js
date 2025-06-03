@@ -5,6 +5,7 @@ const sendEmail = require('../../utils/send-Email');
 
 exports.createUser = async (req, res, next) => {
   try {
+    console.log("Creating user with data:", req.body);
     const user = await userService.createUser(req.body);
     logger.info(`User created: ${user.id} - ${user.email}`);
 
