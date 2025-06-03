@@ -72,6 +72,12 @@ module.exports = {
       status: {
         type: Sequelize.BOOLEAN
       },
+      isApproved: {
+        type: Sequelize.STRING
+      },
+      isPayment: {
+        type: Sequelize.BOOLEAN
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
