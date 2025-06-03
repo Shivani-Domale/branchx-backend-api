@@ -1,10 +1,16 @@
 {
   "development": {
-    "username": "postgres",
-    "password": "root",
+    "username": "branchxdb_owner",
+    "password": "npg_jTXwO8a3AufG",
     "database": "branchxdb",
-    "host": "127.0.0.1",
-    "dialect": "postgres"
+    "host": "ep-white-breeze-abravfmm-pooler.eu-west-2.aws.neon.tech",
+    "dialect": "postgres",
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
+    }
   },
   "test": {
     "username": "root",
