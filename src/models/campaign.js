@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class Campaign extends Model {
     /**
@@ -10,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      Campaign.belongsTo(models.User, { foreignKey: 'userId' });
     }
   }
   Campaign.init({
@@ -36,7 +37,15 @@ module.exports = (sequelize, DataTypes) => {
     timeSlot: DataTypes.STRING,
     status: DataTypes.BOOLEAN,
     isApproved: DataTypes.STRING,
-    isPayment: DataTypes.BOOLEAN
+    isPayment: DataTypes.BOOLEAN,
+    userId: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: 'Users', 
+      key: 'id'
+    },
+    onDelete: 'CASCADE' 
+  }
   }, {
     sequelize,
     modelName: 'Campaign',
