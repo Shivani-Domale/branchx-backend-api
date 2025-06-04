@@ -1,9 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const authController = require('../../controllers/login/auth-controller');
+const { loginUser } = require('../../controllers/login/login-user');
 
-
-router.post('/login', authController.login);
-
+router.post('/login', loginUser);
 module.exports = router;
-// This code defines a route for user login in an Express.js application.
