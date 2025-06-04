@@ -1,3 +1,4 @@
 module.exports = {  
-    ValidateUser : require('./validateUser')
+    ValidateUser : require('./validateUser'),
+    VerifyToken : require('./verifyToken'),
 }

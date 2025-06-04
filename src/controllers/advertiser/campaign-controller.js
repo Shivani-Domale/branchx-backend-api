@@ -4,11 +4,21 @@ const upload = multer();
 const { Logger } = require("../../config");
 const fs = require("fs");
 const path = require("path");
-const { STATUS_CODES } = require("http");
+const { StatusCodes } = require('http-status-codes');
+
 
 const createCampaign = async (req, res) => {
 
   try {
+     const user = req.user;
+     
+     if(!user){
+        return res.status(StatusCodes.UNAUTHORIZED).json({
+           message: " Please Login .",
+            success: false,          
+          });
+     }
+
     console.log(req.body);
     Logger.info("------------");
     Logger.info("Received request to create campaign");
@@ -23,7 +33,7 @@ const createCampaign = async (req, res) => {
     const fileBuffer = req.file.buffer;
     const originalName = req.file.originalname;
 
-    const campaign = await CampaignService.createCampaign(req.body, fileBuffer, originalName);
+    const campaign = await CampaignService.createCampaign(req.body, fileBuffer, originalName,user.id);
 
     Logger.info("Campaign created successfully");
     Logger.info("------------");
@@ -50,7 +60,16 @@ const createCampaign = async (req, res) => {
 
 const getCampaigns = async (req, res) => {
   console.log("Fetching campaigns");
-  const campaigns = await CampaignService.getAllCampaigns();
+   const user = req.user;
+     
+     if(!user){
+        return res.status(StatusCodes.UNAUTHORIZED).json({
+           message: " Please Login .",
+            success: false,          
+          });
+     }
+
+  const campaigns = await CampaignService.getAllCampaigns(user.id);
   return res.json(campaigns);
 }
 
