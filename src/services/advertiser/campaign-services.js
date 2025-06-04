@@ -5,7 +5,7 @@ const { Op } = require("sequelize");
 
 const campaignRepository = new CampaignRepository();
 
-const createCampaign = async (data, fileBuffer, originalName) => {
+const createCampaign = async (data, fileBuffer, originalName,id) => {
   try {
     const campaign = await campaignRepository.create(data);
 
@@ -20,6 +20,7 @@ const createCampaign = async (data, fileBuffer, originalName) => {
     campaign.status = false;
     campaign.isApproved = "PENDING";
     campaign.isPayment = false;
+    campaign.userId = id; 
 
     campaign.ageGroups = Array.isArray(data.ageGroups)
       ? data.ageGroups.join(",")
@@ -41,11 +42,12 @@ const createCampaign = async (data, fileBuffer, originalName) => {
 };
 
 
-const getAllCampaigns = async () => {
+const getAllCampaigns = async (id) => {
     try {
   
         const campaigns = await campaignRepository.findAll({
             where:{
+                userId:id,
                 isApproved:{
                 [Op.ne]:'PENDING'
                 }
