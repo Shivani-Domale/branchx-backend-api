@@ -36,5 +36,6 @@ app.use('/api/auth', authRoutes);
 
 app.listen(ServerConfig.PORT, () => {
 console.log(`Server is running on port ${ServerConfig.PORT}`);
+console.log(`Your project Live now `);
 });
 
