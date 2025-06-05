@@ -25,7 +25,7 @@ const createCampaign = async (req, res) => {
 
     if (!req.file) {
       Logger.error(" video/images file is required");
-      return res.status(400).json({ message: " video/images file is required." });
+      return res.status(StatusCodes.NO_CONTENT).json({ message: " video/images file is required." });
     }
 
     Logger.info(`Uploaded file name: ${req.file.originalname}, size: ${req.file.size} bytes`);
@@ -42,7 +42,7 @@ const createCampaign = async (req, res) => {
       message: "Campaign created successfully",
       data: campaign,
       success: true,
-      status: 200
+      status: StatusCodes.OK
     });
 
 
@@ -53,7 +53,7 @@ const createCampaign = async (req, res) => {
       message: "Internal server error",
       error: error.message || "An unexpected error occurred",
       success: false,
-      status: 500
+      status: StatusCodes.INTERNAL_SERVER_ERROR
     });
   }
 };
@@ -70,7 +70,7 @@ const getCampaigns = async (req, res) => {
      }
 
   const campaigns = await CampaignService.getAllCampaigns(user.id);
-  return res.json(campaigns);
+  return res.status(StatusCodes.OK).json(campaigns);
 }
 
 
@@ -87,7 +87,7 @@ console.log(req.body);
     return res.json({
      message: `${campaign.campaignName} Ad ${status === true ? 'Activated' : 'Deactivated'} successfully`,
       success: true,
-      status: 200
+      status: StatusCodes.OK
     });
   } catch (error) {
     Logger.error("Error updating campaign status:", error);
@@ -95,7 +95,7 @@ console.log(req.body);
       message: "Internal server error",
       error: error.message || "An unexpected error occurred",
       success: false,
-      status: 500
+      status: StatusCodes.INTERNAL_SERVER_ERROR
     });
   }
 
