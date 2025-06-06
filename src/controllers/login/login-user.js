@@ -9,8 +9,10 @@ const SECRET = process.env.JWT_SECRET;
 
 exports.loginUser = async (req, res) => {
   const { email, role, password } = req.body;
+  console.log(req.body);
   try {
     const user = await User.findOne({ where: { email, role } });
+    console.log(user);
     if (!user) {
       return res.status(404).json(
         { 
