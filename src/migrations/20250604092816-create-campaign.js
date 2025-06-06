@@ -60,9 +60,6 @@ module.exports = {
       selectedDays: {
         type: Sequelize.STRING
       },
-      slopePreference: {
-        type: Sequelize.STRING
-      },
       targetRegions: {
         type: Sequelize.STRING
       },
