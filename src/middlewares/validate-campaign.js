@@ -19,7 +19,6 @@ const validateCampaign = [
   body("scheduleDate").optional().isString(),
   body("scheduleEndDate").optional().isString(),
   body("selectedDays").notEmpty().withMessage("Selected days are required"),
-  body("slopePreference").optional().isString(),
   body("targetRegions").notEmpty().withMessage("Target regions are required"),
   body("timeSlot").notEmpty().withMessage("Time slot is required"),
 
