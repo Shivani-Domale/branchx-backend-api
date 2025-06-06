@@ -13,5 +13,6 @@ const router = express.Router();
 router.post('/createCampaign',VerifyToken, upload.single('creativeFile'), validateCampaign, CampaignController.createCampaign);
 router.get('/getCampaigns', VerifyToken,CampaignController.getCampaigns);
 router.put('/:id/status', CampaignController.updateCampaignStatus);
+router.get('/:campaignId/getCampaign',CampaignController.getCampaignById);
 
 module.exports = router;
