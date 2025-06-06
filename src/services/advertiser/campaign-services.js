@@ -23,11 +23,13 @@ const createCampaign = async (data, fileBuffer, originalName, id) => {
         campaign.isPayment = false;
         campaign.userId = id;
 
-     
-         
-         campaign.selectedDays = ParseArrayToString(data.selectedDays);   
-         campaign.ageGroups = ParseArrayToString(data.ageGroups);   
-         campaign.targetRegions = ParseArrayToString(data.targetRegions);
+        const formatedDays = ParseArrayToString(data.selectedDays);
+         const formatedAgeGroups =  ParseArrayToString(data.ageGroups);
+         const formatedRegions = ParseArrayToString(data.targetRegions);
+         console.log("Days:   "+formatedDays);
+         campaign.selectedDays = formatedDays;   
+         campaign.ageGroups =formatedAgeGroups;   
+         campaign.targetRegions =formatedRegions;
          
 
 
