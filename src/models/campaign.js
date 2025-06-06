@@ -32,7 +32,6 @@ module.exports = (sequelize, DataTypes) => {
     scheduleDate: DataTypes.STRING,
     scheduleEndDate: DataTypes.STRING,
     selectedDays: DataTypes.STRING,
-    slopePreference: DataTypes.STRING,
     targetRegions: DataTypes.STRING,
     timeSlot: DataTypes.STRING,
     status: DataTypes.BOOLEAN,
