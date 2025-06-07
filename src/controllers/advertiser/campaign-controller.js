@@ -118,17 +118,30 @@ const getCampaignById = async (req, res) => {
   }
 };
 
-const getUserCampaignByToken =async(req,res)=>{
-  const user  = req.user;
-if(!user){
-  return res.status(404).json({ message: 'Campaign not found' }); 
-}
-  const getCamppaign = CampaignService.getAllCampaigns(user.id);
+const getUserCampaignByToken = async (req, res) => {
+    try {
+        const user = req.user;
+        console.log(user);
 
-    return res.status(StatusCodes.OK).json({
-         data:getCamppaign,
-            success: false,          
-          });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        const campaigns = await CampaignService.getAllCampaigns(user.id);
+      console.log(campaigns);
+
+        return res.status(StatusCodes.OK).json({
+            data: campaigns,
+            success: true, // change to true since the request was successful
+        });
+
+    } catch (error) {
+        console.error("Error in getUserCampaignByToken:", error.message);
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            message: "Failed to get user campaigns",
+            success: false,
+        });
+    }
 };
 
 
