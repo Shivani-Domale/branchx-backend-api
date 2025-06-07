@@ -118,6 +118,19 @@ const getCampaignById = async (req, res) => {
   }
 };
 
+const getUserCampaignByToken =async(req,res)=>{
+  const user  = req.user;
+if(!user){
+  return res.status(404).json({ message: 'Campaign not found' }); 
+}
+  const getCamppaign = CampaignService.getAllCampaigns(user.id);
+
+    return res.status(StatusCodes.OK).json({
+         data:getCamppaign,
+            success: false,          
+          });
+};
 
 
-module.exports = { createCampaign, getCampaigns, updateCampaignStatus ,getCampaignById};
+
+module.exports = { createCampaign, getCampaigns, updateCampaignStatus ,getCampaignById,getUserCampaignByToken};

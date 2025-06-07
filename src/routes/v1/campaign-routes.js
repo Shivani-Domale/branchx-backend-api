@@ -14,5 +14,6 @@ router.post('/createCampaign',VerifyToken, upload.single('creativeFile'), Campai
 router.get('/getCampaigns', VerifyToken,CampaignController.getCampaigns);
 router.put('/:id/status', CampaignController.updateCampaignStatus);
 router.get('/:campaignId/getCampaign',CampaignController.getCampaignById);
+router.get('/getUserCampaign',VerifyToken,CampaignController.getUserCampaignByToken);
 
 module.exports = router;
