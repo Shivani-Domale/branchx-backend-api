@@ -32,7 +32,7 @@ const createCampaign = async (req, res) => {
 
     const fileBuffer = req.file.buffer;
     const originalName = req.file.originalname;
-
+    
     const campaign = await CampaignService.createCampaign(req.body, fileBuffer, originalName,user.id);
 
     Logger.info("Campaign created successfully");
@@ -53,7 +53,7 @@ const createCampaign = async (req, res) => {
       message: "Internal server error",
       error: error.message || "An unexpected error occurred",
       success: false,
-      status: StatusCodes.INTERNAL_SERVER_ERROR
+      status: 500
     });
   }
 };
