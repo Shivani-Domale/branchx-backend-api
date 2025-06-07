@@ -22,7 +22,7 @@ const createCampaign = async (data, fileBuffer, originalName, id) => {
         campaign.isApproved = "PENDING";
         campaign.isPayment = false;
         campaign.userId = id;
-        campaign.ageGroups = null;
+        campaign.ageGroups = "null";
         // const formatedDays = ParseArrayToString(data.selectedDays);
         //  const formatedAgeGroups =  ParseArrayToString(data.ageGroups);
         //  const formatedRegions = ParseArrayToString(data.targetRegions);
