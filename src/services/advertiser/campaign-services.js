@@ -9,7 +9,8 @@ const campaignRepository = new CampaignRepository();
 const createCampaign = async (data, fileBuffer, originalName, id) => {
     try {
         const campaign = await campaignRepository.create(data);
-
+        data.ageGroups = "dummy";
+        console.log(data);
         if (!campaign) {
             throw new Error("Campaign creation failed");
         }
@@ -22,7 +23,7 @@ const createCampaign = async (data, fileBuffer, originalName, id) => {
         campaign.isApproved = "PENDING";
         campaign.isPayment = false;
         campaign.userId = id;
-        campaign.ageGroups = "null";
+      
         // const formatedDays = ParseArrayToString(data.selectedDays);
         //  const formatedAgeGroups =  ParseArrayToString(data.ageGroups);
         //  const formatedRegions = ParseArrayToString(data.targetRegions);
