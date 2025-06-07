@@ -44,48 +44,44 @@ const createCampaign = async (data, fileBuffer, originalName, id) => {
 
 const getAllCampaigns = async (id) => {
     try {
-        // Fetch all campaigns for the user with the given id
         if (!id) {
             throw new Error("User ID is required");
         }
-        const campaigns = await campaignRepository.findAll({
-            where: {
-                userId: id
-            }
+
+        const campaigns = await campaignRepository.findByUserId(id);
+
+        if (!campaigns || campaigns.length === 0) {
+            return []; // or throw an error if you want to enforce existence
+        }
+
+        const data = campaigns.map(campaign => {
+            const date = new Date(campaign.scheduleDate);
+            const formattedDate = date.toLocaleString("en-IN", {
+                timeZone: "Asia/Kolkata",
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit"
+            });
+
+            return {
+                id: campaign.id,
+                campaignName: campaign.campaignName,
+                scheduleDate: formattedDate,
+                timeSlot: campaign.timeSlot,
+                campaignObjective: campaign.campaignObjective,
+                creativeFile: campaign.creativeFile,
+                status: campaign.status,
+                isApproved: campaign.isApproved,
+                isPayment: campaign.isPayment,
+            };
         });
 
-        // const data = [];
-
-        // campaigns.forEach(campaign => {
-        //     // Convert string to Date object
-        //     const date = new Date(campaign.scheduleDate);
-        //     // Format in IST
-        //     const formattedDate = date.toLocaleString("en-IN", {
-        //         timeZone: "Asia/Kolkata",
-        //         year: "numeric",
-        //         month: "2-digit",
-        //         day: "2-digit"
-        //     });
-
-        //     data.push({
-        //         id: campaign.id,
-        //         campaignName: campaign.campaignName,
-        //         scheduleDate: formattedDate, // formatted in IST
-        //         timeSlot: campaign.timeSlot,
-        //         campaignObjective: campaign.campaignObjective,
-        //         creativeFile: campaign.creativeFile,
-        //         status: campaign.status,
-        //         isApproved: campaign.isApproved,
-        //         isPayment: campaign.isPayment,
-        //     });
-        // });
-
-
-        return campaigns;
+        return data;
     } catch (error) {
         throw new Error(`Error fetching campaigns: ${error.message}`);
     }
 };
+
 
 
 const updateCampaignStatus = async (id, status) => {
