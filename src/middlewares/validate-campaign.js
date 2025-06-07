@@ -3,7 +3,6 @@ const errorResponse = require("../utils/errorReponse");
 
 const validateCampaign = [
   body("adDeviceShow").notEmpty().withMessage("Ad device show is required"),
-  body("ageGroups").notEmpty().withMessage("Age groups are required"),
   body("baseBid").isInt({ min: 1 }).withMessage("Base bid must be greater than 0"),
   body("budgetLimit").isInt({ min: 1 }).withMessage("Budget limit must be a positive integer"),
   body("campaignName").notEmpty().withMessage("Campaign name is required"),
