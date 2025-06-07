@@ -50,41 +50,38 @@ const getAllCampaigns = async (id) => {
         }
         const campaigns = await campaignRepository.findAll({
             where: {
-                userId: id,
-                isApproved: {
-                    [Op.ne]: 'PENDING'
-                }
+                userId: id
             }
         });
 
-        const data = [];
+        // const data = [];
 
-        campaigns.forEach(campaign => {
-            // Convert string to Date object
-            const date = new Date(campaign.scheduleDate);
-            // Format in IST
-            const formattedDate = date.toLocaleString("en-IN", {
-                timeZone: "Asia/Kolkata",
-                year: "numeric",
-                month: "2-digit",
-                day: "2-digit"
-            });
+        // campaigns.forEach(campaign => {
+        //     // Convert string to Date object
+        //     const date = new Date(campaign.scheduleDate);
+        //     // Format in IST
+        //     const formattedDate = date.toLocaleString("en-IN", {
+        //         timeZone: "Asia/Kolkata",
+        //         year: "numeric",
+        //         month: "2-digit",
+        //         day: "2-digit"
+        //     });
 
-            data.push({
-                id: campaign.id,
-                campaignName: campaign.campaignName,
-                scheduleDate: formattedDate, // formatted in IST
-                timeSlot: campaign.timeSlot,
-                campaignObjective: campaign.campaignObjective,
-                creativeFile: campaign.creativeFile,
-                status: campaign.status,
-                isApproved: campaign.isApproved,
-                isPayment: campaign.isPayment,
-            });
-        });
+        //     data.push({
+        //         id: campaign.id,
+        //         campaignName: campaign.campaignName,
+        //         scheduleDate: formattedDate, // formatted in IST
+        //         timeSlot: campaign.timeSlot,
+        //         campaignObjective: campaign.campaignObjective,
+        //         creativeFile: campaign.creativeFile,
+        //         status: campaign.status,
+        //         isApproved: campaign.isApproved,
+        //         isPayment: campaign.isPayment,
+        //     });
+        // });
 
 
-        return data;
+        return campaigns;
     } catch (error) {
         throw new Error(`Error fetching campaigns: ${error.message}`);
     }

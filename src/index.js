@@ -4,6 +4,8 @@ const { ServerConfig,Logger } = require('./config');
 const cors = require('cors');
 const errorHandler = require('./middlewares/error-Handler');
 const authRoutes = require('./routes/v1/auth-routes');
+require('events').EventEmitter.defaultMaxListeners = 20;
+
 
 
 const app = express();
