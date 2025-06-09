@@ -1,5 +1,6 @@
 const { body, validationResult } = require("express-validator");
-const errorResponse = require("../utils/errorReponse");
+const { ErrorReponse } = require("../utils");
+const { StatusCodes } = require("http-status-codes");
 
 const validateCampaign = [
   body("adDeviceShow").notEmpty().withMessage("Ad device show is required"),
@@ -39,7 +40,7 @@ const validateCampaign = [
         }
       });
 
-      return errorResponse(res, "Validation failed", 422, formattedErrors);
+      return ErrorReponse(res,StatusCodes.NO_CONTENT, formattedErrors);
     }
 
     next();
