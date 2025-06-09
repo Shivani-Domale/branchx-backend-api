@@ -1,9 +1,9 @@
-const errorResponse = (res, message = "Something went wrong", statusCode = 500, errors = []) => {
-  return res.status(statusCode).json({
-    success: false,
-    message,
-    errors: Array.isArray(errors) ? errors : [],
-  });
+const errorResponse = (res, statusCode, errorMessage) => {
+    return res.status(statusCode).json({
+        success: false,
+        status:statusCode,
+        error:errorMessage
+    });
 };
 
 module.exports = errorResponse;
