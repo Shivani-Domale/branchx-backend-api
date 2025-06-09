@@ -1,6 +1,6 @@
 
 const UserRepository = require('../../repositories/user-repository');
-const sendEmail = require('../../utils/send-Email');
+const { SendingEmailToUser } = require('../../utils');
 
 
 
@@ -12,7 +12,7 @@ const createUser = async (userData) => {
     user.status = 'PENDING';
     await user.save(); // Save the updated status
 
-    await sendEmail(user);
+    await SendingEmailToUser(user);
     return user;
   } catch (error) {
     throw new Error(`Error creating user: ${error.message}`);

@@ -1,18 +1,19 @@
 const { Logger } = require("../../config");
 const { CampaignRepository } = require("../../repositories");
-const { uploadFileToS3 } = require("../../utils/s3Uploader");
+const { UploadFile } = require("../../utils");
+
 
 const campaignRepository = new CampaignRepository();
 
 const createCampaign = async (data, fileBuffer, originalName, id) => {
     try {
         const campaign = await campaignRepository.create(data);
-      
+
         if (!campaign) {
             throw new Error("Campaign creation failed");
         }
 
-        const url = await uploadFileToS3(fileBuffer, originalName, campaign.id);
+        const url = await UploadFile(fileBuffer, originalName, campaign.id);
 
         Logger.info(`File uploaded successfully: ${url}`);
 
@@ -99,24 +100,24 @@ const updateCampaignStatus = async (id, status) => {
 
 }
 
-const getCampaignById = async(campaignId)=>{
- try {
-    if (!campaignId) {
-      throw new Error('Campaign ID is required');
+const getCampaignById = async (campaignId) => {
+    try {
+        if (!campaignId) {
+            throw new Error('Campaign ID is required');
+        }
+
+        const campaign = await campaignRepository.findById(campaignId);
+
+        if (!campaign) {
+            throw new Error('Campaign not found');
+        }
+
+        return campaign;
+    } catch (error) {
+        throw new Error(`Error fetching campaign by ID: ${error.message}`);
     }
-
-    const campaign = await campaignRepository.findById(campaignId);
-
-    if (!campaign) {
-      throw new Error('Campaign not found');
-    }
-
-    return campaign;
-  } catch (error) {
-    throw new Error(`Error fetching campaign by ID: ${error.message}`);
-  }
 };
 
 module.exports = {
-    createCampaign, getAllCampaigns, updateCampaignStatus,getCampaignById
+    createCampaign, getAllCampaigns, updateCampaignStatus, getCampaignById
 }
