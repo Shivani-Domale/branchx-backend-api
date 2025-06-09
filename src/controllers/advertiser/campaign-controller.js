@@ -15,10 +15,7 @@ const createCampaign = async (req, res) => {
     const user = req.user;
 
     if (!user) {
-      return res.status(StatusCodes.UNAUTHORIZED).json({
-        message: " Please Login .",
-        success: false,
-      });
+   ErrorReponse(res,StatusCodes.UNAUTHORIZED,"Please Login...");
     }
 
     console.log(req.body);
@@ -27,7 +24,7 @@ const createCampaign = async (req, res) => {
 
     if (!req.file) {
       Logger.error(" video/images file is required");
-      return res.status(StatusCodes.NO_CONTENT).json({ message: " video/images file is required." });
+      ErrorReponse(res,StatusCodes.NO_CONTENT,"video/image required !");
     }
 
     Logger.info(`Uploaded file name: ${req.file.originalname}, size: ${req.file.size} bytes`);
@@ -40,39 +37,27 @@ const createCampaign = async (req, res) => {
     Logger.info("Campaign created successfully");
     Logger.info("------------");
 
-    return res.json({
-      message: "Campaign created successfully",
-      data: campaign,
-      success: true,
-      status: StatusCodes.OK
-    });
-
+  SuccessReposnse(res,null,StatusCodes.OK,campaign);
 
   } catch (error) {
     Logger.error("Error creating campaign:", error);
     Logger.info("------------");
-    res.json({
-      message: "Internal server error",
-      error: error.message || "An unexpected error occurred",
-      success: false,
-      status: 500
-    });
+     ErrorReponse(res,StatusCodes.INTERNAL_SERVER_ERROR,error);
   }
 };
 
+
+
 const getCampaigns = async (req, res) => {
-  console.log("Fetching campaigns");
+  Logger.info("Fetching campaigns");
   const user = req.user;
 
   if (!user) {
-    return res.status(StatusCodes.UNAUTHORIZED).json({
-      message: " Please Login .",
-      success: false,
-    });
+  ErrorReponse(res,StatusCodes.UNAUTHORIZED,"Please Login...");
   }
 
   const campaigns = await CampaignService.getAllCampaigns(user.id);
-  return res.status(StatusCodes.OK).json(campaigns);
+ SuccessReposnse(res,null,StatusCodes.OK,campaigns);
 }
 
 
@@ -104,13 +89,9 @@ const getCampaignById = async (req, res) => {
     if (!campaign) {
       return res.status(404).json({ message: 'Campaign not found' });
     }
-    res.status(200).json(
-      {
-        campaign: campaign
-      }
-    );
+   SuccessReposnse(res,null,StatusCodes.OK,campaign);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+   ErrorReponse(res,StatusCodes.INTERNAL_SERVER_ERROR,error);
   }
 };
 
@@ -120,7 +101,7 @@ const getUserCampaignByToken = async (req, res) => {
     console.log(user);
 
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+     ErrorReponse(res,StatusCodes.UNAUTHORIZED,"Please Login in..");
     }
 
     const campaigns = await CampaignService.getAllCampaigns(user.id);
@@ -130,10 +111,7 @@ const getUserCampaignByToken = async (req, res) => {
 
   } catch (error) {
     console.error("Error in getUserCampaignByToken:", error.message);
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      message: "Failed to get user campaigns",
-      success: false,
-    });
+  ErrorReponse(res,StatusCodes.INTERNAL_SERVER_ERROR,error);
   }
 };
 
