@@ -1,20 +1,19 @@
 const { Logger } = require("../../config");
 const { CampaignRepository } = require("../../repositories");
-const { ParseArrayToString } = require("../../utils");
 const { uploadFileToS3 } = require("../../utils/s3Uploader");
-const { Op } = require("sequelize");
 
 const campaignRepository = new CampaignRepository();
 
 const createCampaign = async (data, fileBuffer, originalName, id) => {
     try {
         const campaign = await campaignRepository.create(data);
-        console.log(data);
+      
         if (!campaign) {
             throw new Error("Campaign creation failed");
         }
 
         const url = await uploadFileToS3(fileBuffer, originalName, campaign.id);
+
         Logger.info(`File uploaded successfully: ${url}`);
 
         campaign.creativeFile = url;
@@ -23,14 +22,6 @@ const createCampaign = async (data, fileBuffer, originalName, id) => {
         campaign.isPayment = false;
         campaign.userId = id;
         campaign.ageGroups = "dummy";
-        // const formatedDays = ParseArrayToString(data.selectedDays);
-        //  const formatedAgeGroups =  ParseArrayToString(data.ageGroups);
-        //  const formatedRegions = ParseArrayToString(data.targetRegions);
-        //  console.log("Days:   "+formatedDays);
-        //  campaign.selectedDays = formatedDays;   
-        //  campaign.ageGroups =formatedAgeGroups;   
-        //  campaign.targetRegions =formatedRegions;
-         
 
 
         await campaign.save();
