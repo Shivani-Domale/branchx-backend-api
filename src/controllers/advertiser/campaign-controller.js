@@ -5,19 +5,21 @@ const { Logger } = require("../../config");
 const fs = require("fs");
 const path = require("path");
 const { StatusCodes } = require('http-status-codes');
+const { SuccessReposnse, ErrorReponse } = require("../../utils");
+
 
 
 const createCampaign = async (req, res) => {
 
   try {
-     const user = req.user;
-     
-     if(!user){
-        return res.status(StatusCodes.UNAUTHORIZED).json({
-           message: " Please Login .",
-            success: false,          
-          });
-     }
+    const user = req.user;
+
+    if (!user) {
+      return res.status(StatusCodes.UNAUTHORIZED).json({
+        message: " Please Login .",
+        success: false,
+      });
+    }
 
     console.log(req.body);
     Logger.info("------------");
@@ -32,8 +34,8 @@ const createCampaign = async (req, res) => {
 
     const fileBuffer = req.file.buffer;
     const originalName = req.file.originalname;
-    
-    const campaign = await CampaignService.createCampaign(req.body, fileBuffer, originalName,user.id);
+
+    const campaign = await CampaignService.createCampaign(req.body, fileBuffer, originalName, user.id);
 
     Logger.info("Campaign created successfully");
     Logger.info("------------");
@@ -60,14 +62,14 @@ const createCampaign = async (req, res) => {
 
 const getCampaigns = async (req, res) => {
   console.log("Fetching campaigns");
-   const user = req.user;
-     
-     if(!user){
-        return res.status(StatusCodes.UNAUTHORIZED).json({
-           message: " Please Login .",
-            success: false,          
-          });
-     }
+  const user = req.user;
+
+  if (!user) {
+    return res.status(StatusCodes.UNAUTHORIZED).json({
+      message: " Please Login .",
+      success: false,
+    });
+  }
 
   const campaigns = await CampaignService.getAllCampaigns(user.id);
   return res.status(StatusCodes.OK).json(campaigns);
@@ -75,75 +77,66 @@ const getCampaigns = async (req, res) => {
 
 
 const updateCampaignStatus = async (req, res) => {
-  const { id } = req.params;
-   const {status} = req.body;
-console.log(req.body);
-  console.log(status +"  "+ id);
-
 
   try {
-    const campaign = await CampaignService.updateCampaignStatus(id,status);
+    const { id } = req.params;
+    const { status } = req.body;
+    const campaign = await CampaignService.updateCampaignStatus(id, status);
 
-    return res.json({
-     message: `${campaign.campaignName} Ad ${status === true ? 'Activated' : 'Deactivated'} successfully`,
-      success: true,
-      status: StatusCodes.OK
-    });
+    // return res.json({
+    //   message: `${campaign.campaignName} Ad ${status === true ? 'Activated' : 'Deactivated'} successfully`,
+    //   success: true,
+    //   status: StatusCodes.OK
+    // });
+
+    SuccessReposnse(res,`${campaign.campaignName} Ad ${status === true ? 'Activated' : 'Deactivated'} successfully`,StatusCodes.OK,null);
   } catch (error) {
     Logger.error("Error updating campaign status:", error);
-    res.json({
-      message: "Internal server error",
-      error: error.message || "An unexpected error occurred",
-      success: false,
-      status: StatusCodes.INTERNAL_SERVER_ERROR
-    });
+     ErrorReponse(res,StatusCodes.INTERNAL_SERVER_ERROR,error);
   }
 };
 
-const getCampaignById = async (req, res) => {  
+const getCampaignById = async (req, res) => {
 
   const { campaignId } = req.params;
-  try{
-     const campaign  = await CampaignService.getCampaignById(campaignId);
+  try {
+    const campaign = await CampaignService.getCampaignById(campaignId);
     if (!campaign) {
-      return res.status(404).json({ message: 'Campaign not found' }); 
+      return res.status(404).json({ message: 'Campaign not found' });
     }
     res.status(200).json(
       {
         campaign: campaign
       }
     );
-  }catch (error) {
+  } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
 const getUserCampaignByToken = async (req, res) => {
-    try {
-        const user = req.user;
-        console.log(user);
+  try {
+    const user = req.user;
+    console.log(user);
 
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-
-        const campaigns = await CampaignService.getAllCampaigns(user.id);
-      console.log(campaigns);
-
-        return res.status(StatusCodes.OK).json({
-            data: campaigns,
-            success: true, // change to true since the request was successful
-        });
-
-    } catch (error) {
-        console.error("Error in getUserCampaignByToken:", error.message);
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: "Failed to get user campaigns",
-            success: false,
-        });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
     }
+
+    const campaigns = await CampaignService.getAllCampaigns(user.id);
+    console.log(campaigns);
+
+   SuccessReposnse(res,null,StatusCodes.OK,campaigns);
+
+  } catch (error) {
+    console.error("Error in getUserCampaignByToken:", error.message);
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: "Failed to get user campaigns",
+      success: false,
+    });
+  }
 };
 
 
 
-module.exports = { createCampaign, getCampaigns, updateCampaignStatus ,getCampaignById,getUserCampaignByToken};
+module.exports = { createCampaign, getCampaigns, updateCampaignStatus, getCampaignById, getUserCampaignByToken };
