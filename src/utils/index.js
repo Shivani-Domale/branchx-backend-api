@@ -1,5 +1,6 @@
 module.exports = {
-    ParseArrayToString : require('./parseArrayToString'),
-    ErrorReponse : require('./errorReponse'),
-    SuccessReposnse :require('./successReponse')
+    ErrorReponse: require('./errorHandler/errorReponse'),
+    SuccessReposnse: require('./errorHandler/successReponse'),
+    UploadFile: require('./s3Uploader'),
+    SendingEmailToUser: require('./send-Email')
 }
