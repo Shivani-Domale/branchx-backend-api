@@ -1,0 +1,3002 @@
+[
+  {
+    "id": 1,
+    "city": "Mumbai",
+    "tier": "Tier 1",
+    "price": 35000
+  },
+  {
+    "id": 2,
+    "city": "Delhi",
+    "tier": "Tier 1",
+    "price": 32000
+  },
+  {
+    "id": 3,
+    "city": "Bangalore",
+    "tier": "Tier 1",
+    "price": 30000
+  },
+  {
+    "id": 4,
+    "city": "Chennai",
+    "tier": "Tier 1",
+    "price": 28000
+  },
+  {
+    "id": 5,
+    "city": "Kolkata",
+    "tier": "Tier 1",
+    "price": 25000
+  },
+  {
+    "id": 6,
+    "city": "Hyderabad",
+    "tier": "Tier 1",
+    "price": 27000
+  },
+  {
+    "id": 7,
+    "city": "Pune",
+    "tier": "Tier 1",
+    "price": 26000
+  },
+  {
+    "id": 8,
+    "city": "Ahmedabad",
+    "tier": "Tier 1",
+    "price": 24000
+  },
+  {
+    "id": 9,
+    "city": "Surat",
+    "tier": "Tier 2",
+    "price": 21000
+  },
+  {
+    "id": 10,
+    "city": "Jaipur",
+    "tier": "Tier 2",
+    "price": 20000
+  },
+  {
+    "id": 11,
+    "city": "Kanpur",
+    "tier": "Tier 2",
+    "price": 18000
+  },
+  {
+    "id": 12,
+    "city": "Lucknow",
+    "tier": "Tier 2",
+    "price": 19000
+  },
+  {
+    "id": 13,
+    "city": "Nagpur",
+    "tier": "Tier 2",
+    "price": 17000
+  },
+  {
+    "id": 14,
+    "city": "Indore",
+    "tier": "Tier 2",
+    "price": 19500
+  },
+  {
+    "id": 15,
+    "city": "Bhopal",
+    "tier": "Tier 2",
+    "price": 18500
+  },
+  {
+    "id": 16,
+    "city": "Kochi",
+    "tier": "Tier 2",
+    "price": 22000
+  },
+  {
+    "id": 17,
+    "city": "Patna",
+    "tier": "Tier 2",
+    "price": 16000
+  },
+  {
+    "id": 18,
+    "city": "Coimbatore",
+    "tier": "Tier 2",
+    "price": 20500
+  },
+  {
+    "id": 19,
+    "city": "Varanasi",
+    "tier": "Tier 3",
+    "price": 15000
+  },
+  {
+    "id": 20,
+    "city": "Mysore",
+    "tier": "Tier 3",
+    "price": 16500
+  },
+  {
+    "id": 21,
+    "city": "Amritsar",
+    "tier": "Tier 2",
+    "price": 17500
+  },
+  {
+    "id": 22,
+    "city": "Thrissur",
+    "tier": "Tier 3",
+    "price": 15500
+  },
+  {
+    "id": 23,
+    "city": "Gwalior",
+    "tier": "Tier 3",
+    "price": 14000
+  },
+  {
+    "id": 24,
+    "city": "Jalandhar",
+    "tier": "Tier 2",
+    "price": 16000
+  },
+  {
+    "id": 25,
+    "city": "Udaipur",
+    "tier": "Tier 3",
+    "price": 15000
+  },
+  {
+    "id": 26,
+    "city": "Rajahmundry",
+    "tier": "Tier 3",
+    "price": 12000
+  },
+  {
+    "id": 27,
+    "city": "Madurai",
+    "tier": "Tier 2",
+    "price": 18000
+  },
+  {
+    "id": 28,
+    "city": "Vijayawada",
+    "tier": "Tier 2",
+    "price": 19000
+  },
+  {
+    "id": 29,
+    "city": "Visakhapatnam",
+    "tier": "Tier 2",
+    "price": 20000
+  },
+  {
+    "id": 30,
+    "city": "Bhubaneswar",
+    "tier": "Tier 2",
+    "price": 18000
+  },
+  {
+    "id": 31,
+    "city": "Ranchi",
+    "tier": "Tier 2",
+    "price": 17000
+  },
+  {
+    "id": 32,
+    "city": "Raipur",
+    "tier": "Tier 2",
+    "price": 17500
+  },
+  {
+    "id": 33,
+    "city": "Dehradun",
+    "tier": "Tier 2",
+    "price": 19000
+  },
+  {
+    "id": 34,
+    "city": "Chandigarh",
+    "tier": "Tier 2",
+    "price": 23000
+  },
+  {
+    "id": 35,
+    "city": "Agra",
+    "tier": "Tier 2",
+    "price": 17000
+  },
+  {
+    "id": 36,
+    "city": "Ghaziabad",
+    "tier": "Tier 2",
+    "price": 25000
+  },
+  {
+    "id": 37,
+    "city": "Nashik",
+    "tier": "Tier 2",
+    "price": 19000
+  },
+  {
+    "id": 38,
+    "city": "Jabalpur",
+    "tier": "Tier 3",
+    "price": 15000
+  },
+  {
+    "id": 39,
+    "city": "Bareilly",
+    "tier": "Tier 3",
+    "price": 14500
+  },
+  {
+    "id": 40,
+    "city": "Moradabad",
+    "tier": "Tier 3",
+    "price": 13500
+  },
+  {
+    "id": 41,
+    "city": "Aligarh",
+    "tier": "Tier 3",
+    "price": 13000
+  },
+  {
+    "id": 42,
+    "city": "Meerut",
+    "tier": "Tier 2",
+    "price": 18000
+  },
+  {
+    "id": 43,
+    "city": "Dhanbad",
+    "tier": "Tier 3",
+    "price": 14000
+  },
+  {
+    "id": 44,
+    "city": "Prayagraj (Allahabad)",
+    "tier": "Tier 2",
+    "price": 17000
+  },
+  {
+    "id": 45,
+    "city": "Srinagar",
+    "tier": "Tier 2",
+    "price": 20000
+  },
+  {
+    "id": 46,
+    "city": "Guwahati",
+    "tier": "Tier 2",
+    "price": 18500
+  },
+  {
+    "id": 47,
+    "city": "Jammu",
+    "tier": "Tier 3",
+    "price": 16000
+  },
+  {
+    "id": 48,
+    "city": "Ludhiana",
+    "tier": "Tier 2",
+    "price": 21000
+  },
+  {
+    "id": 49,
+    "city": "Amravati",
+    "tier": "Tier 3",
+    "price": 14000
+  },
+  {
+    "id": 50,
+    "city": "Nellore",
+    "tier": "Tier 3",
+    "price": 12500
+  },
+  {
+    "id": 51,
+    "city": "Kakinada",
+    "tier": "Tier 3",
+    "price": 13000
+  },
+  {
+    "id": 52,
+    "city": "Mangaluru (Mangalore)",
+    "tier": "Tier 2",
+    "price": 20000
+  },
+  {
+    "id": 53,
+    "city": "Puducherry",
+    "tier": "Tier 3",
+    "price": 16000
+  },
+  {
+    "id": 54,
+    "city": "Salem",
+    "tier": "Tier 3",
+    "price": 15000
+  },
+  {
+    "id": 55,
+    "city": "Tiruchirappalli",
+    "tier": "Tier 3",
+    "price": 15500
+  },
+  {
+    "id": 56,
+    "city": "Kota",
+    "tier": "Tier 3",
+    "price": 16000
+  },
+  {
+    "id": 57,
+    "city": "Cuttack",
+    "tier": "Tier 3",
+    "price": 14000
+  },
+  {
+    "id": 58,
+    "city": "Guntur",
+    "tier": "Tier 3",
+    "price": 14500
+  },
+  {
+    "id": 59,
+    "city": "Warangal",
+    "tier": "Tier 3",
+    "price": 13500
+  },
+  {
+    "id": 60,
+    "city": "Ajmer",
+    "tier": "Tier 3",
+    "price": 14000
+  },
+  {
+    "id": 61,
+    "city": "Bikaner",
+    "tier": "Tier 3",
+    "price": 13000
+  },
+  {
+    "id": 62,
+    "city": "Jodhpur",
+    "tier": "Tier 2",
+    "price": 18000
+  },
+  {
+    "id": 63,
+    "city": "Thiruvananthapuram",
+    "tier": "Tier 2",
+    "price": 21000
+  },
+  {
+    "id": 64,
+    "city": "Kollam",
+    "tier": "Tier 3",
+    "price": 16000
+  },
+  {
+    "id": 65,
+    "city": "Kozhikode",
+    "tier": "Tier 2",
+    "price": 19000
+  },
+  {
+    "id": 66,
+    "city": "Imphal",
+    "tier": "Tier 3",
+    "price": 15000
+  },
+  {
+    "id": 67,
+    "city": "Agartala",
+    "tier": "Tier 3",
+    "price": 14000
+  },
+  {
+    "id": 68,
+    "city": "Kohima",
+    "tier": "Tier 3",
+    "price": 16000
+  },
+  {
+    "id": 69,
+    "city": "Shillong",
+    "tier": "Tier 3",
+    "price": 17000
+  },
+  {
+    "id": 70,
+    "city": "Aizawl",
+    "tier": "Tier 3",
+    "price": 15000
+  },
+  {
+    "id": 71,
+    "city": "Itanagar",
+    "tier": "Tier 3",
+    "price": 14000
+  },
+  {
+    "id": 72,
+    "city": "Gangtok",
+    "tier": "Tier 3",
+    "price": 17000
+  },
+  {
+    "id": 73,
+    "city": "Port Blair",
+    "tier": "Tier 3",
+    "price": 18000
+  },
+  {
+    "id": 74,
+    "city": "Durgapur",
+    "tier": "Tier 3",
+    "price": 15000
+  },
+  {
+    "id": 75,
+    "city": "Asansol",
+    "tier": "Tier 3",
+    "price": 14500
+  },
+  {
+    "id": 76,
+    "city": "Siliguri",
+    "tier": "Tier 3",
+    "price": 16000
+  },
+  {
+    "id": 77,
+    "city": "Bhilai",
+    "tier": "Tier 3",
+    "price": 15000
+  },
+  {
+    "id": 78,
+    "city": "Jamshedpur",
+    "tier": "Tier 2",
+    "price": 18000
+  },
+  {
+    "id": 79,
+    "city": "Bokaro",
+    "tier": "Tier 3",
+    "price": 14000
+  },
+  {
+    "id": 80,
+    "city": "Hubli-Dharwad",
+    "tier": "Tier 3",
+    "price": 16000
+  },
+  {
+    "id": 81,
+    "city": "Belgaum",
+    "tier": "Tier 3",
+    "price": 15000
+  },
+  {
+    "id": 82,
+    "city": "Gulbarga",
+    "tier": "Tier 3",
+    "price": 13500
+  },
+  {
+    "id": 83,
+    "city": "Davanagere",
+    "tier": "Tier 3",
+    "price": 13000
+  },
+  {
+    "id": 84,
+    "city": "Bellary",
+    "tier": "Tier 3",
+    "price": 12500
+  },
+  {
+    "id": 85,
+    "city": "Bijapur",
+    "tier": "Tier 3",
+    "price": 12000
+  },
+  {
+    "id": 86,
+    "city": "Nanded",
+    "tier": "Tier 3",
+    "price": 13000
+  },
+  {
+    "id": 87,
+    "city": "Aurangabad",
+    "tier": "Tier 3",
+    "price": 16000
+  },
+  {
+    "id": 88,
+    "city": "Kolhapur",
+    "tier": "Tier 3",
+    "price": 15500
+  },
+  {
+    "id": 89,
+    "city": "Akola",
+    "tier": "Tier 3",
+    "price": 12500
+  },
+  {
+    "id": 90,
+    "city": "Jalgaon",
+    "tier": "Tier 3",
+    "price": 12000
+  },
+  {
+    "id": 91,
+    "city": "Latur",
+    "tier": "Tier 3",
+    "price": 11500
+  },
+  {
+    "id": 92,
+    "city": "Dhule",
+    "tier": "Tier 3",
+    "price": 11000
+  },
+  {
+    "id": 93,
+    "city": "Ahmednagar",
+    "tier": "Tier 3",
+    "price": 13000
+  },
+  {
+    "id": 94,
+    "city": "Solapur",
+    "tier": "Tier 3",
+    "price": 14000
+  },
+  {
+    "id": 95,
+    "city": "Thane",
+    "tier": "Tier 1",
+    "price": 28000
+  },
+  {
+    "id": 96,
+    "city": "Navi Mumbai",
+    "tier": "Tier 1",
+    "price": 29000
+  },
+  {
+    "id": 97,
+    "city": "Faridabad",
+    "tier": "Tier 2",
+    "price": 24000
+  },
+  {
+    "id": 98,
+    "city": "Gurgaon (Gurugram)",
+    "tier": "Tier 1",
+    "price": 30000
+  },
+  {
+    "id": 99,
+    "city": "Rohtak",
+    "tier": "Tier 3",
+    "price": 15000
+  },
+  {
+    "id": 100,
+    "city": "Hisar",
+    "tier": "Tier 3",
+    "price": 14500
+  },
+  {
+    "id": 101,
+    "city": "Panipat",
+    "tier": "Tier 3",
+    "price": 14000
+  },
+  {
+    "id": 102,
+    "city": "Sonipat",
+    "tier": "Tier 3",
+    "price": 13500
+  },
+  {
+    "id": 103,
+    "city": "Bhiwani",
+    "tier": "Tier 3",
+    "price": 12000
+  },
+  {
+    "id": 104,
+    "city": "Ambala",
+    "tier": "Tier 3",
+    "price": 15000
+  },
+  {
+    "id": 105,
+    "city": "Karnal",
+    "tier": "Tier 3",
+    "price": 15500
+  },
+  {
+    "id": 106,
+    "city": "Bathinda",
+    "tier": "Tier 3",
+    "price": 14000
+  },
+  {
+    "id": 107,
+    "city": "Patiala",
+    "tier": "Tier 3",
+    "price": 16000
+  },
+  {
+    "id": 108,
+    "city": "Rampur",
+    "tier": "Tier 3",
+    "price": 12000
+  },
+  {
+    "id": 109,
+    "city": "Shahjahanpur",
+    "tier": "Tier 3",
+    "price": 11500
+  },
+  {
+    "id": 110,
+    "city": "Firozabad",
+    "tier": "Tier 3",
+    "price": 11000
+  },
+  {
+    "id": 111,
+    "city": "Muzaffarnagar",
+    "tier": "Tier 3",
+    "price": 12500
+  },
+  {
+    "id": 112,
+    "city": "Mathura",
+    "tier": "Tier 3",
+    "price": 13000
+  },
+  {
+    "id": 113,
+    "city": "Ayodhya (Faizabad)",
+    "tier": "Tier 3",
+    "price": 12000
+  },
+  {
+    "id": 114,
+    "city": "Gorakhpur",
+    "tier": "Tier 3",
+    "price": 15000
+  },
+  {
+    "id": 115,
+    "city": "Jhansi",
+    "tier": "Tier 3",
+    "price": 14000
+  },
+  {
+    "id": 116,
+    "city": "Saharanpur",
+    "tier": "Tier 3",
+    "price": 13500
+  },
+  {
+    "id": 117,
+    "city": "Mirzapur",
+    "tier": "Tier 3",
+    "price": 12000
+  },
+  {
+    "id": 118,
+    "city": "Raebareli",
+    "tier": "Tier 3",
+    "price": 11500
+  },
+  {
+    "id": 119,
+    "city": "Sitapur",
+    "tier": "Tier 3",
+    "price": 10500
+  },
+  {
+    "id": 120,
+    "city": "Bara Banki",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 121,
+    "city": "Gaya",
+    "tier": "Tier 3",
+    "price": 13000
+  },
+  {
+    "id": 122,
+    "city": "Bhagalpur",
+    "tier": "Tier 3",
+    "price": 14000
+  },
+  {
+    "id": 123,
+    "city": "Muzaffarpur",
+    "tier": "Tier 3",
+    "price": 13500
+  },
+  {
+    "id": 124,
+    "city": "Darbhanga",
+    "tier": "Tier 3",
+    "price": 12500
+  },
+  {
+    "id": 125,
+    "city": "Purnia",
+    "tier": "Tier 3",
+    "price": 12000
+  },
+  {
+    "id": 126,
+    "city": "Arrah",
+    "tier": "Tier 3",
+    "price": 11500
+  },
+  {
+    "id": 127,
+    "city": "Chapra",
+    "tier": "Tier 3",
+    "price": 11000
+  },
+  {
+    "id": 128,
+    "city": "Bihar Sharif",
+    "tier": "Tier 3",
+    "price": 10500
+  },
+  {
+    "id": 129,
+    "city": "Katihar",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 130,
+    "city": "Bilaspur",
+    "tier": "Tier 3",
+    "price": 15000
+  },
+  {
+    "id": 131,
+    "city": "Korba",
+    "tier": "Tier 3",
+    "price": 13000
+  },
+  {
+    "id": 132,
+    "city": "Chandrapur",
+    "tier": "Tier 3",
+    "price": 12500
+  },
+  {
+    "id": 133,
+    "city": "Malegaon",
+    "tier": "Tier 3",
+    "price": 11500
+  },
+  {
+    "id": 134,
+    "city": "Ichalkaranji",
+    "tier": "Tier 3",
+    "price": 11000
+  },
+  {
+    "id": 135,
+    "city": "Nagaon",
+    "tier": "Tier 3",
+    "price": 10500
+  },
+  {
+    "id": 136,
+    "city": "Dibrugarh",
+    "tier": "Tier 3",
+    "price": 11000
+  },
+  {
+    "id": 137,
+    "city": "Silchar",
+    "tier": "Tier 3",
+    "price": 10500
+  },
+  {
+    "id": 138,
+    "city": "Dindigul",
+    "tier": "Tier 3",
+    "price": 13000
+  },
+  {
+    "id": 139,
+    "city": "Thanjavur",
+    "tier": "Tier 3",
+    "price": 14000
+  },
+  {
+    "id": 140,
+    "city": "Tiruppur",
+    "tier": "Tier 3",
+    "price": 16000
+  },
+  {
+    "id": 141,
+    "city": "Thoothukudi (Tuticorin)",
+    "tier": "Tier 3",
+    "price": 15000
+  },
+  {
+    "id": 142,
+    "city": "Erode",
+    "tier": "Tier 3",
+    "price": 14500
+  },
+  {
+    "id": 143,
+    "city": "Cuddalore",
+    "tier": "Tier 3",
+    "price": 12000
+  },
+  {
+    "id": 144,
+    "city": "Kumbakonam",
+    "tier": "Tier 3",
+    "price": 11500
+  },
+  {
+    "id": 145,
+    "city": "Nagercoil",
+    "tier": "Tier 3",
+    "price": 13500
+  },
+  {
+    "id": 146,
+    "city": "Tiruvannamalai",
+    "tier": "Tier 3",
+    "price": 11000
+  },
+  {
+    "id": 147,
+    "city": "Hosur",
+    "tier": "Tier 3",
+    "price": 16000
+  },
+  {
+    "id": 148,
+    "city": "Karur",
+    "tier": "Tier 3",
+    "price": 11000
+  },
+  {
+    "id": 149,
+    "city": "Pollachi",
+    "tier": "Tier 3",
+    "price": 10500
+  },
+  {
+    "id": 150,
+    "city": "Sivakasi",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 151,
+    "city": "Virudhunagar",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 152,
+    "city": "Namakkal",
+    "tier": "Tier 3",
+    "price": 10500
+  },
+  {
+    "id": 153,
+    "city": "Tiruchengode",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 154,
+    "city": "Kanchipuram",
+    "tier": "Tier 3",
+    "price": 12000
+  },
+  {
+    "id": 155,
+    "city": "Tambaram",
+    "tier": "Tier 2",
+    "price": 20000
+  },
+  {
+    "id": 156,
+    "city": "Avadi",
+    "tier": "Tier 3",
+    "price": 17000
+  },
+  {
+    "id": 157,
+    "city": "Ambattur",
+    "tier": "Tier 3",
+    "price": 17500
+  },
+  {
+    "id": 158,
+    "city": "Anantapur",
+    "tier": "Tier 3",
+    "price": 13000
+  },
+  {
+    "id": 159,
+    "city": "Ongole",
+    "tier": "Tier 3",
+    "price": 12000
+  },
+  {
+    "id": 160,
+    "city": "Kurnool",
+    "tier": "Tier 3",
+    "price": 13500
+  },
+  {
+    "id": 161,
+    "city": "Tirupati",
+    "tier": "Tier 3",
+    "price": 16000
+  },
+  {
+    "id": 162,
+    "city": "Chittoor",
+    "tier": "Tier 3",
+    "price": 11000
+  },
+  {
+    "id": 163,
+    "city": "Kadapa",
+    "tier": "Tier 3",
+    "price": 11500
+  },
+  {
+    "id": 164,
+    "city": "Proddatur",
+    "tier": "Tier 3",
+    "price": 10500
+  },
+  {
+    "id": 165,
+    "city": "Adoni",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 166,
+    "city": "Machilipatnam",
+    "tier": "Tier 3",
+    "price": 10500
+  },
+  {
+    "id": 167,
+    "city": "Eluru",
+    "tier": "Tier 3",
+    "price": 11000
+  },
+  {
+    "id": 168,
+    "city": "Srikakulam",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 169,
+    "city": "Vizianagaram",
+    "tier": "Tier 3",
+    "price": 10500
+  },
+  {
+    "id": 170,
+    "city": "Tenali",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 171,
+    "city": "Bhimavaram",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 172,
+    "city": "Gudivada",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 173,
+    "city": "Nandyal",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 174,
+    "city": "Hindupur",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 175,
+    "city": "Tadipatri",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 176,
+    "city": "Dharmavaram",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 177,
+    "city": "Guntakal",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 178,
+    "city": "Adilabad",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 179,
+    "city": "Nizamabad",
+    "tier": "Tier 3",
+    "price": 12000
+  },
+  {
+    "id": 180,
+    "city": "Khammam",
+    "tier": "Tier 3",
+    "price": 13000
+  },
+  {
+    "id": 181,
+    "city": "Karimnagar",
+    "tier": "Tier 3",
+    "price": 13500
+  },
+  {
+    "id": 182,
+    "city": "Ramagundam",
+    "tier": "Tier 3",
+    "price": 12000
+  },
+  {
+    "id": 183,
+    "city": "Mahabubnagar",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 184,
+    "city": "Suryapet",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 185,
+    "city": "Miryalaguda",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 186,
+    "city": "Wanaparthy",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 187,
+    "city": "Jagtial",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 188,
+    "city": "Siddipet",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 189,
+    "city": "Sangareddy",
+    "tier": "Tier 3",
+    "price": 10500
+  },
+  {
+    "id": 190,
+    "city": "Nalgonda",
+    "tier": "Tier 3",
+    "price": 11000
+  },
+  {
+    "id": 191,
+    "city": "Medak",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 192,
+    "city": "Vikarabad",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 193,
+    "city": "Kothagudem",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 194,
+    "city": "Mancherial",
+    "tier": "Tier 3",
+    "price": 10500
+  },
+  {
+    "id": 195,
+    "city": "Nagarkurnool",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 196,
+    "city": "Gadwal",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 197,
+    "city": "Komaram Bheem Asifabad",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 198,
+    "city": "Jayashankar Bhupalpally",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 199,
+    "city": "Mulugu",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 200,
+    "city": "Bhadradri Kothagudem",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 201,
+    "city": "Rajanna Sircilla",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 202,
+    "city": "Kamareddy",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 203,
+    "city": "Jangaon",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 204,
+    "city": "Peddapalli",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 205,
+    "city": "Mahabubabad",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 206,
+    "city": "Narayanpet",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 207,
+    "city": "Yadadri Bhuvanagiri",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 208,
+    "city": "Hanumakonda",
+    "tier": "Tier 3",
+    "price": 13500
+  },
+  {
+    "id": 209,
+    "city": "Amreli",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 210,
+    "city": "Bhuj",
+    "tier": "Tier 3",
+    "price": 12000
+  },
+  {
+    "id": 211,
+    "city": "Gandhinagar",
+    "tier": "Tier 2",
+    "price": 21000
+  },
+  {
+    "id": 212,
+    "city": "Junagadh",
+    "tier": "Tier 3",
+    "price": 14000
+  },
+  {
+    "id": 213,
+    "city": "Anand",
+    "tier": "Tier 3",
+    "price": 13000
+  },
+  {
+    "id": 214,
+    "city": "Bharuch",
+    "tier": "Tier 3",
+    "price": 14000
+  },
+  {
+    "id": 215,
+    "city": "Godhra",
+    "tier": "Tier 3",
+    "price": 11000
+  },
+  {
+    "id": 216,
+    "city": "Mehsana",
+    "tier": "Tier 3",
+    "price": 13000
+  },
+  {
+    "id": 217,
+    "city": "Patan",
+    "tier": "Tier 3",
+    "price": 12000
+  },
+  {
+    "id": 218,
+    "city": "Porbandar",
+    "tier": "Tier 3",
+    "price": 11000
+  },
+  {
+    "id": 219,
+    "city": "Valsad",
+    "tier": "Tier 3",
+    "price": 15000
+  },
+  {
+    "id": 220,
+    "city": "Veraval",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 221,
+    "city": "Vapi",
+    "tier": "Tier 3",
+    "price": 16000
+  },
+  {
+    "id": 222,
+    "city": "Navsari",
+    "tier": "Tier 3",
+    "price": 15000
+  },
+  {
+    "id": 223,
+    "city": "Dahod",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 224,
+    "city": "Surendranagar",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 225,
+    "city": "Rajkot",
+    "tier": "Tier 2",
+    "price": 20000
+  },
+  {
+    "id": 226,
+    "city": "Jamnagar",
+    "tier": "Tier 2",
+    "price": 19000
+  },
+  {
+    "id": 227,
+    "city": "Bhavnagar",
+    "tier": "Tier 3",
+    "price": 17000
+  },
+  {
+    "id": 228,
+    "city": "Gandhidham",
+    "tier": "Tier 3",
+    "price": 15000
+  },
+  {
+    "id": 229,
+    "city": "Ankleshwar",
+    "tier": "Tier 3",
+    "price": 14000
+  },
+  {
+    "id": 230,
+    "city": "Jetpur",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 231,
+    "city": "Morbi",
+    "tier": "Tier 3",
+    "price": 12000
+  },
+  {
+    "id": 232,
+    "city": "Botad",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 233,
+    "city": "Kheda",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 234,
+    "city": "Palanpur",
+    "tier": "Tier 3",
+    "price": 11000
+  },
+  {
+    "id": 235,
+    "city": "Mahesana",
+    "tier": "Tier 3",
+    "price": 13000
+  },
+  {
+    "id": 236,
+    "city": "Ahmednagar",
+    "tier": "Tier 3",
+    "price": 13000
+  },
+  {
+    "id": 237,
+    "city": "Beed",
+    "tier": "Tier 3",
+    "price": 11000
+  },
+  {
+    "id": 238,
+    "city": "Bhandara",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 239,
+    "city": "Buldhana",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 240,
+    "city": "Gadchiroli",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 241,
+    "city": "Gondia",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 242,
+    "city": "Hingoli",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 243,
+    "city": "Jalna",
+    "tier": "Tier 3",
+    "price": 11000
+  },
+  {
+    "id": 244,
+    "city": "Osmanabad",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 245,
+    "city": "Parbhani",
+    "tier": "Tier 3",
+    "price": 10500
+  },
+  {
+    "id": 246,
+    "city": "Ratnagiri",
+    "tier": "Tier 3",
+    "price": 13000
+  },
+  {
+    "id": 247,
+    "city": "Satara",
+    "tier": "Tier 3",
+    "price": 14000
+  },
+  {
+    "id": 248,
+    "city": "Sindhudurg",
+    "tier": "Tier 3",
+    "price": 12000
+  },
+  {
+    "id": 249,
+    "city": "Wardha",
+    "tier": "Tier 3",
+    "price": 11000
+  },
+  {
+    "id": 250,
+    "city": "Washim",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 251,
+    "city": "Yavatmal",
+    "tier": "Tier 3",
+    "price": 11500
+  },
+  {
+    "id": 252,
+    "city": "Chhatrapati Sambhajinagar (Aurangabad)",
+    "tier": "Tier 3",
+    "price": 16000
+  },
+  {
+    "id": 253,
+    "city": "Sangli",
+    "tier": "Tier 3",
+    "price": 15000
+  },
+  {
+    "id": 254,
+    "city": "Ichalkaranji",
+    "tier": "Tier 3",
+    "price": 11000
+  },
+  {
+    "id": 255,
+    "city": "Panvel",
+    "tier": "Tier 2",
+    "price": 25000
+  },
+  {
+    "id": 256,
+    "city": "Mira-Bhayandar",
+    "tier": "Tier 2",
+    "price": 26000
+  },
+  {
+    "id": 257,
+    "city": "Kalyan-Dombivali",
+    "tier": "Tier 2",
+    "price": 24000
+  },
+  {
+    "id": 258,
+    "city": "Vasai-Virar",
+    "tier": "Tier 2",
+    "price": 23000
+  },
+  {
+    "id": 259,
+    "city": "Ulhasnagar",
+    "tier": "Tier 3",
+    "price": 18000
+  },
+  {
+    "id": 260,
+    "city": "Lonavala",
+    "tier": "Tier 3",
+    "price": 15000
+  },
+  {
+    "id": 261,
+    "city": "Mahabaleshwar",
+    "tier": "Tier 3",
+    "price": 14000
+  },
+  {
+    "id": 262,
+    "city": "Alibag",
+    "tier": "Tier 3",
+    "price": 16000
+  },
+  {
+    "id": 263,
+    "city": "Chiplun",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 264,
+    "city": "Karad",
+    "tier": "Tier 3",
+    "price": 12000
+  },
+  {
+    "id": 265,
+    "city": "Baramati",
+    "tier": "Tier 3",
+    "price": 11000
+  },
+  {
+    "id": 266,
+    "city": "Shirpur",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 267,
+    "city": "Bhusawal",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 268,
+    "city": "Deolali",
+    "tier": "Tier 3",
+    "price": 11000
+  },
+  {
+    "id": 269,
+    "city": "Manmad",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 270,
+    "city": "Pandharpur",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 271,
+    "city": "Shrirampur",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 272,
+    "city": "Vaijapur",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 273,
+    "city": "Junnar",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 274,
+    "city": "Khed",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 275,
+    "city": "Rajgurunagar",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 276,
+    "city": "Talegaon Dabhade",
+    "tier": "Tier 3",
+    "price": 12000
+  },
+  {
+    "id": 277,
+    "city": "Chakan",
+    "tier": "Tier 3",
+    "price": 13000
+  },
+  {
+    "id": 278,
+    "city": "Shirur",
+    "tier": "Tier 3",
+    "price": 11000
+  },
+  {
+    "id": 279,
+    "city": "Indapur",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 280,
+    "city": "Daund",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 281,
+    "city": "Jejuri",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 282,
+    "city": "Phaltan",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 283,
+    "city": "Wai",
+    "tier": "Tier 3",
+    "price": 11000
+  },
+  {
+    "id": 284,
+    "city": "Panchgani",
+    "tier": "Tier 3",
+    "price": 12000
+  },
+  {
+    "id": 285,
+    "city": "Jalgaon",
+    "tier": "Tier 3",
+    "price": 12000
+  },
+  {
+    "id": 286,
+    "city": "Kozhikode (Calicut)",
+    "tier": "Tier 2",
+    "price": 19000
+  },
+  {
+    "id": 287,
+    "city": "Alappuzha (Alleppey)",
+    "tier": "Tier 3",
+    "price": 17000
+  },
+  {
+    "id": 288,
+    "city": "Palakkad (Palghat)",
+    "tier": "Tier 3",
+    "price": 16000
+  },
+  {
+    "id": 289,
+    "city": "Kannur (Cannanore)",
+    "tier": "Tier 3",
+    "price": 17500
+  },
+  {
+    "id": 290,
+    "city": "Kottayam",
+    "tier": "Tier 3",
+    "price": 18000
+  },
+  {
+    "id": 291,
+    "city": "Malappuram",
+    "tier": "Tier 3",
+    "price": 16000
+  },
+  {
+    "id": 292,
+    "city": "Manjeri",
+    "tier": "Tier 3",
+    "price": 15000
+  },
+  {
+    "id": 293,
+    "city": "Kasargod",
+    "tier": "Tier 3",
+    "price": 14000
+  },
+  {
+    "id": 294,
+    "city": "Attingal",
+    "tier": "Tier 3",
+    "price": 13000
+  },
+  {
+    "id": 295,
+    "city": "Neyyattinkara",
+    "tier": "Tier 3",
+    "price": 12000
+  },
+  {
+    "id": 296,
+    "city": "Punalur",
+    "tier": "Tier 3",
+    "price": 11000
+  },
+  {
+    "id": 297,
+    "city": "Chengannur",
+    "tier": "Tier 3",
+    "price": 12000
+  },
+  {
+    "id": 298,
+    "city": "Mavelikkara",
+    "tier": "Tier 3",
+    "price": 11000
+  },
+  {
+    "id": 299,
+    "city": "Kayamkulam",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 300,
+    "city": "Changanassery",
+    "tier": "Tier 3",
+    "price": 12000
+  },
+  {
+    "id": 301,
+    "city": "Pala",
+    "tier": "Tier 3",
+    "price": 11000
+  },
+  {
+    "id": 302,
+    "city": "Vaikom",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 303,
+    "city": "Perumbavoor",
+    "tier": "Tier 3",
+    "price": 13000
+  },
+  {
+    "id": 304,
+    "city": "Angamaly",
+    "tier": "Tier 3",
+    "price": 12000
+  },
+  {
+    "id": 305,
+    "city": "Chalakkudy",
+    "tier": "Tier 3",
+    "price": 11000
+  },
+  {
+    "id": 306,
+    "city": "Kodungallur",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 307,
+    "city": "Kunnamkulam",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 308,
+    "city": "Shoranur",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 309,
+    "city": "Ottappalam",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 310,
+    "city": "Mannarkkad",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 311,
+    "city": "Ponnani",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 312,
+    "city": "Tirur",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 313,
+    "city": "Perinthalmanna",
+    "tier": "Tier 3",
+    "price": 11000
+  },
+  {
+    "id": 314,
+    "city": "Nilambur",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 315,
+    "city": "Kanhangad",
+    "tier": "Tier 3",
+    "price": 11000
+  },
+  {
+    "id": 316,
+    "city": "Payyannur",
+    "tier": "Tier 3",
+    "price": 10500
+  },
+  {
+    "id": 317,
+    "city": "Thalassery",
+    "tier": "Tier 3",
+    "price": 12000
+  },
+  {
+    "id": 318,
+    "city": "Vadakara",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 319,
+    "city": "Kalpetta",
+    "tier": "Tier 3",
+    "price": 13000
+  },
+  {
+    "id": 320,
+    "city": "Mananthavady",
+    "tier": "Tier 3",
+    "price": 11000
+  },
+  {
+    "id": 321,
+    "city": "Sulthan Bathery",
+    "tier": "Tier 3",
+    "price": 10500
+  },
+  {
+    "id": 322,
+    "city": "Nedumangad",
+    "tier": "Tier 3",
+    "price": 12000
+  },
+  {
+    "id": 323,
+    "city": "Kattappana",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 324,
+    "city": "Adimali",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 325,
+    "city": "Peermade",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 326,
+    "city": "Erumely",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 327,
+    "city": "Harippad",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 328,
+    "city": "Cherthala",
+    "tier": "Tier 3",
+    "price": 11000
+  },
+  {
+    "id": 329,
+    "city": "Varkala",
+    "tier": "Tier 3",
+    "price": 12000
+  },
+  {
+    "id": 330,
+    "city": "Paravur",
+    "tier": "Tier 3",
+    "price": 11000
+  },
+  {
+    "id": 331,
+    "city": "Kottarakkara",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 332,
+    "city": "Pathanamthitta",
+    "tier": "Tier 3",
+    "price": 12000
+  },
+  {
+    "id": 333,
+    "city": "Thiruvalla",
+    "tier": "Tier 3",
+    "price": 13000
+  },
+  {
+    "id": 334,
+    "city": "Adoor",
+    "tier": "Tier 3",
+    "price": 11000
+  },
+  {
+    "id": 335,
+    "city": "Piravom",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 336,
+    "city": "Kothamangalam",
+    "tier": "Tier 3",
+    "price": 11000
+  },
+  {
+    "id": 337,
+    "city": "Moovattupuzha",
+    "tier": "Tier 3",
+    "price": 11500
+  },
+  {
+    "id": 338,
+    "city": "Koothattukulam",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 339,
+    "city": "Chittur-Thathamangalam",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 340,
+    "city": "Pattambi",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 341,
+    "city": "Cherpulassery",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 342,
+    "city": "Ponnani",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 343,
+    "city": "Kuttipuram",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 344,
+    "city": "Edappal",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 345,
+    "city": "Tirur",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 346,
+    "city": "Koduvally",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 347,
+    "city": "Mukkam",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 348,
+    "city": "Ramanattukara",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 349,
+    "city": "Feroke",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 350,
+    "city": "Kondotty",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 351,
+    "city": "Parappanangadi",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 352,
+    "city": "Tanur",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 353,
+    "city": "Panoor",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 354,
+    "city": "Iritty",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 355,
+    "city": "Taliparamba",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 356,
+    "city": "Udumalaipettai",
+    "tier": "Tier 3",
+    "price": 10500
+  },
+  {
+    "id": 357,
+    "city": "Gobichettipalayam",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 358,
+    "city": "Tiruchengode",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 359,
+    "city": "Perundurai",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 360,
+    "city": "Sathyamangalam",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 361,
+    "city": "Bhavani",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 362,
+    "city": "Mettupalayam",
+    "tier": "Tier 3",
+    "price": 11000
+  },
+  {
+    "id": 363,
+    "city": "Palladam",
+    "tier": "Tier 3",
+    "price": 10500
+  },
+  {
+    "id": 364,
+    "city": "Sankarankoil",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 365,
+    "city": "Tenkasi",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 366,
+    "city": "Rajapalayam",
+    "tier": "Tier 3",
+    "price": 10500
+  },
+  {
+    "id": 367,
+    "city": "Srivilliputhur",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 368,
+    "city": "Aruppukottai",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 369,
+    "city": "Paramakudi",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 370,
+    "city": "Ramanathapuram",
+    "tier": "Tier 3",
+    "price": 11000
+  },
+  {
+    "id": 371,
+    "city": "Karaikudi",
+    "tier": "Tier 3",
+    "price": 12000
+  },
+  {
+    "id": 372,
+    "city": "Sivaganga",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 373,
+    "city": "Pattukkottai",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 374,
+    "city": "Mannargudi",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 375,
+    "city": "Tiruvarur",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 376,
+    "city": "Nagapattinam",
+    "tier": "Tier 3",
+    "price": 10500
+  },
+  {
+    "id": 377,
+    "city": "Mayiladuthurai",
+    "tier": "Tier 3",
+    "price": 11000
+  },
+  {
+    "id": 378,
+    "city": "Chidambaram",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 379,
+    "city": "Vriddhachalam",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 380,
+    "city": "Neyveli",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 381,
+    "city": "Attur",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 382,
+    "city": "Valparai",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 383,
+    "city": "Dharapuram",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 384,
+    "city": "Kangeyam",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 385,
+    "city": "Theni",
+    "tier": "Tier 3",
+    "price": 11000
+  },
+  {
+    "id": 386,
+    "city": "Periyakulam",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 387,
+    "city": "Bodinayakanur",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 388,
+    "city": "Cumbum",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 389,
+    "city": "Uthamapalayam",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 390,
+    "city": "Puliyangudi",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 391,
+    "city": "Kadayanallur",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 392,
+    "city": "Shenkottai",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 393,
+    "city": "Alandur",
+    "tier": "Tier 3",
+    "price": 19000
+  },
+  {
+    "id": 394,
+    "city": "Pallavaram",
+    "tier": "Tier 3",
+    "price": 18000
+  },
+  {
+    "id": 395,
+    "city": "Chromepet",
+    "tier": "Tier 3",
+    "price": 18500
+  },
+  {
+    "id": 396,
+    "city": "Chengalpattu",
+    "tier": "Tier 3",
+    "price": 15000
+  },
+  {
+    "id": 397,
+    "city": "Walajapet",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 398,
+    "city": "Ranipet",
+    "tier": "Tier 3",
+    "price": 10500
+  },
+  {
+    "id": 399,
+    "city": "Arcot",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 400,
+    "city": "Tirupattur",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 401,
+    "city": "Vaniyambadi",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 402,
+    "city": "Ambur",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 403,
+    "city": "Gudiyatham",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 404,
+    "city": "Pernambut",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 405,
+    "city": "Hosur",
+    "tier": "Tier 3",
+    "price": 16000
+  },
+  {
+    "id": 406,
+    "city": "Dharmapuri",
+    "tier": "Tier 3",
+    "price": 12000
+  },
+  {
+    "id": 407,
+    "city": "Krishnagiri",
+    "tier": "Tier 3",
+    "price": 13000
+  },
+  {
+    "id": 408,
+    "city": "Harur",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 409,
+    "city": "Palani",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 410,
+    "city": "Melur",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 411,
+    "city": "Vadipatti",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 412,
+    "city": "Usilampatti",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 413,
+    "city": "Tirumangalam",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 414,
+    "city": "Sholavandan",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 415,
+    "city": "Perambalur",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 416,
+    "city": "Ariyalur",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 417,
+    "city": "Jayankondam",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 418,
+    "city": "Sendurai",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 419,
+    "city": "Rasipuram",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 420,
+    "city": "Tiruchengodu",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 421,
+    "city": "Velur",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 422,
+    "city": "Paramathi Velur",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 423,
+    "city": "Komarapalayam",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 424,
+    "city": "Andipatti",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 425,
+    "city": "Pochampalli",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 426,
+    "city": "Denkanikottai",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 427,
+    "city": "Kaigal",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 428,
+    "city": "Tharamangalam",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 429,
+    "city": "Omalur",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 430,
+    "city": "Edappadi",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 431,
+    "city": "Sankari",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 432,
+    "city": "Kolathur",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 433,
+    "city": "Mallasamudram",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 434,
+    "city": "Pattukkottai",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 435,
+    "city": "Arantangi",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 436,
+    "city": "Manamadurai",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 437,
+    "city": "Illuppur",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 438,
+    "city": "Keeranur",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 439,
+    "city": "Viralimalai",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 440,
+    "city": "Pattukkottai",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 441,
+    "city": "Kuzhithurai",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 442,
+    "city": "Colachel",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 443,
+    "city": "Padmanabhapuram",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 444,
+    "city": "Kaliakkavilai",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 445,
+    "city": "Marthandam",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 446,
+    "city": "Parassala",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 447,
+    "city": "Neyyattinkara",
+    "tier": "Tier 3",
+    "price": 12000
+  },
+  {
+    "id": 448,
+    "city": "Vizhinjam",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 449,
+    "city": "Nedumangad",
+    "tier": "Tier 3",
+    "price": 12000
+  },
+  {
+    "id": 450,
+    "city": "Chirayinkeezhu",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 451,
+    "city": "Kadakkal",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 452,
+    "city": "Pattanamthitta",
+    "tier": "Tier 3",
+    "price": 12000
+  },
+  {
+    "id": 453,
+    "city": "Adoor",
+    "tier": "Tier 3",
+    "price": 11000
+  },
+  {
+    "id": 454,
+    "city": "Konni",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 455,
+    "city": "Ranni",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 456,
+    "city": "Pandalam",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 457,
+    "city": "Sabarimala",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 458,
+    "city": "Pampady",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 459,
+    "city": "Ettumanoor",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 460,
+    "city": "Ponnani",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 461,
+    "city": "Malappuram",
+    "tier": "Tier 3",
+    "price": 16000
+  },
+  {
+    "id": 462,
+    "city": "Tirur",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 463,
+    "city": "Perinthalmanna",
+    "tier": "Tier 3",
+    "price": 11000
+  },
+  {
+    "id": 464,
+    "city": "Pattambi",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 465,
+    "city": "Cherpulassery",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 466,
+    "city": "Manjeri",
+    "tier": "Tier 3",
+    "price": 15000
+  },
+  {
+    "id": 467,
+    "city": "Nilambur",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 468,
+    "city": "Kondotty",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 469,
+    "city": "Areekode",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 470,
+    "city": "Kottakkal",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 471,
+    "city": "Valanchery",
+    "tier": "Tier 3",
+    "price": 9500
+  },
+  {
+    "id": 472,
+    "city": "Tanur",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 473,
+    "city": "Perumbavoor",
+    "tier": "Tier 3",
+    "price": 13000
+  },
+  {
+    "id": 474,
+    "city": "Angamaly",
+    "tier": "Tier 3",
+    "price": 12000
+  },
+  {
+    "id": 475,
+    "city": "Chalakkudy",
+    "tier": "Tier 3",
+    "price": 11000
+  },
+  {
+    "id": 476,
+    "city": "Kodungallur",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 477,
+    "city": "Kunnamkulam",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 478,
+    "city": "Chavakkad",
+    "tier": "Tier 3",
+    "price": 10500
+  },
+  {
+    "id": 479,
+    "city": "Guruvayoor",
+    "tier": "Tier 3",
+    "price": 11000
+  },
+  {
+    "id": 480,
+    "city": "Irinjalakuda",
+    "tier": "Tier 3",
+    "price": 11000
+  },
+  {
+    "id": 481,
+    "city": "Mukundapuram",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 482,
+    "city": "Vadakkancherry",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 483,
+    "city": "Aluva",
+    "tier": "Tier 2",
+    "price": 19000
+  },
+  {
+    "id": 484,
+    "city": "Kalamassery",
+    "tier": "Tier 3",
+    "price": 18000
+  },
+  {
+    "id": 485,
+    "city": "Maradu",
+    "tier": "Tier 3",
+    "price": 17000
+  },
+  {
+    "id": 486,
+    "city": "Tripunithura",
+    "tier": "Tier 3",
+    "price": 17500
+  },
+  {
+    "id": 487,
+    "city": "Muvattupuzha",
+    "tier": "Tier 3",
+    "price": 11500
+  },
+  {
+    "id": 488,
+    "city": "Kothamangalam",
+    "tier": "Tier 3",
+    "price": 11000
+  },
+  {
+    "id": 489,
+    "city": "Kolavennu",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 490,
+    "city": "Tenali",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 491,
+    "city": "Repalle",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 492,
+    "city": "Narasaraopet",
+    "tier": "Tier 3",
+    "price": 11000
+  },
+  {
+    "id": 493,
+    "city": "Vinukonda",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 494,
+    "city": "Piduguralla",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 495,
+    "city": "Sattenapalle",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 496,
+    "city": "Ponnur",
+    "tier": "Tier 3",
+    "price": 9000
+  },
+  {
+    "id": 497,
+    "city": "Chilakaluripet",
+    "tier": "Tier 3",
+    "price": 10500
+  },
+  {
+    "id": 498,
+    "city": "Bapatla",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 499,
+    "city": "Chirala",
+    "tier": "Tier 3",
+    "price": 10000
+  },
+  {
+    "id": 500,
+    "city": "Parchur",
+    "tier": "Tier 3",
+    "price": 9000
+  }
+]

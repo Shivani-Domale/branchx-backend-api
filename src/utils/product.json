@@ -1,0 +1,152 @@
+[
+  {
+    "id": 1,
+    "product_type": "Fresh Produce",
+    "price": 80
+  },
+  {
+    "id": 2,
+    "product_type": "Dairy Products",
+    "price": 60
+  },
+  {
+    "id": 3,
+    "product_type": "Packaged Snacks",
+    "price": 50
+  },
+  {
+    "id": 4,
+    "product_type": "Frozen Foods",
+    "price": 95
+  },
+  {
+    "id": 5,
+    "product_type": "Baked Goods",
+    "price": 150
+  },
+  {
+    "id": 6,
+    "product_type": "Canned Goods",
+    "price": 70
+  },
+  {
+    "id": 7,
+    "product_type": "Soft Drinks",
+    "price": 90
+  },
+  {
+    "id": 8,
+    "product_type": "Juices",
+    "price": 140
+  },
+  {
+    "id": 9,
+    "product_type": "Hot Beverages",
+    "price": 200
+  },
+  {
+    "id": 10,
+    "product_type": "Apparel",
+    "price": 999
+  },
+  {
+    "id": 11,
+    "product_type": "Footwear",
+    "price": 1100
+  },
+  {
+    "id": 12,
+    "product_type": "Home Appliances",
+    "price": 2800
+  },
+  {
+    "id": 13,
+    "product_type": "Mobile Phones",
+    "price": 18000
+  },
+  {
+    "id": 14,
+    "product_type": "Headphones & Earbuds",
+    "price": 1500
+  },
+  {
+    "id": 15,
+    "product_type": "Televisions",
+    "price": 32000
+  },
+  {
+    "id": 16,
+    "product_type": "Laptops & PCs",
+    "price": 45000
+  },
+  {
+    "id": 17,
+    "product_type": "Skincare Products",
+    "price": 350
+  },
+  {
+    "id": 18,
+    "product_type": "Hair Care Products",
+    "price": 280
+  },
+  {
+    "id": 19,
+    "product_type": "Oral Care Products",
+    "price": 120
+  },
+  {
+    "id": 20,
+    "product_type": "Cleaning Supplies",
+    "price": 220
+  },
+  {
+    "id": 21,
+    "product_type": "Kitchenware",
+    "price": 600
+  },
+  {
+    "id": 22,
+    "product_type": "Bed & Bath Linens",
+    "price": 950
+  },
+  {
+    "id": 23,
+    "product_type": "Stationery Items",
+    "price": 80
+  },
+  {
+    "id": 24,
+    "product_type": "Children's Toys",
+    "price": 550
+  },
+  {
+    "id": 25,
+    "product_type": "Sports Equipment",
+    "price": 700
+  },
+  {
+    "id": 26,
+    "product_type": "Pet Supplies",
+    "price": 400
+  },
+  {
+    "id": 27,
+    "product_type": "Health Supplements",
+    "price": 650
+  },
+  {
+    "id": 28,
+    "product_type": "Small Tools",
+    "price": 300
+  },
+  {
+    "id": 29,
+    "product_type": "Personal Electronics",
+    "price": 800
+  },
+  {
+    "id": 30,
+    "product_type": "Home Decor",
+    "price": 1200
+  }
+]
