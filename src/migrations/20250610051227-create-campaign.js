@@ -9,15 +9,6 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      adDeviceShow: {
-        type: Sequelize.STRING
-      },
-      baseBid: {
-        type: Sequelize.INTEGER
-      },
-      budgetLimit: {
-        type: Sequelize.INTEGER
-      },
       campaignName: {
         type: Sequelize.STRING
       },
@@ -57,9 +48,6 @@ module.exports = {
       selectedDays: {
         type: Sequelize.STRING
       },
-      targetRegions: {
-        type: Sequelize.STRING
-      },
       timeSlot: {
         type: Sequelize.STRING
       },
@@ -72,7 +60,16 @@ module.exports = {
       isPayment: {
         type: Sequelize.BOOLEAN
       },
+      baseBid: {
+        type: Sequelize.INTEGER
+      },
+      budgetLimit: {
+        type: Sequelize.INTEGER
+      },
       userId: {
+        type: Sequelize.INTEGER
+      },
+      productId: {
         type: Sequelize.INTEGER
       },
       createdAt: {

@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
         Device.belongsTo(models.Location, { foreignKey: 'locationId' });
+         Device.belongsToMany(models.Campaign, {
+        through: 'CampaignDeviceTypes',
+        foreignKey: 'deviceTypeId'
+      });
     }
   }
   Device.init({

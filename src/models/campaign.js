@@ -10,13 +10,22 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+       Campaign.belongsToMany(models.Device, {
+        through: 'CampaignDeviceTypes',
+        foreignKey: 'campaignId'
+      });
+
+      Campaign.belongsToMany(models.Location, {
+        through: 'CampaignLocations',
+        foreignKey: 'campaignId'
+      });
+
+      Campaign.belongsTo(models.Product, {
+        foreignKey: 'productId'
+      });
     }
   }
   Campaign.init({
-    adDeviceShow: DataTypes.STRING,
-    baseBid: DataTypes.INTEGER,
-    budgetLimit: DataTypes.INTEGER,
     campaignName: DataTypes.STRING,
     campaignDescription: DataTypes.STRING,
     campaignObjective: DataTypes.STRING,
@@ -30,15 +39,39 @@ module.exports = (sequelize, DataTypes) => {
     scheduleDate: DataTypes.STRING,
     scheduleEndDate: DataTypes.STRING,
     selectedDays: DataTypes.STRING,
-    targetRegions: DataTypes.STRING,
     timeSlot: DataTypes.STRING,
     status: DataTypes.BOOLEAN,
     isApproved: DataTypes.STRING,
     isPayment: DataTypes.BOOLEAN,
-    userId: DataTypes.INTEGER
+    baseBid: DataTypes.INTEGER,
+    budgetLimit: DataTypes.INTEGER,
+    userId: DataTypes.INTEGER,
+    productId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Campaign',
   });
+
+ Campaign.addHook('beforeCreate', async (campaign, options) => {
+    const brandPrefix = campaign.campaignName.slice(0, 3).toUpperCase();
+
+    const lastCampaign = await Campaign.findOne({
+      where: {
+        campaignCode: {
+          [sequelize.Sequelize.Op.like]: `${brandPrefix}%`
+        }
+      },
+      order: [['createdAt', 'DESC']]
+    });
+
+    let nextNumber = '001';
+    if (lastCampaign && lastCampaign.campaignCode) {
+      const lastNumber = parseInt(lastCampaign.campaignCode.slice(3));
+      nextNumber = String(lastNumber + 1).padStart(3, '0');
+    }
+
+    campaign.campaignCode = `${brandPrefix}${nextNumber}`;
+  });
+
   return Campaign;
 };
