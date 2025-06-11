@@ -48,7 +48,7 @@ const createCampaign = async (data, fileBuffer, originalName, id) => {
 
 
     const campaign = await campaignRepository.create(data, { transaction: t });
-
+    console.log(campaign);
     if (!campaign) {
       throw new Error("Campaign creation failed");
     }
@@ -57,7 +57,7 @@ const createCampaign = async (data, fileBuffer, originalName, id) => {
     if (!fileBuffer || !originalName) {
       throw new Error("Creative file is required.");
     }
-console.log(campaign);
+
     const creativeUrl = await UploadFile(fileBuffer, originalName, campaign.id);
     campaign.creativeFile = creativeUrl;
 
