@@ -141,7 +141,7 @@ const createCampaign = async (data, fileBuffer, originalName, id) => {
             throw new Error("Campaign creation failed");
         }
 
-        // ✅ Upload creative file
+        // ✅Upload creative file
         if (!fileBuffer || !originalName) {
             throw new Error("Creative file is required.");
         }
@@ -151,25 +151,25 @@ const createCampaign = async (data, fileBuffer, originalName, id) => {
 
         await campaign.save({ transaction: t });
 
-        // ✅ Associate devices
+        //  Associate devices
         if (deviceIds.length) {
             Logger.info("🔗 Associating devices...");
             await campaign.addDevices(deviceIds, { transaction: t });
         }
 
-        // ✅ Associate locations
+        //  Associate locations
         if (locationIds.length) {
             Logger.info("📍 Associating locations...");
             await campaign.addLocations(locationIds, { transaction: t });
         }
 
         await t.commit();
-        Logger.info("✅ Campaign created successfully.");
+        Logger.info(" Campaign created successfully.");
         return campaign;
 
     } catch (error) {
         await t.rollback();
-        Logger.error("❌ Error creating campaign:", error.message);
+        Logger.error(" Error creating campaign:", error.message);
         throw new Error(`Error creating campaign: ${error.message}`);
     }
 };
@@ -205,6 +205,7 @@ const getAllCampaigns = async (id) => {
                 status: campaign.status,
                 isApproved: campaign.isApproved,
                 isPayment: campaign.isPayment,
+                campaignCode:campaign.campaignCode
             };
         });
 
