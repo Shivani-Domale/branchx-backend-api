@@ -95,10 +95,10 @@ const locationRepository = new LocationRepository();
 
 const createCampaign = async (data, fileBuffer, originalName, id) => {
     const t = await sequelize.transaction();
-
+    console.log(data);
     try {
-        Logger.info("🚀 Starting campaign creation...");
-        console.log("👤 userId passed:", id);
+        Logger.info(" Starting campaign creation...");
+        console.log(" userId passed:", id);
 
         const DeviceTypes = JSON.parse(data.adDeviceShow || "[]");
         const Locations = JSON.parse(data.targetRegions || "[]");
@@ -127,7 +127,7 @@ const createCampaign = async (data, fileBuffer, originalName, id) => {
             throw new Error("No matching locations found for selected cities.");
         }
 
-        // ✅ Add required fields before create
+        //  Add required fields before create
         data.userId = id;
         data.productId = productId;
         data.status = false;
@@ -141,7 +141,7 @@ const createCampaign = async (data, fileBuffer, originalName, id) => {
             throw new Error("Campaign creation failed");
         }
 
-        // ✅Upload creative file
+        // Upload creative file
         if (!fileBuffer || !originalName) {
             throw new Error("Creative file is required.");
         }
@@ -153,13 +153,13 @@ const createCampaign = async (data, fileBuffer, originalName, id) => {
 
         //  Associate devices
         if (deviceIds.length) {
-            Logger.info("🔗 Associating devices...");
+            Logger.info(" Associating devices...");
             await campaign.addDevices(deviceIds, { transaction: t });
         }
 
         //  Associate locations
         if (locationIds.length) {
-            Logger.info("📍 Associating locations...");
+            Logger.info(" Associating locations...");
             await campaign.addLocations(locationIds, { transaction: t });
         }
 
