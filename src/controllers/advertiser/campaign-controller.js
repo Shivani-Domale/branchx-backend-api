@@ -105,6 +105,4 @@ const getUserCampaignByToken = async (req, res) => {
   }
 };
 
-
-
 module.exports = { createCampaign, getCampaigns, updateCampaignStatus, getCampaignById, getUserCampaignByToken };
