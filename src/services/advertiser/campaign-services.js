@@ -67,6 +67,9 @@ const createCampaign = async (data, fileBuffer, originalName, id) => {
     campaign.userId = id;
     campaign.productId = productId;
 
+    console.log(campaign);
+    
+
     await campaign.save({ transaction: t });
 
    
