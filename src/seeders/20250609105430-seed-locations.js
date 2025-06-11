@@ -1,6 +1,6 @@
 'use strict';
 
-const locations = require('../utils/csvjson.json'); // adjust the path
+const locations = require('../utils/location.json'); // adjust the path
 
 module.exports = {
   async up(queryInterface, Sequelize) {

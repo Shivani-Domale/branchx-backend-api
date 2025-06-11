@@ -1,8 +1,21 @@
 const crudRepository = require("./crud-repository");
-const {Location} = require('../models');
-class LocationRepository extends  crudRepository{
-    constructor()
-    {
+const { Location } = require('../models');
+const { Op } = require("sequelize");
+
+class LocationRepository extends crudRepository {
+    constructor() {
         super(Location);
     }
+
+    async findByCities(cityNames) {
+        return await this.model.findAll({
+            where: {
+                city: {
+                    [Op.in]: cityNames.map(city => city.trim())
+                }
+            }
+        });
+    }
 }
+
+module.exports = LocationRepository;
