@@ -57,7 +57,7 @@ const createCampaign = async (data, fileBuffer, originalName, id) => {
     if (!fileBuffer || !originalName) {
       throw new Error("Creative file is required.");
     }
-
+console.log(campaign);
     const creativeUrl = await UploadFile(fileBuffer, originalName, campaign.id);
     campaign.creativeFile = creativeUrl;
 
@@ -67,7 +67,7 @@ const createCampaign = async (data, fileBuffer, originalName, id) => {
     campaign.userId = id;
     campaign.productId = productId;
 
-    console.log(campaign);
+    
     
 
     await campaign.save({ transaction: t });
