@@ -67,7 +67,13 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       userId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Users', // Must match actual table name in DB (case-sensitive on some DBs)
+          key: 'id'
+        },
+        onDelete: 'CASCADE',
+        allowNull: false
       },
       productId: {
         type: Sequelize.INTEGER
