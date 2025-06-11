@@ -17,7 +17,7 @@ const createCampaign = async (data, fileBuffer, originalName, userId) => {
 
    
     const DeviceTypes = JSON.parse(data.deviceTypes || "[]");
-    const Locations = JSON.parse(data.cities || "[]");
+    const Locations = JSON.parse(data.targetRegions || "[]");
     const ProductType = data.productType;
 
     if (!Array.isArray(DeviceTypes) || DeviceTypes.length === 0) {
