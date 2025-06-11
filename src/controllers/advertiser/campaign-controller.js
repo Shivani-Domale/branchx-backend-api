@@ -2,7 +2,6 @@ const { Logger } = require("../../config");
 const { CampaignService } = require("../../services");
 const { StatusCodes } = require('http-status-codes');
 const { SuccessReposnse, ErrorReponse } = require("../../utils");
-const { error } = require("winston");
 
 
 
