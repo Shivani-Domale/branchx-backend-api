@@ -1,30 +1,69 @@
-const { Logger } = require("../../config");
-const { CampaignRepository } = require("../../repositories");
+const { Op } = require("sequelize");
+const { CampaignRepository, ProductRepository, DeviceRepository, LocationRepository } = require("../../repositories");
 const { UploadFile } = require("../../utils");
+const { Sequelize } = require("../../models");
+const { Logger } = require("../../config");
 
 const campaignRepository = new CampaignRepository();
+const productRepository = new ProductRepository();
+const deviceRepository = new DeviceRepository();
+const locationRepository = new LocationRepository();
 
 const createCampaign = async (data, fileBuffer, originalName, id) => {
     try {
-        const campaign = await campaignRepository.create(data);
 
-        if (!campaign) {
-            throw new Error("Campaign creation failed");
-        }
+        console.log(data);
+        const ProductType = data.productType;
+        const DeviceTypes = JSON.parse(data.deviceTypes); // Now it's an actual array
+        const Locations = JSON.parse(data.cities);        // ["Mumbai", "Pune"]
 
-        const url = await UploadFile(fileBuffer, originalName, campaign.id);
+      
 
-        Logger.info(`File uploaded successfully: ${url}`);
+      const deviceRecords = await deviceRepository.findByDeviceTypes(DeviceTypes);
+      const deviceIds = deviceRecords.map(device => device.id);
+      
 
-        campaign.creativeFile = url;
-        campaign.status = false;
-        campaign.isApproved = "PENDING";
-        campaign.isPayment = false;
-        campaign.userId = id;
-        campaign.ageGroups = "dummy";
+      const locationRecords = await locationRepository.findByCities(Locations);
+      const locationIds = locationRecords.map(loc => loc.id);
 
 
-        await campaign.save();
+      const productId = await productRepository.findIdByProductType(ProductType);
+
+        console.log(productId);
+        console.log(locationIds);
+        console.log(deviceIds);
+
+       
+
+            const campaign = await campaignRepository.create(data);
+
+            if (!campaign) {
+                throw new Error("Campaign creation failed");
+            }
+
+            const url = await UploadFile(fileBuffer, originalName, campaign.id);
+
+
+            campaign.creativeFile = url;
+            campaign.status = false;
+            campaign.isApproved = "PENDING";
+            campaign.isPayment = false;
+            campaign.userId = id;
+            campaign.productId = productId;
+
+
+            await campaign.save();
+
+            if(deviceIds.length)
+            {
+                Logger.info("Devices");
+                await  campaign.addDevices(deviceIds);
+            }
+
+            if(locationIds.length){
+                Logger.info("Locations");
+                await campaign.addLocations(locationIds);  
+            }
 
         return campaign;
     } catch (error) {

@@ -27,6 +27,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Campaign.init({
     campaignName: DataTypes.STRING,
+    campaignCode: DataTypes.STRING,
     campaignDescription: DataTypes.STRING,
     campaignObjective: DataTypes.STRING,
     campaignType: DataTypes.STRING,
