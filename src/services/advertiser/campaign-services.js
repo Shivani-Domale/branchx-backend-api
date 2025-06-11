@@ -16,16 +16,16 @@ const createCampaign = async (data, fileBuffer, originalName, userId) => {
     Logger.info(" Starting campaign creation...");
 
    
-    const DeviceTypes = JSON.parse(data.deviceTypes || "[]");
+    const DeviceTypes = JSON.parse(data.adDeviceShow || "[]");
     const Locations = JSON.parse(data.targetRegions || "[]");
     const ProductType = data.productType;
 
     if (!Array.isArray(DeviceTypes) || DeviceTypes.length === 0) {
-      throw new BadRequestError("Device types must be a non-empty array.");
+      throw new Error("Device types must be a non-empty array.");
     }
 
     if (!Array.isArray(Locations) || Locations.length === 0) {
-      throw new BadRequestError("Cities (locations) must be a non-empty array.");
+      throw new Error("Cities (locations) must be a non-empty array.");
     }
 
     
