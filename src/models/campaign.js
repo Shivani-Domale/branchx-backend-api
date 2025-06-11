@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-       Campaign.belongsToMany(models.Device, {
+      Campaign.belongsToMany(models.Device, {
         through: 'CampaignDeviceTypes',
         foreignKey: 'campaignId'
       });
@@ -23,6 +23,12 @@ module.exports = (sequelize, DataTypes) => {
       Campaign.belongsTo(models.Product, {
         foreignKey: 'productId'
       });
+      
+      Campaign.belongsTo(models.User, {
+        foreignKey: 'userId',
+        as: 'user' // Optional alias
+      });
+
     }
   }
   Campaign.init({
@@ -53,7 +59,7 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'Campaign',
   });
 
- Campaign.addHook('beforeCreate', async (campaign, options) => {
+  Campaign.addHook('beforeCreate', async (campaign, options) => {
     const brandPrefix = campaign.campaignName.slice(0, 3).toUpperCase();
 
     const lastCampaign = await Campaign.findOne({
