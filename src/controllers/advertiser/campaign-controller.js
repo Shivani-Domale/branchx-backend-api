@@ -2,6 +2,7 @@ const { Logger } = require("../../config");
 const { CampaignService } = require("../../services");
 const { StatusCodes } = require('http-status-codes');
 const { SuccessReposnse, ErrorReponse } = require("../../utils");
+const { error } = require("winston");
 
 
 
@@ -9,28 +10,29 @@ const createCampaign = async (req, res) => {
   try {
     const user = req.user;
 
+    console.log(user);
     if (!user) {
       ErrorReponse(res, StatusCodes.UNAUTHORIZED, "Please Login...");
     }
 
-   // console.log(req.body);
-    // Logger.info("------------");
-    // Logger.info("Received request to create campaign");
+   console.log(req.body);
+    Logger.info("------------");
+    Logger.info("Received request to create campaign");
 
     if (!req.file) {
-     // Logger.error(" video/images file is required");
+      Logger.error(" video/images file is required");
       ErrorReponse(res, StatusCodes.NO_CONTENT, "video/image required !");
     }
 
-    //Logger.info(`Uploaded file name: ${req.file.originalname}, size: ${req.file.size} bytes`);
+    Logger.info(`Uploaded file name: ${req.file.originalname}, size: ${req.file.size} bytes`);
 
     const fileBuffer = req.file.buffer;
     const originalName = req.file.originalname;
 
     const campaign = await CampaignService.createCampaign(req.body, fileBuffer, originalName, user.id);
 
-    // Logger.info("Campaign created successfully");
-    // Logger.info("------------");
+    Logger.info("Campaign created successfully");
+    Logger.info("------------");
 
     SuccessReposnse(res, null, StatusCodes.OK, campaign);
 
@@ -95,6 +97,15 @@ const getUserCampaignByToken = async (req, res) => {
     }
 
     const campaigns = await CampaignService.getAllCampaigns(user.id);
+    console.log(campaigns);
+    
+    if(!campaigns) {
+      return res.status(StatusCodes.NOT_FOUND).json({
+        data : [],
+        success : false,
+        error : "No campaign found"
+      })
+    }
    
     SuccessReposnse(res, null, StatusCodes.OK, campaigns);
 
