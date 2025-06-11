@@ -10,7 +10,7 @@ const productRepository = new ProductRepository();
 const deviceRepository = new DeviceRepository();
 const locationRepository = new LocationRepository();
 
-const createCampaign = async (data, fileBuffer, originalName, userId) => {
+const createCampaign = async (data, fileBuffer, originalName, id) => {
     const t =await sequelize.transaction();
     try {
     Logger.info(" Starting campaign creation...");
@@ -62,14 +62,14 @@ const createCampaign = async (data, fileBuffer, originalName, userId) => {
     campaign.status = false;
     campaign.isApproved = "PENDING";
     campaign.isPayment = false;
-    campaign.userId = userId;
+    campaign.userId = id;
     campaign.productId = productId;
 
     await campaign.save({ transaction: t });
 
    
     if (deviceIds.length) {
-      Logger.info("📡 Associating devices...");
+      Logger.info(" Associating devices...");
       await campaign.addDevices(deviceIds, { transaction: t });
     }
 
