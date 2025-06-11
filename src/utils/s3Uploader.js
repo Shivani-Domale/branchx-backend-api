@@ -35,6 +35,6 @@ const uploadFileToS3 = async (fileBuffer, originalName, adId) => {
 
 };
 
-module.exports = {
+module.exports = 
     uploadFileToS3
-};
+;
