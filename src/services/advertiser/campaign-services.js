@@ -12,6 +12,8 @@ const locationRepository = new LocationRepository();
 
 const createCampaign = async (data, fileBuffer, originalName, id) => {
     const t =await sequelize.transaction();
+    console.log(id);
+    
     try {
     Logger.info(" Starting campaign creation...");
 
