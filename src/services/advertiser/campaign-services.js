@@ -2,7 +2,6 @@ const { Logger } = require("../../config");
 const { CampaignRepository } = require("../../repositories");
 const { UploadFile } = require("../../utils");
 
-
 const campaignRepository = new CampaignRepository();
 
 const createCampaign = async (data, fileBuffer, originalName, id) => {
@@ -117,6 +116,9 @@ const getCampaignById = async (campaignId) => {
         throw new Error(`Error fetching campaign by ID: ${error.message}`);
     }
 };
+
+
+
 
 module.exports = {
     createCampaign, getAllCampaigns, updateCampaignStatus, getCampaignById

@@ -14,4 +14,9 @@ router.put('/:id/status', CampaignController.updateCampaignStatus);
 router.get('/:campaignId/getCampaign',CampaignController.getCampaignById);
 router.get('/getUserCampaign',VerifyToken,CampaignController.getUserCampaignByToken);
 
+router.get('/dropdown/devices', VerifyToken, CampaignController.getDeviceTypes);
+router.get('/dropdown/products', VerifyToken, CampaignController.getProductTypes);
+router.get('/dropdown/locations', VerifyToken, CampaignController.getLocations);
+
+
 module.exports = router;
