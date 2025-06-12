@@ -275,7 +275,7 @@ const getAllCampaigns = async (id) => {
         const campaigns = await campaignRepository.findByUserId(id);
 
         if (!campaigns || campaigns.length === 0) {
-            return null
+            throw new Error("no campaign found")
         }
 
         const data = campaigns.map(campaign => {
