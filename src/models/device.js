@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-        Device.belongsTo(models.Location, { foreignKey: 'locationId' });
+       Device.belongsTo(models.Location, { foreignKey: 'locationId' });
          Device.belongsToMany(models.Campaign, {
         through: 'CampaignDeviceTypes',
         foreignKey: 'deviceTypeId'
@@ -20,8 +20,6 @@ module.exports = (sequelize, DataTypes) => {
   Device.init({
     deviceType: DataTypes.STRING,
     price: DataTypes.INTEGER,
-    deviceCount: DataTypes.INTEGER,
-    availableCount: DataTypes.INTEGER,
     locationId: DataTypes.INTEGER
   }, {
     sequelize,
