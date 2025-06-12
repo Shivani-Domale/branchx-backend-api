@@ -126,8 +126,6 @@ const getDeviceTypes = async (req, res) => {
 
     const filteredDevices = devices.map(d => ({
       deviceType: d.deviceType,
-      availableCount: d.availableCount,
-      price: d.price
     }));
 
     if (!filteredDevices) {
@@ -147,7 +145,6 @@ const getLocations = async (req, res) => {
     const locations = await CampaignService.getLocations();
     const cityPriceList = locations.map(loc => ({
       city: loc.city,
-      price: loc.price
     }));
 
     if (!cityPriceList) {
@@ -167,7 +164,6 @@ const getProductTypes = async (req, res) => {
     const products = await CampaignService.getProductTypes();
     const filteredProducts = products.map(p => ({
       product_type: p.product_type,
-      price: p.price
     }));
 
     if (!filteredProducts) {
@@ -215,5 +211,4 @@ try {
 }
 };
 
-
-module.exports = { createCampaign, getCampaigns, updateCampaignStatus, getCampaignById, getUserCampaignByToken, getDeviceTypes, getProductTypes, getLocations, updateCampaign ,deleteCampaign};
+module.exports = { createCampaign, getCampaigns, updateCampaignStatus, getCampaignById, getUserCampaignByToken, getDeviceTypes, getProductTypes, getLocations, updateCampaign ,deleteCampaign, };
