@@ -4,7 +4,6 @@ const { UploadFile } = require("../../utils");
 const { sequelize } = require("../../models");
 const { Logger } = require("../../config");
 
-
 const campaignRepository = new CampaignRepository();
 const productRepository = new ProductRepository();
 const deviceRepository = new DeviceRepository();
@@ -347,6 +346,34 @@ const getCampaignById = async (campaignId) => {
     }
 };
 
+const getDeviceTypes = async () => {
+  try {
+    const devices = await deviceRepository.getAll();
+    return devices;
+  } catch (error) {
+    throw new Error(`Error fetching devices: ${error.message}`);
+  }
+};
+
+const getLocations = async () => {
+  try {
+    const locations = await locationRepository.getAll();
+    return locations;
+  } catch (error) {
+    throw new Error(`Error fetching locations: ${error.message}`);
+  }
+};
+
+const getProductTypes = async () => {
+  try {
+    const products = await productRepository.getAll();
+    return products;
+  } catch (error) {
+    throw new Error(`Error fetching products: ${error.message}`);
+  }
+};
+
+
 module.exports = {
-    createCampaign, getAllCampaigns, updateCampaignStatus, getCampaignById
+    createCampaign, getAllCampaigns, updateCampaignStatus, getCampaignById, getDeviceTypes, getProductTypes, getLocations
 }

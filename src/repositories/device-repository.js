@@ -16,6 +16,11 @@ class DeviceRepository extends crudRepository {
             }
         });
     }
+
+    async getAll() {
+        return await this.model.findAll();
+    }
+
 }
 
 module.exports = DeviceRepository;

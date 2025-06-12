@@ -23,6 +23,10 @@ class ProductRepository extends crudRepository {
             throw new Error(`Error fetching product by type: ${error.message}`);
         }
     }
+
+    async getAll() {
+        return await this.model.findAll();
+    }
 }
 
 module.exports = ProductRepository;
