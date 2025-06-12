@@ -419,9 +419,8 @@ const deleteCampaign = async (id) => {
 
 
 
-
 module.exports = {
   createCampaign, getAllCampaigns, updateCampaignStatus,
   getCampaignById, getDeviceTypes, getProductTypes,
   getLocations, deleteCampaign,updateCampaign
-}
+};
