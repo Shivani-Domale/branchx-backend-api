@@ -53,7 +53,8 @@ module.exports = (sequelize, DataTypes) => {
     baseBid: DataTypes.INTEGER,
     budgetLimit: DataTypes.INTEGER,
     userId: DataTypes.INTEGER,
-    productId: DataTypes.INTEGER
+    productId: DataTypes.INTEGER,
+    remark : DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Campaign',
