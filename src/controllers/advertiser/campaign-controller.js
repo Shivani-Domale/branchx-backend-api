@@ -1,7 +1,7 @@
 const { Logger } = require("../../config");
 const { CampaignService } = require("../../services");
 const { StatusCodes } = require('http-status-codes');
-const { SuccessReposnse, ErrorReponse } = require("../../utils");
+const { SuccessReposnse, ErrorReponse, GenerateBaseCostForCampaigns } = require("../../utils");
 
 
 
@@ -200,16 +200,55 @@ const updateCampaign = async (req, res) => {
   }
 };
 
-const deleteCampaign = async(req,res) =>{
-try {
-  
-  const{id} = req.params;
+const deleteCampaign = async (req, res) => {
+  try {
 
-  SuccessReposnse(res,'campaign deleted',StatusCodes.OK,null);
-} catch (error) {
-  ErrorReponse(res,StatusCodes.BAD_REQUEST,error);
-}
+    const { id } = req.params;
+
+    SuccessReposnse(res, 'campaign deleted', StatusCodes.OK, null);
+  } catch (error) {
+    ErrorReponse(res, StatusCodes.BAD_REQUEST, error);
+  }
 };
 
+const calculateBaseCost = async (req, res) => {
+  try {
+    const { adDeviceShow, productType, targetRegions } = req.body;
 
-module.exports = { createCampaign, updateCampaignStatus, getCampaignById, getUserCampaignByToken, getDeviceTypes, getProductTypes, getLocations, updateCampaign ,deleteCampaign};
+    if (!adDeviceShow || !productType || !targetRegions) {
+      return ErrorReponse(res, StatusCodes.BAD_REQUEST, "Missing required fields.");
+    }
+
+    const deviceTypes = JSON.parse(adDeviceShow || "[]").map(d => d.name);
+    const locationCities = JSON.parse(targetRegions || "[]");
+    const parsedProduct = JSON.parse(productType || "{}");
+
+    if (!deviceTypes.length || !locationCities.length || !parsedProduct.name) {
+      return ErrorReponse(res, StatusCodes.BAD_REQUEST, "Invalid input data.");
+    }
+
+    const devices = await deviceRepository.findByDeviceTypes(deviceTypes);
+    const locations = await locationRepository.findByCities(locationCities);
+    const product = await productRepository.findIdByProductType(parsedProduct.name);
+
+    console.log(devices + " " + locations + " " + product);
+
+    if (!devices.length || !locations.length || !product) {
+      return ErrorReponse(res, StatusCodes.NOT_FOUND, "Devices, locations, or product not found.");
+    }
+
+    const baseCost = GenerateBaseCostForCampaigns(devices, locations, product);
+    return SuccessReposnse(res, "Base cost calculated successfully", StatusCodes.OK, { baseCost });
+
+  } catch (error) {
+    console.error("Error calculating base cost:", error);
+    return ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, "Error calculating base cost.");
+  }
+};
+
+module.exports = {
+  createCampaign, updateCampaignStatus, getCampaignById,
+  getUserCampaignByToken, getDeviceTypes, getProductTypes,
+  getLocations, updateCampaign, deleteCampaign,
+  calculateBaseCost
+};
