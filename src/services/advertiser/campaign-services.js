@@ -362,8 +362,16 @@ const getDeviceTypes = async () => {
 
 const getLocations = async () => {
   try {
-    const locations = await locationRepository.getAll();
-    return locations;
+    const locations = await locationRepository.findAll();
+
+    const cityPriceList = locations.map(loc => ({
+      city: loc.city,
+    }));
+  if(!cityPriceList){
+    throw new Error(" no cities are found");
+  }
+
+    return cityPriceList;
   } catch (error) {
     throw new Error(`Error fetching locations: ${error.message}`);
   }

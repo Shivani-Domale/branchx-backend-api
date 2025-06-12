@@ -143,11 +143,9 @@ const getLocations = async (req, res) => {
   console.log("getLocations endpoint hit");
   try {
     const locations = await CampaignService.getLocations();
-    const cityPriceList = locations.map(loc => ({
-      city: loc.city,
-    }));
+   
 
-    if (!cityPriceList) {
+    if (!locations || locations.length===0 ) {
       ErrorReponse(res, StatusCodes.NOT_FOUND, 'No Cities Found');
     }
 
