@@ -9,12 +9,12 @@ const createCampaign = async (req, res) => {
   try {
     const user = req.user;
 
-    console.log(user);
     if (!user) {
       ErrorReponse(res, StatusCodes.UNAUTHORIZED, "Please Login...");
     }
 
-   console.log(req.body);
+    console.log(req.body);
+
     Logger.info("------------");
     Logger.info("Received request to create campaign");
 
@@ -53,6 +53,11 @@ const getCampaigns = async (req, res) => {
   }
 
   const campaigns = await CampaignService.getAllCampaigns(user.id);
+
+  if (!campaigns) {
+    ErrorReponse(res, StatusCodes.NOT_FOUND, ' No campaign are found');
+  }
+
   SuccessReposnse(res, null, StatusCodes.OK, campaigns);
 }
 
@@ -63,6 +68,10 @@ const updateCampaignStatus = async (req, res) => {
     const { id } = req.params;
     const { status } = req.body;
     const campaign = await CampaignService.updateCampaignStatus(id, status);
+
+    if (!campaign) {
+      ErrorReponse(res, StatusCodes.NOT_FOUND, 'Unable To Update Campaign Status');
+    }
 
     SuccessReposnse(res, `${campaign.campaignName} Ad ${status === true ? 'Activated' : 'Deactivated'} successfully`, StatusCodes.OK, null);
   } catch (error) {
@@ -78,7 +87,7 @@ const getCampaignById = async (req, res) => {
     const campaign = await CampaignService.getCampaignById(campaignId);
 
     if (!campaign) {
-      return res.status(404).json({ message: 'Campaign not found' });
+      return ErrorReponse(res, StatusCodes.BAD_REQUEST, 'Campaign not found');
     }
 
     SuccessReposnse(res, null, StatusCodes.OK, campaign);
@@ -97,15 +106,11 @@ const getUserCampaignByToken = async (req, res) => {
 
     const campaigns = await CampaignService.getAllCampaigns(user.id);
     console.log(campaigns);
-    
-    if(!campaigns) {
-      return res.status(StatusCodes.NOT_FOUND).json({
-        data : [],
-        success : false,
-        error : "No campaign found"
-      })
+
+    if (!campaigns) {
+      ErrorReponse(res, StatusCodes.NOT_FOUND, 'No campaign found');
     }
-   
+
     SuccessReposnse(res, null, StatusCodes.OK, campaigns);
 
   } catch (error) {
@@ -122,8 +127,12 @@ const getDeviceTypes = async (req, res) => {
     const filteredDevices = devices.map(d => ({
       deviceType: d.deviceType,
       availableCount: d.availableCount,
-      price :d.price
+      price: d.price
     }));
+
+    if (!filteredDevices) {
+      ErrorReponse(res, StatusCodes.NOT_FOUND, 'No Devices Found');
+    }
 
     SuccessReposnse(res, null, StatusCodes.OK, filteredDevices);
   } catch (error) {
@@ -140,6 +149,11 @@ const getLocations = async (req, res) => {
       city: loc.city,
       price: loc.price
     }));
+
+    if (!cityPriceList) {
+      ErrorReponse(res, StatusCodes.NOT_FOUND, 'No Cities Found');
+    }
+
     SuccessReposnse(res, null, StatusCodes.OK, cityPriceList);
   } catch (error) {
     ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error.message);
@@ -155,11 +169,25 @@ const getProductTypes = async (req, res) => {
       product_type: p.product_type,
       price: p.price
     }));
+
+    if (!filteredProducts) {
+      ErrorReponse(res, StatusCodes.NOT_FOUND, 'No Product Catrgory Found');
+    }
+
     SuccessReposnse(res, null, StatusCodes.OK, filteredProducts);
   } catch (error) {
     ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error.message);
   }
 };
 
+const deleteCampaign = async (req, res) => {
 
-module.exports = { createCampaign, getCampaigns, updateCampaignStatus, getCampaignById, getUserCampaignByToken, getDeviceTypes, getProductTypes, getLocations };
+  try {
+         const { id } = req.params;
+    const res = await CampaignService.deleteCampaign(id);
+  SuccessReposnse(res,`${id} :campaign deleted`,StatusCodes.OK,null);
+  } catch (error) {
+  ErrorReponse(res,StatusCodes.BAD_REQUEST,error);
+  }
+};
+module.exports = { createCampaign, getCampaigns, updateCampaignStatus, getCampaignById, getUserCampaignByToken, getDeviceTypes, getProductTypes, getLocations, deleteCampaign };
