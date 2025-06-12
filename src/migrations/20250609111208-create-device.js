@@ -15,12 +15,6 @@ module.exports = {
       price: {
         type: Sequelize.INTEGER
       },
-      deviceCount: {
-        type: Sequelize.INTEGER
-      },
-      availableCount: {
-        type: Sequelize.INTEGER
-      },
       locationId: {
         type: Sequelize.INTEGER,
         references: {

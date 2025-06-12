@@ -220,7 +220,7 @@ const createCampaign = async (data, fileBuffer, originalName, id) => {
         data.status = false;
         data.isApproved = "PENDING";
         data.isPayment = false;
-
+        data.remark = null;
         const campaign = await campaignRepository.create(data, { transaction: t });
 
         if (!campaign) {
