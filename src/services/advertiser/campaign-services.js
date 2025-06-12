@@ -178,7 +178,7 @@ const createCampaign = async (data, fileBuffer, originalName, id) => {
 
     try {
         Logger.info("Starting campaign creation...");
-        console.log("User ID passed:", id);
+     
 
         // Parse device types and get their names
         const parsedDevices = JSON.parse(data.adDeviceShow || "[]"); // [{ name: "Cube", price: 1500 }]
@@ -233,6 +233,11 @@ const createCampaign = async (data, fileBuffer, originalName, id) => {
         }
 
         const creativeUrl = await UploadFile(fileBuffer, originalName, campaign.id);
+
+        if(!creativeUrl){
+            throw new Error('Failed to upload video/image ');
+        }
+
         campaign.creativeFile = creativeUrl;
 
         await campaign.save({ transaction: t });
@@ -404,6 +409,14 @@ const updateCampaign = async (id, data, fileBuffer, originalName) => {
 };
 
 
+const deleteCampaign = async(id)=>{
+  const campaign = await campaignRepository.findById(id);
+  if(!campaign){
+    throw new Error('Unable to delete campaign');
+  }
+  return campaign;
+};
 module.exports = {
-    createCampaign, getAllCampaigns, updateCampaignStatus, getCampaignById, getDeviceTypes, getProductTypes, getLocations, updateCampaign
+    createCampaign, getAllCampaigns, updateCampaignStatus, getCampaignById, getDeviceTypes, getProductTypes, getLocations,deleteCampaign
+
 }
