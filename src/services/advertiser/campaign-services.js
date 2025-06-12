@@ -275,7 +275,7 @@ const getAllCampaigns = async (id) => {
         const campaigns = await campaignRepository.findByUserId(id);
 
         if (!campaigns || campaigns.length === 0) {
-            return []; // or throw an error if you want to enforce existence
+            return null
         }
 
         const data = campaigns.map(campaign => {
