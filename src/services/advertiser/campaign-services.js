@@ -220,7 +220,7 @@ const createCampaign = async (data, fileBuffer, originalName, id) => {
         data.status = false;
         data.isApproved = "PENDING";
         data.isPayment = false;
-
+        data.remark = null;
         const campaign = await campaignRepository.create(data, { transaction: t });
 
         if (!campaign) {
@@ -275,7 +275,7 @@ const getAllCampaigns = async (id) => {
         const campaigns = await campaignRepository.findByUserId(id);
 
         if (!campaigns || campaigns.length === 0) {
-            return []; // or throw an error if you want to enforce existence
+            throw new Error("no campaign found")
         }
 
         const data = campaigns.map(campaign => {
