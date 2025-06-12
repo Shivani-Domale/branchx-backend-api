@@ -108,7 +108,7 @@ const getUserCampaignByToken = async (req, res) => {
     console.log(campaigns);
 
     if (!campaigns || campaigns.length === 0) {
-     return ErrorReponse(res, StatusCodes.NOT_FOUND, 'No campaign found');
+      ErrorReponse(res, StatusCodes.NOT_FOUND, 'No campaign found');
     }
 
     SuccessReposnse(res, null, StatusCodes.OK, campaigns);
