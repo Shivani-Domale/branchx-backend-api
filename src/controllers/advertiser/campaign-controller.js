@@ -55,7 +55,7 @@ const getCampaigns = async (req, res) => {
   const campaigns = await CampaignService.getAllCampaigns(user.id);
 
  if (!campaigns || campaigns.length === 0) {
-    return ErrorReponse(res, StatusCodes.NOT_FOUND, 'No campaigns found');
+    ErrorReponse(res, StatusCodes.NOT_FOUND, 'No campaigns found');
   }
 
   SuccessReposnse(res, null, StatusCodes.OK, campaigns);
