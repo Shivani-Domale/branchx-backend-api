@@ -121,7 +121,8 @@ const getDeviceTypes = async (req, res) => {
 
     const filteredDevices = devices.map(d => ({
       deviceType: d.deviceType,
-      availableCount: d.availableCount
+      availableCount: d.availableCount,
+      price :d.price
     }));
 
     SuccessReposnse(res, null, StatusCodes.OK, filteredDevices);
