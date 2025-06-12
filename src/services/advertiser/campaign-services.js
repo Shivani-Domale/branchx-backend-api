@@ -4,7 +4,6 @@ const { UploadFile } = require("../../utils");
 const { sequelize } = require("../../models");
 const { Logger } = require("../../config");
 
-
 const campaignRepository = new CampaignRepository();
 const productRepository = new ProductRepository();
 const deviceRepository = new DeviceRepository();
@@ -179,7 +178,7 @@ const createCampaign = async (data, fileBuffer, originalName, id) => {
 
     try {
         Logger.info("Starting campaign creation...");
-        console.log("User ID passed:", id);
+     
 
         // Parse device types and get their names
         const parsedDevices = JSON.parse(data.adDeviceShow || "[]"); // [{ name: "Cube", price: 1500 }]
@@ -234,6 +233,11 @@ const createCampaign = async (data, fileBuffer, originalName, id) => {
         }
 
         const creativeUrl = await UploadFile(fileBuffer, originalName, campaign.id);
+
+        if(!creativeUrl){
+            throw new Error('Failed to upload video/image ');
+        }
+
         campaign.creativeFile = creativeUrl;
 
         await campaign.save({ transaction: t });
@@ -347,6 +351,72 @@ const getCampaignById = async (campaignId) => {
     }
 };
 
+const getDeviceTypes = async () => {
+  try {
+    const devices = await deviceRepository.getAll();
+    return devices;
+  } catch (error) {
+    throw new Error(`Error fetching devices: ${error.message}`);
+  }
+};
+
+const getLocations = async () => {
+  try {
+    const locations = await locationRepository.getAll();
+    return locations;
+  } catch (error) {
+    throw new Error(`Error fetching locations: ${error.message}`);
+  }
+};
+
+const getProductTypes = async () => {
+  try {
+    const products = await productRepository.getAll();
+    return products;
+  } catch (error) {
+    throw new Error(`Error fetching products: ${error.message}`);
+  }
+};
+
+const updateCampaign = async (id, data, fileBuffer, originalName) => {
+  const t = await sequelize.transaction();
+
+  try {
+    const campaign = await campaignRepository.findById(id);
+    if (!campaign) {
+      throw new Error("Campaign not found");
+    }
+
+    // Only update the fields passed in request body
+    Object.assign(campaign, data);
+
+    if (fileBuffer && originalName) {
+      const newCreativeUrl = await UploadFile(fileBuffer, originalName, campaign.id);
+      campaign.creativeFile = newCreativeUrl;
+    }
+
+    await campaign.save({ transaction: t });
+
+    // Optionally update associations here (locations/devices) if part of update
+
+    await t.commit();
+    return campaign;
+  } catch (error) {
+    await t.rollback();
+    Logger.error("Error updating campaign:", error.message);
+    throw new Error(`Error updating campaign: ${error.message}`);
+  }
+};
+
+
+const deleteCampaign = async(id)=>{
+  const campaign = await campaignRepository.findById(id);
+  if(!campaign){
+    throw new Error('Unable to delete campaign');
+  }
+  return campaign;
+};
 module.exports = {
-    createCampaign, getAllCampaigns, updateCampaignStatus, getCampaignById
+    createCampaign, getAllCampaigns, updateCampaignStatus, getCampaignById, getDeviceTypes, getProductTypes, getLocations,deleteCampaign
+
 }
