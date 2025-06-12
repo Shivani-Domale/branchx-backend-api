@@ -126,8 +126,6 @@ const getDeviceTypes = async (req, res) => {
 
     const filteredDevices = devices.map(d => ({
       deviceType: d.deviceType,
-      availableCount: d.availableCount,
-      price: d.price
     }));
 
     if (!filteredDevices) {
@@ -147,7 +145,6 @@ const getLocations = async (req, res) => {
     const locations = await CampaignService.getLocations();
     const cityPriceList = locations.map(loc => ({
       city: loc.city,
-      price: loc.price
     }));
 
     if (!cityPriceList) {
@@ -167,7 +164,6 @@ const getProductTypes = async (req, res) => {
     const products = await CampaignService.getProductTypes();
     const filteredProducts = products.map(p => ({
       product_type: p.product_type,
-      price: p.price
     }));
 
     if (!filteredProducts) {
@@ -185,9 +181,6 @@ const updateCampaign = async (req, res) => {
     const { id } = req.params;
 
     Logger.info("Received request to update campaign with ID:", id);
-
-    // Check if the user is authenticated
-    // Uncomment the following lines if you want to check for user authentication
 
     const user = req.user;
 
