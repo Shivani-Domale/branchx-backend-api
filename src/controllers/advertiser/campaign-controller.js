@@ -114,6 +114,51 @@ const getUserCampaignByToken = async (req, res) => {
   }
 };
 
+const getDeviceTypes = async (req, res) => {
+  console.log("getDeviceTypes endpoint hit");
+  try {
+    const devices = await CampaignService.getDeviceTypes();
+
+    const filteredDevices = devices.map(d => ({
+      deviceType: d.deviceType,
+      availableCount: d.availableCount
+    }));
+
+    SuccessReposnse(res, null, StatusCodes.OK, filteredDevices);
+  } catch (error) {
+    ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error.message);
+  }
+};
 
 
-module.exports = { createCampaign, getCampaigns, updateCampaignStatus, getCampaignById, getUserCampaignByToken };
+const getLocations = async (req, res) => {
+  console.log("getLocations endpoint hit");
+  try {
+    const locations = await CampaignService.getLocations();
+    const cityPriceList = locations.map(loc => ({
+      city: loc.city,
+      price: loc.price
+    }));
+    SuccessReposnse(res, null, StatusCodes.OK, cityPriceList);
+  } catch (error) {
+    ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error.message);
+  }
+};
+
+
+const getProductTypes = async (req, res) => {
+  console.log("getProductTypes endpoint hit");
+  try {
+    const products = await CampaignService.getProductTypes();
+    const filteredProducts = products.map(p => ({
+      product_type: p.product_type,
+      price: p.price
+    }));
+    SuccessReposnse(res, null, StatusCodes.OK, filteredProducts);
+  } catch (error) {
+    ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error.message);
+  }
+};
+
+
+module.exports = { createCampaign, getCampaigns, updateCampaignStatus, getCampaignById, getUserCampaignByToken, getDeviceTypes, getProductTypes, getLocations };

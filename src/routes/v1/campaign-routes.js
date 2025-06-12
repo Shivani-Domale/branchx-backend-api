@@ -14,4 +14,16 @@ router.put('/:id/status', CampaignController.updateCampaignStatus);
 router.get('/:campaignId/getCampaign',CampaignController.getCampaignById);
 router.get('/getUserCampaign',VerifyToken,CampaignController.getUserCampaignByToken);
 
+router.get('/dropdown/devices', VerifyToken, CampaignController.getDeviceTypes);
+router.get('/dropdown/products', VerifyToken, CampaignController.getProductTypes);
+router.get('/dropdown/locations', VerifyToken, CampaignController.getLocations);
+// router.get('/dropdown/devices',  CampaignController.getDeviceTypes);
+// router.get('/dropdown/products', CampaignController.getProductTypes);
+// router.get('/dropdown/locations',  CampaignController.getLocations);
+
+router.get('/test', (req, res) => {
+  res.send("Campaign test route is working");
+});
+
+
 module.exports = router;
