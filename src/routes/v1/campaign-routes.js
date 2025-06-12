@@ -17,6 +17,8 @@ router.get('/getUserCampaign',VerifyToken,CampaignController.getUserCampaignByTo
 router.get('/dropdown/devices', VerifyToken, CampaignController.getDeviceTypes);
 router.get('/dropdown/products', VerifyToken, CampaignController.getProductTypes);
 router.get('/dropdown/locations', VerifyToken, CampaignController.getLocations);
-router.put('/:id/updateCampaign', VerifyToken, UploadFileCampaign.upload.single('creativeFile'), CampaignController.updateCampaign);
+
+router.put('/:id/updateCampaign', VerifyToken, UploadFileCampaign.upload.single('creativeFile'), CampaignController.updateCampaign
+
 
 module.exports = router;
