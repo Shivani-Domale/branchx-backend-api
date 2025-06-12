@@ -20,6 +20,17 @@ class LocationRepository extends crudRepository {
     async getAll() {
         return await this.model.findAll();
     }
+
+    async getLocationWithDevices(cityName) {
+    return await this.model.findOne({
+        where: { city: cityName },
+        include: [{
+            model: Device,
+            attributes: ['deviceType', 'price', 'availableCount'],
+        }]
+    });
+}
+
 }
 
 module.exports = LocationRepository;
