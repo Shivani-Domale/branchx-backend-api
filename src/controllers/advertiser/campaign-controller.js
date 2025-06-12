@@ -166,9 +166,6 @@ const updateCampaign = async (req, res) => {
 
     Logger.info("Received request to update campaign with ID:", id);
 
-    // Check if the user is authenticated
-    // Uncomment the following lines if you want to check for user authentication
-
     const user = req.user;
 
     if (!user) {
