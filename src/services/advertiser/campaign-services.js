@@ -416,7 +416,6 @@ const deleteCampaign = async(id)=>{
   }
   return campaign;
 };
-module.exports = {
-    createCampaign, getAllCampaigns, updateCampaignStatus, getCampaignById, getDeviceTypes, getProductTypes, getLocations,deleteCampaign
 
-}
+module.exports = {
+    createCampaign, getAllCampaigns, updateCampaignStatus, getCampaignById, getDeviceTypes, getProductTypes, getLocations,deleteCampaign, updateCampaign}
