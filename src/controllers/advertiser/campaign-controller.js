@@ -180,14 +180,43 @@ const getProductTypes = async (req, res) => {
   }
 };
 
-const deleteCampaign = async (req, res) => {
-
+const updateCampaign = async (req, res) => {
   try {
-         const { id } = req.params;
-    const res = await CampaignService.deleteCampaign(id);
-  SuccessReposnse(res,`${id} :campaign deleted`,StatusCodes.OK,null);
+    const { id } = req.params;
+
+    Logger.info("Received request to update campaign with ID:", id);
+
+    // Check if the user is authenticated
+    // Uncomment the following lines if you want to check for user authentication
+
+    const user = req.user;
+
+    if (!user) {
+      return ErrorReponse(res, StatusCodes.UNAUTHORIZED, "Please Login...");
+    }
+
+    const fileBuffer = req.file ? req.file.buffer : null;
+    const originalName = req.file ? req.file.originalname : null;
+
+    const updatedCampaign = await CampaignService.updateCampaign(id, req.body, fileBuffer, originalName);
+    SuccessReposnse(res, "Campaign updated successfully", StatusCodes.OK, updatedCampaign);
+
   } catch (error) {
-  ErrorReponse(res,StatusCodes.BAD_REQUEST,error);
+    Logger.error("Error updating campaign:", error);
+    ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error.message);
   }
 };
-module.exports = { createCampaign, getCampaigns, updateCampaignStatus, getCampaignById, getUserCampaignByToken, getDeviceTypes, getProductTypes, getLocations, deleteCampaign };
+
+const deleteCampaign = async(req,res) =>{
+try {
+  
+  const{id} = req.params;
+
+  SuccessReposnse(res,'campaign deleted',StatusCodes.OK,null);
+} catch (error) {
+  ErrorReponse(res,StatusCodes.BAD_REQUEST,error);
+}
+};
+
+
+module.exports = { createCampaign, getCampaigns, updateCampaignStatus, getCampaignById, getUserCampaignByToken, getDeviceTypes, getProductTypes, getLocations, updateCampaign ,deleteCampaign};

@@ -378,6 +378,36 @@ const getProductTypes = async () => {
   }
 };
 
+const updateCampaign = async (id, data, fileBuffer, originalName) => {
+  const t = await sequelize.transaction();
+
+  try {
+    const campaign = await campaignRepository.findById(id);
+    if (!campaign) {
+      throw new Error("Campaign not found");
+    }
+
+    // Only update the fields passed in request body
+    Object.assign(campaign, data);
+
+    if (fileBuffer && originalName) {
+      const newCreativeUrl = await UploadFile(fileBuffer, originalName, campaign.id);
+      campaign.creativeFile = newCreativeUrl;
+    }
+
+    await campaign.save({ transaction: t });
+
+    // Optionally update associations here (locations/devices) if part of update
+
+    await t.commit();
+    return campaign;
+  } catch (error) {
+    await t.rollback();
+    Logger.error("Error updating campaign:", error.message);
+    throw new Error(`Error updating campaign: ${error.message}`);
+  }
+};
+
 
 const deleteCampaign = async(id)=>{
   const campaign = await campaignRepository.findById(id);
@@ -388,4 +418,5 @@ const deleteCampaign = async(id)=>{
 };
 module.exports = {
     createCampaign, getAllCampaigns, updateCampaignStatus, getCampaignById, getDeviceTypes, getProductTypes, getLocations,deleteCampaign
+
 }
