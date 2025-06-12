@@ -9,7 +9,7 @@ const router = express.Router();
 
 /* campaign routes */
 router.post('/createCampaign',VerifyToken, UploadFileCampaign.upload.single('creativeFile'), CampaignController.createCampaign);
-router.get('/getCampaigns', VerifyToken,CampaignController.getCampaigns);
+//router.get('/getCampaigns', VerifyToken,CampaignController.getCampaigns);
 router.put('/:id/status', CampaignController.updateCampaignStatus);
 router.get('/:campaignId/getCampaign',CampaignController.getCampaignById);
 router.get('/getUserCampaign',VerifyToken,CampaignController.getUserCampaignByToken);
