@@ -219,4 +219,4 @@ try {
 };
 
 
-module.exports = { createCampaign, getCampaigns, updateCampaignStatus, getCampaignById, getUserCampaignByToken, getDeviceTypes, getProductTypes, getLocations, updateCampaign ,deleteCampaign};
+module.exports = { createCampaign, updateCampaignStatus, getCampaignById, getUserCampaignByToken, getDeviceTypes, getProductTypes, getLocations, updateCampaign ,deleteCampaign};
