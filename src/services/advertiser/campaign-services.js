@@ -1,7 +1,7 @@
 const { Op } = require("sequelize");
 const { CampaignRepository, ProductRepository, DeviceRepository, LocationRepository } = require("../../repositories");
 const { UploadFile } = require("../../utils");
-const { Sequelize } = require("../../models");
+const { sequelize } = require("../../models");
 const { Logger } = require("../../config");
 
 const campaignRepository = new CampaignRepository();
@@ -9,64 +9,253 @@ const productRepository = new ProductRepository();
 const deviceRepository = new DeviceRepository();
 const locationRepository = new LocationRepository();
 
+// const createCampaign = async (data, fileBuffer, originalName, id) => {
+//     const t =await sequelize.transaction();
+//     console.log(id);
+
+//     try {
+//     Logger.info(" Starting campaign creation...");
+
+
+//     const DeviceTypes = JSON.parse(data.adDeviceShow || "[]");
+//     const Locations = JSON.parse(data.targetRegions || "[]");
+//     const ProductType = data.productType;
+
+//     if (!Array.isArray(DeviceTypes) || DeviceTypes.length === 0) {
+//       throw new Error("Device types must be a non-empty array.");
+//     }
+
+//     if (!Array.isArray(Locations) || Locations.length === 0) {
+//       throw new Error("Cities (locations) must be a non-empty array.");
+//     }
+
+
+//     const deviceRecords = await deviceRepository.findByDeviceTypes(DeviceTypes);
+//     const locationRecords = await locationRepository.findByCities(Locations);
+//     const productId = await productRepository.findIdByProductType(ProductType);
+
+//     const deviceIds = deviceRecords.map(device => device.id);
+//     const locationIds = locationRecords.map(loc => loc.id);
+
+//     if (deviceIds.length === 0) {
+//       throw new Error("No matching devices found for selected types.");
+//     }
+
+//     if (locationIds.length === 0) {
+//       throw new Error("No matching locations found for selected cities.");
+//     }
+
+
+//     const campaign = await campaignRepository.create(data, { transaction: t });
+//     console.log(campaign);
+//     if (!campaign) {
+//       throw new Error("Campaign creation failed");
+//     }
+
+
+//     if (!fileBuffer || !originalName) {
+//       throw new Error("Creative file is required.");
+//     }
+
+//     const creativeUrl = await UploadFile(fileBuffer, originalName, campaign.id);
+//     campaign.creativeFile = creativeUrl;
+
+//     campaign.status = false;
+//     campaign.isApproved = "PENDING";
+//     campaign.isPayment = false;
+//     campaign.userId = id;
+//     campaign.productId = productId;
+
+
+
+
+//     await campaign.save({ transaction: t });
+
+
+//     if (deviceIds.length) {
+//       Logger.info(" Associating devices...");
+//       await campaign.addDevices(deviceIds, { transaction: t });
+//     }
+
+//     if (locationIds.length) {
+//       Logger.info(" Associating locations...");
+//       await campaign.addLocations(locationIds, { transaction: t });
+//     }
+
+//     await t.commit();
+//     Logger.info(" Campaign created successfully.");
+//     return campaign;
+//   } catch (error) {
+//     await t.rollback();
+//     Logger.error(" Error creating campaign:", error.message);
+//     throw new Error(`Error creating campaign: ${error.message}`);
+//   }
+// };
+
+// const createCampaign = async (data, fileBuffer, originalName, id) => {
+//     const t = await sequelize.transaction();
+//     console.log(data);
+//     try {
+//         Logger.info(" Starting campaign creation...");
+//         console.log(" userId passed:", id);
+
+//         const DeviceTypes = JSON.parse(data.adDeviceShow || "[]");
+//         const Locations = JSON.parse(data.targetRegions || "[]");
+//         const ProductType = data.productType;
+
+//         if (!Array.isArray(DeviceTypes) || DeviceTypes.length === 0) {
+//             throw new Error("Device types must be a non-empty array.");
+//         }
+
+//         if (!Array.isArray(Locations) || Locations.length === 0) {
+//             throw new Error("Cities (locations) must be a non-empty array.");
+//         }
+
+//         const deviceRecords = await deviceRepository.findByDeviceTypes(DeviceTypes);
+//         const locationRecords = await locationRepository.findByCities(Locations);
+//         const productId = await productRepository.findIdByProductType(ProductType);
+
+//         const deviceIds = deviceRecords.map(device => device.id);
+//         const locationIds = locationRecords.map(loc => loc.id);
+
+//         if (deviceIds.length === 0) {
+//             throw new Error("No matching devices found for selected types.");
+//         }
+
+//         if (locationIds.length === 0) {
+//             throw new Error("No matching locations found for selected cities.");
+//         }
+
+//         //  Add required fields before create
+//         data.userId = id;
+//         data.productId = productId;
+//         data.status = false;
+//         data.isApproved = "PENDING";
+//         data.isPayment = false;
+
+//         const campaign = await campaignRepository.create(data, { transaction: t });
+//         console.log(campaign);
+        
+//         if (!campaign) {
+//             throw new Error("Campaign creation failed");
+//         }
+
+//         // Upload creative file
+//         if (!fileBuffer || !originalName) {
+//             throw new Error("Creative file is required.");
+//         }
+
+//         const creativeUrl = await UploadFile(fileBuffer, originalName, campaign.id);
+//         campaign.creativeFile = creativeUrl;
+
+//         await campaign.save({ transaction: t });
+
+//         //  Associate devices
+//         if (deviceIds.length) {
+//             Logger.info(" Associating devices...");
+//             await campaign.addDevices(deviceIds, { transaction: t });
+//         }
+
+//         //  Associate locations
+//         if (locationIds.length) {
+//             Logger.info(" Associating locations...");
+//             await campaign.addLocations(locationIds, { transaction: t });
+//         }
+
+//         await t.commit();
+//         Logger.info(" Campaign created successfully.");
+//         return campaign;
+
+//     } catch (error) {
+//         await t.rollback();
+//         Logger.error(" Error creating campaign:", error.message);
+//         throw new Error(`Error creating campaign: ${error.message}`);
+//     }
+// };
+
 const createCampaign = async (data, fileBuffer, originalName, id) => {
+    const t = await sequelize.transaction();
+
     try {
+        Logger.info("Starting campaign creation...");
+        console.log("User ID passed:", id);
 
-        console.log(data);
-        const ProductType = data.productType;
-        const DeviceTypes = JSON.parse(data.deviceTypes); // Now it's an actual array
-        const Locations = JSON.parse(data.cities);        // ["Mumbai", "Pune"]
+        // Parse device types and get their names
+        const parsedDevices = JSON.parse(data.adDeviceShow || "[]"); // [{ name: "Cube", price: 1500 }]
+        const DeviceTypes = parsedDevices.map(device => device.name);
 
-      
+        // Parse product type and extract the name
+        const parsedProduct = JSON.parse(data.productType || "{}"); // { name: "Dairy Products", price: 300 }
+        const ProductType = parsedProduct.name;
 
-      const deviceRecords = await deviceRepository.findByDeviceTypes(DeviceTypes);
-      const deviceIds = deviceRecords.map(device => device.id);
-      
+        // Parse locations
+        const Locations = JSON.parse(data.targetRegions || "[]");
 
-      const locationRecords = await locationRepository.findByCities(Locations);
-      const locationIds = locationRecords.map(loc => loc.id);
+        if (!Array.isArray(DeviceTypes) || DeviceTypes.length === 0) {
+            throw new Error("Device types must be a non-empty array.");
+        }
 
+        if (!Array.isArray(Locations) || Locations.length === 0) {
+            throw new Error("Cities (locations) must be a non-empty array.");
+        }
 
-      const productId = await productRepository.findIdByProductType(ProductType);
+        const deviceRecords = await deviceRepository.findByDeviceTypes(DeviceTypes);
+        const locationRecords = await locationRepository.findByCities(Locations);
+        const productId = await productRepository.findIdByProductType(ProductType);
 
-        console.log(productId);
-        console.log(locationIds);
-        console.log(deviceIds);
+        const deviceIds = deviceRecords.map(device => device.id);
+        const locationIds = locationRecords.map(loc => loc.id);
 
-       
+        if (deviceIds.length === 0) {
+            throw new Error("No matching devices found for selected types.");
+        }
 
-            const campaign = await campaignRepository.create(data);
+        if (locationIds.length === 0) {
+            throw new Error("No matching locations found for selected cities.");
+        }
 
-            if (!campaign) {
-                throw new Error("Campaign creation failed");
-            }
+        // Set necessary campaign fields
+        data.userId = id;
+        data.productId = productId;
+        data.status = false;
+        data.isApproved = "PENDING";
+        data.isPayment = false;
 
-            const url = await UploadFile(fileBuffer, originalName, campaign.id);
+        const campaign = await campaignRepository.create(data, { transaction: t });
 
+        if (!campaign) {
+            throw new Error("Campaign creation failed");
+        }
 
-            campaign.creativeFile = url;
-            campaign.status = false;
-            campaign.isApproved = "PENDING";
-            campaign.isPayment = false;
-            campaign.userId = id;
-            campaign.productId = productId;
+        // Upload creative file
+        if (!fileBuffer || !originalName) {
+            throw new Error("Creative file is required.");
+        }
 
+        const creativeUrl = await UploadFile(fileBuffer, originalName, campaign.id);
+        campaign.creativeFile = creativeUrl;
 
-            await campaign.save();
+        await campaign.save({ transaction: t });
 
-            if(deviceIds.length)
-            {
-                Logger.info("Devices");
-                await  campaign.addDevices(deviceIds);
-            }
+        // Associate devices
+        if (deviceIds.length) {
+            Logger.info("Associating devices...");
+            await campaign.addDevices(deviceIds, { transaction: t });
+        }
 
-            if(locationIds.length){
-                Logger.info("Locations");
-                await campaign.addLocations(locationIds);  
-            }
+        // Associate locations
+        if (locationIds.length) {
+            Logger.info("Associating locations...");
+            await campaign.addLocations(locationIds, { transaction: t });
+        }
 
+        await t.commit();
+        Logger.info("Campaign created successfully.");
         return campaign;
+
     } catch (error) {
+        await t.rollback();
+        Logger.error("Error creating campaign:", error.message);
         throw new Error(`Error creating campaign: ${error.message}`);
     }
 };
@@ -103,6 +292,7 @@ const getAllCampaigns = async (id) => {
                 status: campaign.status,
                 isApproved: campaign.isApproved,
                 isPayment: campaign.isPayment,
+                campaignCode:campaign.campaignCode
             };
         });
 
