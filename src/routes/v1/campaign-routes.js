@@ -18,9 +18,7 @@ router.get('/dropdown/devices', VerifyToken, CampaignController.getDeviceTypes);
 router.get('/dropdown/products', VerifyToken, CampaignController.getProductTypes);
 router.get('/dropdown/locations', VerifyToken, CampaignController.getLocations);
 
-router.get('/test', (req, res) => {
-  res.send("Campaign test route is working");
-});
+router.put('/:id/updateCampaign', VerifyToken, UploadFileCampaign.upload.single('creativeFile'), CampaignController.updateCampaign
 
 
 module.exports = router;
