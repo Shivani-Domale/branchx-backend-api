@@ -18,6 +18,9 @@ module.exports = {
       price: {
         type: Sequelize.INTEGER
       },
+      deviceCount: {
+        type: Sequelize.INTEGER
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

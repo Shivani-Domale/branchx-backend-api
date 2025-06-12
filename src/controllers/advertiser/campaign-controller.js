@@ -44,22 +44,22 @@ const createCampaign = async (req, res) => {
 
 
 
-const getCampaigns = async (req, res) => {
-  Logger.info("Fetching campaigns");
-  const user = req.user;
+// const getCampaigns = async (req, res) => {
+//   Logger.info("Fetching campaigns");
+//   const user = req.user;
 
-  if (!user) {
-    ErrorReponse(res, StatusCodes.UNAUTHORIZED, "Please Login...");
-  }
+//   if (!user) {
+//     ErrorReponse(res, StatusCodes.UNAUTHORIZED, "Please Login...");
+//   }
 
-  const campaigns = await CampaignService.getAllCampaigns(user.id);
+//   const campaigns = await CampaignService.getAllCampaigns(user.id);
+//   console.log(campaigns)
+//  if (!campaigns || campaigns.length === 0) {
+//     ErrorReponse(res, StatusCodes.NOT_FOUND, 'No campaigns found');
+//   }
 
-  if (!campaigns) {
-    ErrorReponse(res, StatusCodes.NOT_FOUND, ' No campaign are found');
-  }
-
-  SuccessReposnse(res, null, StatusCodes.OK, campaigns);
-}
+//   SuccessReposnse(res, null, StatusCodes.OK, campaigns);
+// }
 
 
 const updateCampaignStatus = async (req, res) => {
@@ -107,7 +107,7 @@ const getUserCampaignByToken = async (req, res) => {
     const campaigns = await CampaignService.getAllCampaigns(user.id);
     console.log(campaigns);
 
-    if (!campaigns) {
+    if (!campaigns || campaigns.length === 0) {
       ErrorReponse(res, StatusCodes.NOT_FOUND, 'No campaign found');
     }
 
@@ -211,4 +211,5 @@ try {
 }
 };
 
-module.exports = { createCampaign, getCampaigns, updateCampaignStatus, getCampaignById, getUserCampaignByToken, getDeviceTypes, getProductTypes, getLocations, updateCampaign ,deleteCampaign, };
+
+module.exports = { createCampaign, updateCampaignStatus, getCampaignById, getUserCampaignByToken, getDeviceTypes, getProductTypes, getLocations, updateCampaign ,deleteCampaign};
