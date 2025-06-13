@@ -15,6 +15,8 @@ const createCampaign = async (data, fileBuffer, originalName, id) => {
   try {
     Logger.info("Starting campaign creation...");
 
+    console.log(data);
+    
     
     const parsedDevices = JSON.parse(data.adDevices || "[]"); 
     const DeviceTypes = parsedDevices.map(device => device.name);
