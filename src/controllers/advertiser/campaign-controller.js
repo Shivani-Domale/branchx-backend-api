@@ -64,7 +64,7 @@ const getCampaignById = async (req, res) => {
 
   const { campaignId } = req.params;
   try {
-      console.log("working...  "+campaignId);
+    
     const campaign = await CampaignService.getCampaignById(campaignId);
 
   
