@@ -261,25 +261,23 @@ const deleteCampaign = async (id) => {
 
 const calculateBaseCost = async (adDevices, productType, targetRegions) => {
 
-  // if (!adDevices || !productType || !targetRegions) {
-  //   throw new Error("Missing required fields.");
-  // }
-
   if (!adDevices.length || !targetRegions.length || !productType) {
     throw new Error("Invalid input data.");
   }
 
   const devices = await deviceRepository.findByDeviceTypes(adDevices);
   const locations = await locationRepository.findByCities(targetRegions);
-  const product = await productRepository.findIdByProductType(productType);
-
-  if (!devices.length || !locations.length || !product) {
+  const product = await productRepository.findProductById(productType);
+  
+  if (!devices || !locations || !product) {
     throw new Error("Devices, locations, or product not found.");
   }
 
-  const baseCost = GenerateBaseCostForCampaigns(devices, locations, product);
+
+  const baseCost = await GenerateBaseCostForCampaigns({devices, locations, product});
   return baseCost;
 };
+
 
 module.exports = {
   createCampaign, getAllCampaigns, updateCampaignStatus,

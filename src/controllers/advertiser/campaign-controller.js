@@ -189,17 +189,11 @@ const deleteCampaign = async (req, res) => {
   }
 };
 
-
 const calculateBaseCost = async (req, res) => {
   try {
     const { adDevices, productType, targetRegions } = req.body;
 
-    const deviceTypes = JSON.parse(adDevices || "[]").map(d => d.name);
-    const locationCities = JSON.parse(targetRegions || "[]");
-    const parsedProduct = JSON.parse(productType || "{}");
-
-
-    const baseCost = await CampaignService.calculateBaseCost(deviceTypes, parsedProduct, locationCities);
+    const baseCost = await CampaignService.calculateBaseCost(adDevices, productType, targetRegions);
 
     return SuccessReposnse(res, "Base cost calculated successfully", StatusCodes.OK, { baseCost });
   } catch (error) {
@@ -207,6 +201,7 @@ const calculateBaseCost = async (req, res) => {
     return ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error.message);
   }
 };
+
 
 module.exports = {
   createCampaign, updateCampaignStatus, getCampaignById,
