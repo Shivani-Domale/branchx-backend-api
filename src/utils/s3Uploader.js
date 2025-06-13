@@ -16,7 +16,7 @@ const uploadFileToS3 = async (fileBuffer, originalName, adId) => {
     const fileName = `${uuidv4()}${extension}`;
     const key = `adds/${adId}/${fileName}`;
 
-    const contentType = mime.lookup(extension); // e.g. "image/jpeg" or "video/mp4"
+    const contentType = mime.lookup(extension); 
     if (!contentType) {
         throw new Error('Unsupported file type');
     }
@@ -25,8 +25,8 @@ const uploadFileToS3 = async (fileBuffer, originalName, adId) => {
         Bucket: BUCKET_NAME,
         Key: key,
         Body: fileBuffer,
-        ContentType: contentType, // Adjust based on your file type
-        //   ACL: 'public-read' // Optional, if you want the file to be publicly accessible
+        ContentType: contentType, 
+        
     };
 
     await s3.upload(params).promise();
