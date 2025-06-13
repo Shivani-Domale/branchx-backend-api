@@ -13,8 +13,6 @@ const createCampaign = async (req, res) => {
       ErrorReponse(res, StatusCodes.UNAUTHORIZED, "Please Login...");
     }
 
-    console.log(req.body);
-
     Logger.info("------------");
     Logger.info("Received request to create campaign");
 
@@ -42,24 +40,6 @@ const createCampaign = async (req, res) => {
   }
 };
 
-
-
-// const getCampaigns = async (req, res) => {
-//   Logger.info("Fetching campaigns");
-//   const user = req.user;
-
-//   if (!user) {
-//     ErrorReponse(res, StatusCodes.UNAUTHORIZED, "Please Login...");
-//   }
-
-//   const campaigns = await CampaignService.getAllCampaigns(user.id);
-//   console.log(campaigns)
-//  if (!campaigns || campaigns.length === 0) {
-//     ErrorReponse(res, StatusCodes.NOT_FOUND, 'No campaigns found');
-//   }
-
-//   SuccessReposnse(res, null, StatusCodes.OK, campaigns);
-// }
 
 
 const updateCampaignStatus = async (req, res) => {
@@ -105,7 +85,7 @@ const getUserCampaignByToken = async (req, res) => {
     }
 
     const campaigns = await CampaignService.getAllCampaigns(user.id);
-    console.log(campaigns);
+
 
     if (!campaigns || campaigns.length === 0) {
       ErrorReponse(res, StatusCodes.NOT_FOUND, 'No campaign found');
@@ -120,7 +100,7 @@ const getUserCampaignByToken = async (req, res) => {
 };
 
 const getDeviceTypes = async (req, res) => {
-  console.log("getDeviceTypes endpoint hit");
+
   try {
     const devices = await CampaignService.getDeviceTypes();
 
@@ -140,18 +120,16 @@ const getDeviceTypes = async (req, res) => {
 
 
 const getLocations = async (req, res) => {
-  console.log("getLocations endpoint hit");
+
   try {
     const locations = await CampaignService.getLocations();
-    const cityPriceList = locations.map(loc => ({
-      city: loc.city,
-    }));
 
-    if (!cityPriceList) {
+
+    if (!locations || locations.length === 0) {
       ErrorReponse(res, StatusCodes.NOT_FOUND, 'No Cities Found');
     }
 
-    SuccessReposnse(res, null, StatusCodes.OK, cityPriceList);
+    SuccessReposnse(res, "Data fetch successfully", StatusCodes.OK, locations);
   } catch (error) {
     ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error.message);
   }
@@ -159,7 +137,7 @@ const getLocations = async (req, res) => {
 
 
 const getProductTypes = async (req, res) => {
-  console.log("getProductTypes endpoint hit");
+
   try {
     const products = await CampaignService.getProductTypes();
     const filteredProducts = products.map(p => ({
@@ -200,16 +178,39 @@ const updateCampaign = async (req, res) => {
   }
 };
 
-const deleteCampaign = async(req,res) =>{
-try {
-  
-  const{id} = req.params;
+const deleteCampaign = async (req, res) => {
+  try {
 
-  SuccessReposnse(res,'campaign deleted',StatusCodes.OK,null);
-} catch (error) {
-  ErrorReponse(res,StatusCodes.BAD_REQUEST,error);
-}
+    const { id } = req.params;
+
+    SuccessReposnse(res, 'campaign deleted', StatusCodes.OK, null);
+  } catch (error) {
+    ErrorReponse(res, StatusCodes.BAD_REQUEST, error);
+  }
 };
 
 
-module.exports = { createCampaign, updateCampaignStatus, getCampaignById, getUserCampaignByToken, getDeviceTypes, getProductTypes, getLocations, updateCampaign ,deleteCampaign};
+const calculateBaseCost = async (req, res) => {
+  try {
+    const { adDevices, productType, targetRegions } = req.body;
+
+    const deviceTypes = JSON.parse(adDevices || "[]").map(d => d.name);
+    const locationCities = JSON.parse(targetRegions || "[]");
+    const parsedProduct = JSON.parse(productType || "{}");
+
+
+    const baseCost = await CampaignService.calculateBaseCost(deviceTypes, parsedProduct, locationCities);
+
+    return SuccessReposnse(res, "Base cost calculated successfully", StatusCodes.OK, { baseCost });
+  } catch (error) {
+    console.error("Error calculating base cost:", error.message);
+    return ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error.message);
+  }
+};
+
+module.exports = {
+  createCampaign, updateCampaignStatus, getCampaignById,
+  getUserCampaignByToken, getDeviceTypes, getProductTypes,
+  getLocations, updateCampaign, deleteCampaign,
+  calculateBaseCost
+};
