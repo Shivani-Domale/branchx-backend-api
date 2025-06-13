@@ -16,15 +16,14 @@ const createCampaign = async (data, fileBuffer, originalName, id) => {
     Logger.info("Starting campaign creation...");
 
 
-    // Parse device types and get their names
-    const parsedDevices = JSON.parse(data.adDeviceShow || "[]"); // [{ name: "Cube", price: 1500 }]
+    
+    const parsedDevices = JSON.parse(data.adDeviceShow || "[]"); 
     const DeviceTypes = parsedDevices.map(device => device.name);
 
-    // Parse product type and extract the name
-    const parsedProduct = JSON.parse(data.productType || "{}"); // { name: "Dairy Products", price: 300 }
+    const parsedProduct = JSON.parse(data.productType || "{}"); 
     const ProductType = parsedProduct.name;
 
-    // Parse locations
+
     const Locations = JSON.parse(data.targetRegions || "[]");
 
     if (!Array.isArray(DeviceTypes) || DeviceTypes.length === 0) {
@@ -50,7 +49,7 @@ const createCampaign = async (data, fileBuffer, originalName, id) => {
       throw new Error("No matching locations found for selected cities.");
     }
 
-    // Set necessary campaign fields
+   
     data.userId = id;
     data.productId = productId;
     data.status = false;
@@ -63,7 +62,7 @@ const createCampaign = async (data, fileBuffer, originalName, id) => {
       throw new Error("Campaign creation failed");
     }
 
-    // Upload creative file
+   
     if (!fileBuffer || !originalName) {
       throw new Error("Creative file is required.");
     }
@@ -78,13 +77,12 @@ const createCampaign = async (data, fileBuffer, originalName, id) => {
 
     await campaign.save({ transaction: t });
 
-    // Associate devices
     if (deviceIds.length) {
       Logger.info("Associating devices...");
       await campaign.addDevices(deviceIds, { transaction: t });
     }
 
-    // Associate locations
+   
     if (locationIds.length) {
       Logger.info("Associating locations...");
       await campaign.addLocations(locationIds, { transaction: t });
@@ -262,7 +260,7 @@ const deleteCampaign = async (id) => {
 };
 
 const calculateBaseCost = async (adDevices, productType, targetRegions) => {
-  
+
   // if (!adDevices || !productType || !targetRegions) {
   //   throw new Error("Missing required fields.");
   // }

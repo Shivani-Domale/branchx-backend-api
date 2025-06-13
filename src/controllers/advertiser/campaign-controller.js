@@ -13,8 +13,6 @@ const createCampaign = async (req, res) => {
       ErrorReponse(res, StatusCodes.UNAUTHORIZED, "Please Login...");
     }
 
-    console.log(req.body);
-
     Logger.info("------------");
     Logger.info("Received request to create campaign");
 
@@ -87,7 +85,7 @@ const getUserCampaignByToken = async (req, res) => {
     }
 
     const campaigns = await CampaignService.getAllCampaigns(user.id);
-    console.log(campaigns);
+
 
     if (!campaigns || campaigns.length === 0) {
       ErrorReponse(res, StatusCodes.NOT_FOUND, 'No campaign found');
@@ -102,7 +100,7 @@ const getUserCampaignByToken = async (req, res) => {
 };
 
 const getDeviceTypes = async (req, res) => {
-  console.log("getDeviceTypes endpoint hit");
+
   try {
     const devices = await CampaignService.getDeviceTypes();
 
@@ -122,7 +120,7 @@ const getDeviceTypes = async (req, res) => {
 
 
 const getLocations = async (req, res) => {
-  console.log("getLocations endpoint hit");
+
   try {
     const locations = await CampaignService.getLocations();
 
@@ -139,7 +137,7 @@ const getLocations = async (req, res) => {
 
 
 const getProductTypes = async (req, res) => {
-  console.log("getProductTypes endpoint hit");
+
   try {
     const products = await CampaignService.getProductTypes();
     const filteredProducts = products.map(p => ({
@@ -191,48 +189,12 @@ const deleteCampaign = async (req, res) => {
   }
 };
 
-// const calculateBaseCost = async (req, res) => {
-//   try {
-//     const { adDeviceShow, productType, targetRegions } = req.body;
-
-//     console.log(req.body);
-
-//     if (!adDeviceShow || !productType || !targetRegions) {
-//       return ErrorReponse(res, StatusCodes.BAD_REQUEST, "Missing required fields.");
-//     }
-
-//     const deviceTypes = JSON.parse(adDeviceShow || "[]").map(d => d.name);
-//     const locationCities = JSON.parse(targetRegions || "[]");
-//     const parsedProduct = JSON.parse(productType || "{}");
-
-//     if (!deviceTypes.length || !locationCities.length || !parsedProduct.name) {
-//       return ErrorReponse(res, StatusCodes.BAD_REQUEST, "Invalid input data.");
-//     }
-
-//     const devices = await deviceRepository.findByDeviceTypes(deviceTypes);
-//     const locations = await locationRepository.findByCities(locationCities);
-//     const product = await productRepository.findIdByProductType(parsedProduct.name);
-
-//     console.log(devices + " " + locations + " " + product);
-
-//     if (!devices.length || !locations.length || !product) {
-//       return ErrorReponse(res, StatusCodes.NOT_FOUND, "Devices, locations, or product not found.");
-//     }
-
-//     const baseCost = GenerateBaseCostForCampaigns(devices, locations, product);
-//     return SuccessReposnse(res, "Base cost calculated successfully", StatusCodes.OK, { baseCost });
-
-//   } catch (error) {
-//     console.error("Error calculating base cost:", error);
-//     return ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, "Error calculating base cost.");
-//   }
-// };
 
 const calculateBaseCost = async (req, res) => {
   try {
     const { adDevices, productType, targetRegions } = req.body;
-    console.log(req.body);
-    const deviceTypes = JSON.parse(adDeviceShow || "[]").map(d => d.name);
+
+    const deviceTypes = JSON.parse(adDevices || "[]").map(d => d.name);
     const locationCities = JSON.parse(targetRegions || "[]");
     const parsedProduct = JSON.parse(productType || "{}");
 
