@@ -5,6 +5,7 @@ const generateBaseCostForCampaigns = async ({ devices, product, locations }) => 
         const productRate = product.price;
         const deviceCount = locations.reduce((sum, l) => sum + l.deviceCount, 0);
 
+
         const baseCost = (deviceRate + locationRate + productRate) * deviceCount;
         return baseCost;
 
