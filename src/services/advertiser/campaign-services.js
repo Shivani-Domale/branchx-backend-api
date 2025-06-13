@@ -262,9 +262,10 @@ const deleteCampaign = async (id) => {
 };
 
 const calculateBaseCost = async (adDevices, productType, targetRegions) => {
-  if (!adDevices || !productType || !targetRegions) {
-    throw new Error("Missing required fields.");
-  }
+  
+  // if (!adDevices || !productType || !targetRegions) {
+  //   throw new Error("Missing required fields.");
+  // }
 
   if (!adDevices.length || !targetRegions.length || !productType) {
     throw new Error("Invalid input data.");
