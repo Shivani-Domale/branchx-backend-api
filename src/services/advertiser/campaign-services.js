@@ -1,4 +1,4 @@
-const { Op } = require("sequelize");
+
 const { CampaignRepository, ProductRepository, DeviceRepository, LocationRepository } = require("../../repositories");
 const { UploadFile, GenerateBaseCostForCampaigns } = require("../../utils");
 const { sequelize } = require("../../models");
@@ -173,17 +173,31 @@ const getCampaignById = async (campaignId) => {
       throw new Error('Campaign ID is required');
     }
 
-    const campaign = await campaignRepository.findById(campaignId);
+    const campaign = await campaignRepository.findByIdWithLocationAndDevice(campaignId);
 
     if (!campaign) {
       throw new Error('Campaign not found');
     }
 
-    return campaign;
+    // Convert to plain object
+    const campaignData = campaign.toJSON();
+
+    // Keep only city and deviceType in respective arrays
+    campaignData.Locations = campaignData.Locations.map(location => ({
+      city: location.city
+    }));
+
+    campaignData.Devices = campaignData.Devices.map(device => ({
+      deviceType: device.deviceType
+    }));
+
+    return campaignData;
+
   } catch (error) {
     throw new Error(`Error fetching campaign by ID: ${error.message}`);
   }
 };
+
 
 const getDeviceTypes = async () => {
   try {
