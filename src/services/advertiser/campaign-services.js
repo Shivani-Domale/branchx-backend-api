@@ -261,10 +261,6 @@ const deleteCampaign = async (id) => {
 
 const calculateBaseCost = async (adDevices, productType, targetRegions) => {
 
-  if (!adDevices.length || !targetRegions.length || !productType) {
-    throw new Error("Invalid input data.");
-  }
-
   const devices = await deviceRepository.findByDeviceTypes(adDevices);
   const locations = await locationRepository.findByCities(targetRegions);
   const product = await productRepository.findProductById(productType);
