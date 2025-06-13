@@ -195,6 +195,8 @@ const calculateBaseCost = async (req, res) => {
   try {
     const { adDeviceShow, productType, targetRegions } = req.body;
 
+    console.log(req.body);
+    
     if (!adDeviceShow || !productType || !targetRegions) {
       return ErrorReponse(res, StatusCodes.BAD_REQUEST, "Missing required fields.");
     }
