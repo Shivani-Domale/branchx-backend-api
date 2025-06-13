@@ -191,29 +191,66 @@ const deleteCampaign = async (req, res) => {
   }
 };
 
+// const calculateBaseCost = async (req, res) => {
+//   try {
+//     const { adDeviceShow, productType, targetRegions } = req.body;
+
+//     console.log(req.body);
+    
+//     if (!adDeviceShow || !productType || !targetRegions) {
+//       return ErrorReponse(res, StatusCodes.BAD_REQUEST, "Missing required fields.");
+//     }
+
+//     const deviceTypes = JSON.parse(adDeviceShow || "[]").map(d => d.name);
+//     const locationCities = JSON.parse(targetRegions || "[]");
+//     const parsedProduct = JSON.parse(productType || "{}");
+
+//     if (!deviceTypes.length || !locationCities.length || !parsedProduct.name) {
+//       return ErrorReponse(res, StatusCodes.BAD_REQUEST, "Invalid input data.");
+//     }
+
+//     const devices = await deviceRepository.findByDeviceTypes(deviceTypes);
+//     const locations = await locationRepository.findByCities(locationCities);
+//     const product = await productRepository.findIdByProductType(parsedProduct.name);
+
+//     console.log(devices + " " + locations + " " + product);
+
+//     if (!devices.length || !locations.length || !product) {
+//       return ErrorReponse(res, StatusCodes.NOT_FOUND, "Devices, locations, or product not found.");
+//     }
+
+//     const baseCost = GenerateBaseCostForCampaigns(devices, locations, product);
+//     return SuccessReposnse(res, "Base cost calculated successfully", StatusCodes.OK, { baseCost });
+
+//   } catch (error) {
+//     console.error("Error calculating base cost:", error);
+//     return ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, "Error calculating base cost.");
+//   }
+// };
+
 const calculateBaseCost = async (req, res) => {
   try {
-    const { adDeviceShow, productType, targetRegions } = req.body;
+    const { adDevices, productType, targetRegions } = req.body;
 
     console.log(req.body);
-    
-    if (!adDeviceShow || !productType || !targetRegions) {
+
+    if (!adDevices || !productType || !targetRegions) {
       return ErrorReponse(res, StatusCodes.BAD_REQUEST, "Missing required fields.");
     }
 
-    const deviceTypes = JSON.parse(adDeviceShow || "[]").map(d => d.name);
-    const locationCities = JSON.parse(targetRegions || "[]");
-    const parsedProduct = JSON.parse(productType || "{}");
+    const deviceTypes = adDevices; // already an array like ['TV']
+    const locationCities = targetRegions; // already an array like ['Mumbai']
+    const parsedProductName = productType; // already a string like 'Baked Goods'
 
-    if (!deviceTypes.length || !locationCities.length || !parsedProduct.name) {
+    if (!deviceTypes.length || !locationCities.length || !parsedProductName) {
       return ErrorReponse(res, StatusCodes.BAD_REQUEST, "Invalid input data.");
     }
 
     const devices = await deviceRepository.findByDeviceTypes(deviceTypes);
     const locations = await locationRepository.findByCities(locationCities);
-    const product = await productRepository.findIdByProductType(parsedProduct.name);
+    const product = await productRepository.findIdByProductType(parsedProductName);
 
-    console.log(devices + " " + locations + " " + product);
+    console.log(devices, locations, product);
 
     if (!devices.length || !locations.length || !product) {
       return ErrorReponse(res, StatusCodes.NOT_FOUND, "Devices, locations, or product not found.");
@@ -227,6 +264,7 @@ const calculateBaseCost = async (req, res) => {
     return ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, "Error calculating base cost.");
   }
 };
+
 
 module.exports = {
   createCampaign, updateCampaignStatus, getCampaignById,
