@@ -26,6 +26,15 @@ const createCampaign = async (data, fileBuffer, originalName, id) => {
 
     const Locations = JSON.parse(data.targetRegions || "[]");
 
+    console.log(parsedDevices);
+    console.log(DeviceTypes);
+    console.log(ProductType);
+    console.log(Locations);
+    
+    
+    
+    
+
     if (!Array.isArray(DeviceTypes) || DeviceTypes.length === 0) {
       throw new Error("Device types must be a non-empty array.");
     }
