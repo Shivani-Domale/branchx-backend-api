@@ -25,21 +25,21 @@ const createCampaign = async (data, fileBuffer, originalName, id) => {
     const ProductType = parsedProduct.name;
 
 
-    const parsedLocations = JSON.parse(data.targetRegions || "[]");
-    const TargetRegions =   parsedLocations.map(location=>location.name);  
-    
+    const Locations = JSON.parse(data.targetRegions || "[]");
+
+
     
 
     if (!Array.isArray(DeviceTypes) || DeviceTypes.length === 0) {
       throw new Error("Device types must be a non-empty array.");
     }
 
-    if (!Array.isArray(TargetRegions) || TargetRegions.length === 0) {
+    if (!Array.isArray(Locations) || Locations.length === 0) {
       throw new Error("Cities (locations) must be a non-empty array.");
     }
 
     const deviceRecords = await deviceRepository.findByDeviceTypes(DeviceTypes);
-    const locationRecords = await locationRepository.findByCities(TargetRegions);
+    const locationRecords = await locationRepository.findByCities(Locations);
     const productId = await productRepository.findIdByProductType(ProductType);
 
     const deviceIds = deviceRecords.map(device => device.id);
