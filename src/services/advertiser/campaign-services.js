@@ -1,6 +1,6 @@
 const { Op } = require("sequelize");
 const { CampaignRepository, ProductRepository, DeviceRepository, LocationRepository } = require("../../repositories");
-const { UploadFile } = require("../../utils");
+const { UploadFile, GenerateBaseCostForCampaigns } = require("../../utils");
 const { sequelize } = require("../../models");
 const { Logger } = require("../../config");
 
