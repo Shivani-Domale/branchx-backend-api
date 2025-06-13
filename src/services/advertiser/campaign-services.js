@@ -15,23 +15,16 @@ const createCampaign = async (data, fileBuffer, originalName, id) => {
   try {
     Logger.info("Starting campaign creation...");
 
-
     
-    const parsedDevices = JSON.parse(data.adDeviceShow || "[]"); 
+    const parsedDevices = JSON.parse(data.adDevices || "[]"); 
     const DeviceTypes = parsedDevices.map(device => device.name);
 
     const parsedProduct = JSON.parse(data.productType || "{}"); 
     const ProductType = parsedProduct.name;
 
 
-    const Locations = JSON.parse(data.targetRegions || "[]");
-
-    console.log(parsedDevices);
-    console.log(DeviceTypes);
-    console.log(ProductType);
-    console.log(Locations);
-    
-    
+    const parsedLocations = JSON.parse(data.targetRegions || "[]");
+    const TargetRegions =   parsedLocations.map(location=>location.name);  
     
     
 
@@ -39,12 +32,12 @@ const createCampaign = async (data, fileBuffer, originalName, id) => {
       throw new Error("Device types must be a non-empty array.");
     }
 
-    if (!Array.isArray(Locations) || Locations.length === 0) {
+    if (!Array.isArray(TargetRegions) || TargetRegions.length === 0) {
       throw new Error("Cities (locations) must be a non-empty array.");
     }
 
     const deviceRecords = await deviceRepository.findByDeviceTypes(DeviceTypes);
-    const locationRecords = await locationRepository.findByCities(Locations);
+    const locationRecords = await locationRepository.findByCities(TargetRegions);
     const productId = await productRepository.findIdByProductType(ProductType);
 
     const deviceIds = deviceRecords.map(device => device.id);
