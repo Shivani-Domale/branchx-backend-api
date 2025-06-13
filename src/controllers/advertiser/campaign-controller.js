@@ -125,9 +125,9 @@ const getLocations = async (req, res) => {
   console.log("getLocations endpoint hit");
   try {
     const locations = await CampaignService.getLocations();
-   
 
-    if (!locations || locations.length===0 ) {
+
+    if (!locations || locations.length === 0) {
       ErrorReponse(res, StatusCodes.NOT_FOUND, 'No Cities Found');
     }
 
@@ -196,7 +196,7 @@ const deleteCampaign = async (req, res) => {
 //     const { adDeviceShow, productType, targetRegions } = req.body;
 
 //     console.log(req.body);
-    
+
 //     if (!adDeviceShow || !productType || !targetRegions) {
 //       return ErrorReponse(res, StatusCodes.BAD_REQUEST, "Missing required fields.");
 //     }
@@ -232,13 +232,12 @@ const calculateBaseCost = async (req, res) => {
   try {
     const { adDevices, productType, targetRegions } = req.body;
     console.log(req.body);
-    console.log(adDevices);
-    console.log(productType);
-    console.log(targetRegions);
-    
-    
-    
-    const baseCost = await CampaignService.calculateBaseCost(adDevices, productType, targetRegions);
+    const deviceTypes = JSON.parse(adDeviceShow || "[]").map(d => d.name);
+    const locationCities = JSON.parse(targetRegions || "[]");
+    const parsedProduct = JSON.parse(productType || "{}");
+
+
+    const baseCost = await CampaignService.calculateBaseCost(deviceTypes, parsedProduct, locationCities);
 
     return SuccessReposnse(res, "Base cost calculated successfully", StatusCodes.OK, { baseCost });
   } catch (error) {
