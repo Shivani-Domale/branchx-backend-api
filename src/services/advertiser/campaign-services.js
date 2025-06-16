@@ -1,4 +1,4 @@
-const { Op } = require("sequelize");
+
 const { CampaignRepository, ProductRepository, DeviceRepository, LocationRepository } = require("../../repositories");
 const { UploadFile, GenerateBaseCostForCampaigns, DeleteFileFromAWS } = require("../../utils");
 const { sequelize } = require("../../models");
@@ -14,10 +14,9 @@ const createCampaign = async (data, fileBuffer, originalName, id) => {
 
   try {
     Logger.info("Starting campaign creation...");
-
-
     
-    const parsedDevices = JSON.parse(data.adDeviceShow || "[]"); 
+    
+    const parsedDevices = JSON.parse(data.adDevices || "[]"); 
     const DeviceTypes = parsedDevices.map(device => device.name);
 
     const parsedProduct = JSON.parse(data.productType || "{}"); 
@@ -25,6 +24,7 @@ const createCampaign = async (data, fileBuffer, originalName, id) => {
 
 
     const Locations = JSON.parse(data.targetRegions || "[]");
+
 
     if (!Array.isArray(DeviceTypes) || DeviceTypes.length === 0) {
       throw new Error("Device types must be a non-empty array.");
@@ -173,17 +173,31 @@ const getCampaignById = async (campaignId) => {
       throw new Error('Campaign ID is required');
     }
 
-    const campaign = await campaignRepository.findById(campaignId);
+    const campaign = await campaignRepository.findByIdWithLocationAndDevice(campaignId);
 
     if (!campaign) {
       throw new Error('Campaign not found');
     }
 
-    return campaign;
+    // Convert to plain object
+    const campaignData = campaign.toJSON();
+
+    // Keep only city and deviceType in respective arrays
+    campaignData.Locations = campaignData.Locations.map(location => ({
+      city: location.city
+    }));
+
+    campaignData.Devices = campaignData.Devices.map(device => ({
+      deviceType: device.deviceType
+    }));
+
+    return campaignData;
+
   } catch (error) {
     throw new Error(`Error fetching campaign by ID: ${error.message}`);
   }
 };
+
 
 const getDeviceTypes = async () => {
   try {
@@ -299,25 +313,19 @@ module.exports = {
 
 const calculateBaseCost = async (adDevices, productType, targetRegions) => {
 
-  // if (!adDevices || !productType || !targetRegions) {
-  //   throw new Error("Missing required fields.");
-  // }
-
-  if (!adDevices.length || !targetRegions.length || !productType) {
-    throw new Error("Invalid input data.");
-  }
-
   const devices = await deviceRepository.findByDeviceTypes(adDevices);
   const locations = await locationRepository.findByCities(targetRegions);
-  const product = await productRepository.findIdByProductType(productType);
-
-  if (!devices.length || !locations.length || !product) {
+  const product = await productRepository.findProductById(productType);
+  
+  if (!devices || !locations || !product) {
     throw new Error("Devices, locations, or product not found.");
   }
 
-  const baseCost = GenerateBaseCostForCampaigns(devices, locations, product);
+
+  const baseCost = await GenerateBaseCostForCampaigns({devices, locations, product});
   return baseCost;
 };
+
 
 module.exports = {
   createCampaign, getAllCampaigns, updateCampaignStatus,

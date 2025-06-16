@@ -11,7 +11,7 @@ class DeviceRepository extends crudRepository {
         return await this.model.findAll({
             where: {
                 deviceType: {
-                    [Op.in]: deviceTypes.map(type => type.trim())
+                    [Op.in]: deviceTypes.map(p => p.trim())
                 }
             }
         });
