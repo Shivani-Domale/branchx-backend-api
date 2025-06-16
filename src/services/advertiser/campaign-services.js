@@ -1,6 +1,6 @@
 const { Op } = require("sequelize");
 const { CampaignRepository, ProductRepository, DeviceRepository, LocationRepository } = require("../../repositories");
-const { UploadFile, GenerateBaseCostForCampaigns } = require("../../utils");
+const { UploadFile, GenerateBaseCostForCampaigns, DeleteFileFromAWS } = require("../../utils");
 const { sequelize } = require("../../models");
 const { Logger } = require("../../config");
 
@@ -251,12 +251,50 @@ const updateCampaign = async (id, data, fileBuffer, originalName) => {
 };
 
 
+// const deleteCampaign = async (id) => {
+//   const campaign = await campaignRepository.findById(id);
+//   if (!campaign) {
+//     throw new Error('Unable to delete campaign');
+//   }
+//   return campaign;
+// };
+
+
+
+
 const deleteCampaign = async (id) => {
   const campaign = await campaignRepository.findById(id);
+
   if (!campaign) {
     throw new Error('Unable to delete campaign');
   }
-  return campaign;
+
+  let imageDeleted = false;
+
+  if (campaign.creativeFile) {
+    try {
+      await DeleteFileFromAWS(campaign.creativeFile);
+      imageDeleted = true;
+    } catch (error) {
+      Logger.error(`Failed to delete file from AWS: ${error.message}`);
+      // Do not throw — proceed with disabling the campaign
+    }
+  }
+
+  campaign.status = false; // Soft delete
+  await campaign.save();
+
+  return {
+    id: campaign.id,
+    campaignName: campaign.campaignName,
+    imageDeleted
+  };
+};
+
+
+module.exports = {
+  deleteCampaign,
+  // other service functions
 };
 
 const calculateBaseCost = async (adDevices, productType, targetRegions) => {

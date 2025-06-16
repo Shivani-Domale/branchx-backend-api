@@ -178,14 +178,29 @@ const updateCampaign = async (req, res) => {
   }
 };
 
+// const deleteCampaign = async (req, res) => {
+//   try {
+
+//     const { id } = req.params;
+
+//     SuccessReposnse(res, 'campaign deleted', StatusCodes.OK, null);
+//   } catch (error) {
+//     ErrorReponse(res, StatusCodes.BAD_REQUEST, error);
+//   }
+// };
+
+
 const deleteCampaign = async (req, res) => {
   try {
-
     const { id } = req.params;
+    const result = await CampaignService.deleteCampaign(id);
 
-    SuccessReposnse(res, 'campaign deleted', StatusCodes.OK, null);
+    SuccessReposnse(res, 'Campaign deleted', StatusCodes.OK, result);
   } catch (error) {
-    ErrorReponse(res, StatusCodes.BAD_REQUEST, error);
+    Logger.error('Error deleting campaign:', error);
+    if (!res.headersSent) {
+      ErrorReponse(res, StatusCodes.BAD_REQUEST, error.message);
+    }
   }
 };
 
