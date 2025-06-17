@@ -35,6 +35,22 @@ const uploadFileToS3 = async (fileBuffer, originalName, adId) => {
 
 };
 
-module.exports = 
-    uploadFileToS3
-;
+
+const DeleteFileFromAWS = async (fileUrl) => {
+  const bucketName = process.env.AWS_S3_BUCKET_NAME;
+
+  const url = new URL(fileUrl);
+  const key = decodeURIComponent(url.pathname.slice(1)); // remove leading '/'
+
+  const params = {
+    Bucket: bucketName,
+    Key: key
+  };
+
+  await s3.deleteObject(params).promise();
+};
+
+module.exports = {
+    uploadFileToS3,
+    DeleteFileFromAWS
+};
