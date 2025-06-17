@@ -52,8 +52,10 @@ const updateCampaignStatus = async (req, res) => {
     if (!campaign) {
       ErrorReponse(res, StatusCodes.NOT_FOUND, 'Unable To Update Campaign Status');
     }
+  
+    const message = `${campaign.campaignName} Ad ${status === true ? 'Activated' : 'Deactivated'} successfully`;
 
-    SuccessReposnse(res, `${campaign.campaignName} Ad ${status === true ? 'Activated' : 'Deactivated'} successfully`, StatusCodes.OK, null);
+    return SuccessReposnse(res, message, StatusCodes.OK, null);
   } catch (error) {
     Logger.error("Error updating campaign status:", error);
     ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error);

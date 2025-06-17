@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "dev": "nodemon src/index.js",
     "migrate": "npx sequelize-cli db:migrate --migrations-path src/migrations --models-path src/models --config src/config/config.json",
     "seed": "npx sequelize-cli db:seed:all --seeders-path src/seeders --models-path src/models --config src/config/config.json"
@@ -42,5 +42,10 @@
   "bugs": {
     "url": "https://github.com/Shivani-Domale/branchx-backend-api/issues"
   },
-  "homepage": "https://github.com/Shivani-Domale/branchx-backend-api#readme"
+  "homepage": "https://github.com/Shivani-Domale/branchx-backend-api#readme",
+  "devDependencies": {
+    "jest": "^30.0.0",
+    "sequelize-mock": "^0.10.2",
+    "supertest": "^7.1.1"
+  }
 }
