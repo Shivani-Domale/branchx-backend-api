@@ -1,6 +1,10 @@
 
 const { CampaignRepository, ProductRepository, DeviceRepository, LocationRepository } = require("../../repositories");
+<<<<<<< HEAD
 const { UploadFile, GenerateBaseCostForCampaigns, DeleteFileFromAWS } = require("../../utils");
+=======
+const { UploadFile, GenerateBaseCostForCampaigns } = require("../../utils");
+>>>>>>> 52270e06e3b65583cf828d6f070162a9a4407628
 const { sequelize } = require("../../models");
 const { Logger } = require("../../config");
 
@@ -253,8 +257,6 @@ const updateCampaign = async (id, data, fileBuffer, originalName) => {
 
     await campaign.save({ transaction: t });
 
-    // Optionally update associations here (locations/devices) if part of update
-
     await t.commit();
     return campaign;
   } catch (error) {
@@ -263,18 +265,6 @@ const updateCampaign = async (id, data, fileBuffer, originalName) => {
     throw new Error(`Error updating campaign: ${error.message}`);
   }
 };
-
-
-// const deleteCampaign = async (id) => {
-//   const campaign = await campaignRepository.findById(id);
-//   if (!campaign) {
-//     throw new Error('Unable to delete campaign');
-//   }
-//   return campaign;
-// };
-
-
-
 
 const deleteCampaign = async (id) => {
   const campaign = await campaignRepository.findById(id);
@@ -305,12 +295,6 @@ const deleteCampaign = async (id) => {
   };
 };
 
-
-module.exports = {
-  deleteCampaign,
-  // other service functions
-};
-
 const calculateBaseCost = async (adDevices, productType, targetRegions) => {
 
   const devices = await deviceRepository.findByDeviceTypes(adDevices);
@@ -320,7 +304,6 @@ const calculateBaseCost = async (adDevices, productType, targetRegions) => {
   if (!devices || !locations || !product) {
     throw new Error("Devices, locations, or product not found.");
   }
-
 
   const baseCost = await GenerateBaseCostForCampaigns({devices, locations, product});
   return baseCost;

@@ -180,18 +180,6 @@ const updateCampaign = async (req, res) => {
   }
 };
 
-// const deleteCampaign = async (req, res) => {
-//   try {
-
-//     const { id } = req.params;
-
-//     SuccessReposnse(res, 'campaign deleted', StatusCodes.OK, null);
-//   } catch (error) {
-//     ErrorReponse(res, StatusCodes.BAD_REQUEST, error);
-//   }
-// };
-
-
 const deleteCampaign = async (req, res) => {
   try {
     const { id } = req.params;
