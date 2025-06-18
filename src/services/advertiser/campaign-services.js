@@ -1,10 +1,8 @@
 
 const { CampaignRepository, ProductRepository, DeviceRepository, LocationRepository } = require("../../repositories");
-<<<<<<< HEAD
-const { UploadFile, GenerateBaseCostForCampaigns, DeleteFileFromAWS } = require("../../utils");
-=======
-const { UploadFile, GenerateBaseCostForCampaigns } = require("../../utils");
->>>>>>> 52270e06e3b65583cf828d6f070162a9a4407628
+
+const { GenerateBaseCostForCampaigns, UploadFile } = require("../../utils");
+
 const { sequelize } = require("../../models");
 const { Logger } = require("../../config");
 
@@ -18,12 +16,12 @@ const createCampaign = async (data, fileBuffer, originalName, id) => {
 
   try {
     Logger.info("Starting campaign creation...");
-    
-    
-    const parsedDevices = JSON.parse(data.adDevices || "[]"); 
+
+
+    const parsedDevices = JSON.parse(data.adDevices || "[]");
     const DeviceTypes = parsedDevices.map(device => device.name);
 
-    const parsedProduct = JSON.parse(data.productType || "{}"); 
+    const parsedProduct = JSON.parse(data.productType || "{}");
     const ProductType = parsedProduct.name;
 
 
@@ -53,20 +51,17 @@ const createCampaign = async (data, fileBuffer, originalName, id) => {
       throw new Error("No matching locations found for selected cities.");
     }
 
-   
+
     data.userId = id;
     data.productId = productId;
-    data.status = false;
-    data.isApproved = "PENDING";
     data.isPayment = false;
-    data.remark = null;
     const campaign = await campaignRepository.create(data, { transaction: t });
 
     if (!campaign) {
       throw new Error("Campaign creation failed");
     }
 
-   
+
     if (!fileBuffer || !originalName) {
       throw new Error("Creative file is required.");
     }
@@ -86,7 +81,7 @@ const createCampaign = async (data, fileBuffer, originalName, id) => {
       await campaign.addDevices(deviceIds, { transaction: t });
     }
 
-   
+
     if (locationIds.length) {
       Logger.info("Associating locations...");
       await campaign.addLocations(locationIds, { transaction: t });
@@ -300,12 +295,12 @@ const calculateBaseCost = async (adDevices, productType, targetRegions) => {
   const devices = await deviceRepository.findByDeviceTypes(adDevices);
   const locations = await locationRepository.findByCities(targetRegions);
   const product = await productRepository.findProductById(productType);
-  
+
   if (!devices || !locations || !product) {
     throw new Error("Devices, locations, or product not found.");
   }
 
-  const baseCost = await GenerateBaseCostForCampaigns({devices, locations, product});
+  const baseCost = await GenerateBaseCostForCampaigns({ devices, locations, product });
   return baseCost;
 };
 

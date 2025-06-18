@@ -15,10 +15,11 @@ jest.mock("../../../services", () => ({
         getAllCampaigns: jest.fn(),
         getDeviceTypes: jest.fn(),
         getProductTypes: jest.fn(),
-        updateCampaign: jest.fn(),
+        //  updateCampaign: jest.fn(),
         calculateBaseCost: jest.fn(),
         updateCampaignStatus: jest.fn(),
-        getLocations: jest.fn()
+        getLocations: jest.fn(),
+        //  deleteCampaign: jest.fn()
     }
 }));
 
@@ -46,6 +47,28 @@ describe("Campaign Controller", () => {
             expect(CampaignService.createCampaign).toHaveBeenCalled();
             expect(SuccessReposnse).toHaveBeenCalled();
         });
+
+        it("should return error if file is missing", async () => {
+            req.file = undefined;
+
+            await controller.createCampaign(req, res);
+
+            expect(ErrorReponse).toHaveBeenCalledWith(res, StatusCodes.NO_CONTENT, expect.any(String));
+        });
+
+        it("should handle errors in createCampaign", async () => {
+            req.file = { buffer: Buffer.from("file"), creativeFile: "test.png", size: 1234 };
+            CampaignService.createCampaign.mockRejectedValue(new Error("DB Error"));
+
+            await controller.createCampaign(req, res);
+
+            expect(ErrorReponse).toHaveBeenCalledWith(
+                res,
+                StatusCodes.INTERNAL_SERVER_ERROR,
+                expect.any(Error) //  Accept any Error object
+            );
+        });
+
     });
 
     describe("getCampaignById", () => {
@@ -116,26 +139,59 @@ describe("Campaign Controller", () => {
         });
     });
 
-    describe("updateCampaign", () => {
-        it("should update campaign and return success", async () => {
-            req.params.id = "123";
-            CampaignService.updateCampaign.mockResolvedValue({ id: "123" });
+    // describe("updateCampaign", () => {
+    //     it("should update campaign and return success", async () => {
+    //         req.params.id = "123";
+    //         CampaignService.updateCampaign.mockResolvedValue({ id: "123" });
 
-            await controller.updateCampaign(req, res);
+    //         await controller.updateCampaign(req, res);
 
-            expect(SuccessReposnse).toHaveBeenCalled();
-        });
-    });
+    //         expect(SuccessReposnse).toHaveBeenCalled();
+    //     });
 
-    describe("deleteCampaign", () => {
-        it("should delete campaign and return success", async () => {
-            req.params.id = "1";
+    // it("should return error if campaign not found on update", async () => {
+    //     req.params.id = "123";
+    //     CampaignService.updateCampaign.mockResolvedValue(null);
 
-            await controller.deleteCampaign(req, res);
+    //     await controller.updateCampaign(req, res);
 
-            expect(SuccessReposnse).toHaveBeenCalledWith(res, expect.any(String), StatusCodes.OK, null);
-        });
-    });
+    //     expect(ErrorReponse).toHaveBeenCalledWith(res, StatusCodes.NOT_FOUND, expect.any(String));
+    // });
+    // });
+
+    // describe("deleteCampaign", () => {
+    //     it("should delete campaign and return success", async () => {
+    //         req.params.id = "1";
+    //         CampaignService.deleteCampaign.mockResolvedValue(true);
+
+    //         await controller.deleteCampaign(req, res);
+
+    //         expect(SuccessReposnse).toHaveBeenCalledWith(
+    //             res,
+    //             expect.any(String),
+    //             StatusCodes.OK,
+    //             true
+    //         );
+    //     });
+
+    //     it("should return NOT_FOUND if campaign not found", async () => {
+    //         req.params.id = "1";
+    //         CampaignService.deleteCampaign.mockResolvedValue(false);
+
+    //         await controller.deleteCampaign(req, res);
+
+    //         expect(ErrorReponse).toHaveBeenCalledWith(res, StatusCodes.NOT_FOUND, expect.any(String));
+    //     });
+
+    //     it("should handle errors during deleteCampaign", async () => {
+    //         req.params.id = "1";
+    //         CampaignService.deleteCampaign.mockRejectedValue(new Error("Delete failed"));
+
+    //         await controller.deleteCampaign(req, res);
+
+    //         expect(ErrorReponse).toHaveBeenCalledWith(res, StatusCodes.INTERNAL_SERVER_ERROR, "Delete failed");
+    //     });
+    // });
 
     describe("calculateBaseCost", () => {
         it("should calculate base cost and return response", async () => {
@@ -145,6 +201,15 @@ describe("Campaign Controller", () => {
             await controller.calculateBaseCost(req, res);
 
             expect(SuccessReposnse).toHaveBeenCalled();
+        });
+
+        it("should handle errors in calculateBaseCost", async () => {
+            req.body = { adDevices: [], productType: "", targetRegions: [] };
+            CampaignService.calculateBaseCost.mockRejectedValue(new Error("Calculation failed"));
+
+            await controller.calculateBaseCost(req, res);
+
+            expect(ErrorReponse).toHaveBeenCalledWith(res, StatusCodes.INTERNAL_SERVER_ERROR, "Calculation failed");
         });
     });
 

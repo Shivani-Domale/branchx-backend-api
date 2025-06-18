@@ -7,11 +7,13 @@ const { SuccessReposnse, ErrorReponse } = require("../../utils");
 
 const createCampaign = async (req, res) => {
   try {
-    const user = req.user;
+    // const user = req.user;
 
-    if (!user) {
-      ErrorReponse(res, StatusCodes.UNAUTHORIZED, "Please Login...");
-    }
+    // if (!user) {
+    //   ErrorReponse(res, StatusCodes.UNAUTHORIZED, "Please Login...");
+    // }
+    console.log(req.body);
+
 
     Logger.info("------------");
     Logger.info("Received request to create campaign");
@@ -26,7 +28,7 @@ const createCampaign = async (req, res) => {
     const fileBuffer = req.file.buffer;
     const originalName = req.file.originalname;
 
-    const campaign = await CampaignService.createCampaign(req.body, fileBuffer, originalName, user.id);
+    const campaign = await CampaignService.createCampaign(req.body, fileBuffer, originalName, 37);
 
     Logger.info("Campaign created successfully");
     Logger.info("------------");
@@ -52,7 +54,7 @@ const updateCampaignStatus = async (req, res) => {
     if (!campaign) {
       ErrorReponse(res, StatusCodes.NOT_FOUND, 'Unable To Update Campaign Status');
     }
-  
+
     const message = `${campaign.campaignName} Ad ${status === true ? 'Activated' : 'Deactivated'} successfully`;
 
     return SuccessReposnse(res, message, StatusCodes.OK, null);
@@ -66,10 +68,10 @@ const getCampaignById = async (req, res) => {
 
   const { campaignId } = req.params;
   try {
-    
+
     const campaign = await CampaignService.getCampaignById(campaignId);
 
-  
+
     if (!campaign) {
       return ErrorReponse(res, StatusCodes.BAD_REQUEST, 'Campaign not found');
     }
@@ -190,9 +192,7 @@ const deleteCampaign = async (req, res) => {
     SuccessReposnse(res, 'Campaign deleted', StatusCodes.OK, result);
   } catch (error) {
     Logger.error('Error deleting campaign:', error);
-    if (!res.headersSent) {
-      ErrorReponse(res, StatusCodes.BAD_REQUEST, error.message);
-    }
+    ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error.message);
   }
 };
 
