@@ -1,5 +1,5 @@
 
-const UserRepository = require('../../repositories/user-repository');
+const UserRepository = require('../../repositories/users/user-repository');
 const { SendingEmailToUser } = require('../../utils');
 
 
