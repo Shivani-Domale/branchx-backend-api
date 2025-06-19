@@ -7,14 +7,14 @@ const { SuccessReposnse, ErrorReponse } = require("../../utils");
 
 const createCampaign = async (req, res) => {
   try {
-    const user = req.user;
-
-    if (!user) {
-      ErrorReponse(res, StatusCodes.UNAUTHORIZED, "Please Login...");
-    }
+    // const user = req.user;
+    // console.log("User from request:", user);
+    // if (!user) {
+    //   ErrorReponse(res, StatusCodes.UNAUTHORIZED, "Please Login...");
+    // }
     console.log(req.body);
 
-
+ 
     Logger.info("------------");
     Logger.info("Received request to create campaign");
 
@@ -28,7 +28,7 @@ const createCampaign = async (req, res) => {
     const fileBuffer = req.file.buffer;
     const originalName = req.file.originalname;
 
-    const campaign = await CampaignService.createCampaign(req.body, fileBuffer, originalName, user.id);
+    const campaign = await CampaignService.createCampaign(req.body, fileBuffer, originalName, 41);
 
     Logger.info("Campaign created successfully");
     Logger.info("------------");
