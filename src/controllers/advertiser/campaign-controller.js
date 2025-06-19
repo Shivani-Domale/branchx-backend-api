@@ -20,7 +20,7 @@ const createCampaign = async (req, res) => {
 
     if (!req.file) {
       Logger.error(" video/images file is required");
-      ErrorReponse(res, StatusCodes.NO_CONTENT, "video/image required !");
+     return ErrorReponse(res, StatusCodes.NO_CONTENT, "video/image required !");
     }
 
     Logger.info(`Uploaded file name: ${req.file.originalname}, size: ${req.file.size} bytes`);
@@ -38,7 +38,7 @@ const createCampaign = async (req, res) => {
   } catch (error) {
     Logger.error("Error creating campaign:", error);
     Logger.error("------------");
-    ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error);
+    return ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error);
   }
 };
 
