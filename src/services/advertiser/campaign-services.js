@@ -262,34 +262,47 @@ const updateCampaign = async (id, data, fileBuffer, originalName) => {
   }
 };
 
+// const deleteCampaign = async (id) => {
+//   const campaign = await campaignRepository.findById(id);
+
+//   if (!campaign) {
+//     throw new Error('Unable to delete campaign');
+//   }
+
+//   let imageDeleted = false;
+
+//   if (campaign.creativeFile) {
+//     try {
+//       await DeleteFileFromAWS(campaign.creativeFile);
+//       imageDeleted = true;
+//     } catch (error) {
+//       Logger.error(`Failed to delete file from AWS: ${error.message}`);
+//       // Do not throw — proceed with disabling the campaign
+//     }
+//   }
+
+//   campaign.status = false; // Soft delete
+//   await campaign.save();
+
+//   return {
+//     id: campaign.id,
+//     campaignName: campaign.campaignName,
+//     imageDeleted
+//   };
+// };
+
 const deleteCampaign = async (id) => {
-  const campaign = await campaignRepository.findById(id);
+  const transaction = await sequelize.transaction();
 
-  if (!campaign) {
-    throw new Error('Unable to delete campaign');
+  try {
+    const result = await campaignRepository.deleteById(id, transaction);
+    await transaction.commit();
+    return result;
+  } catch (error) {
+    await transaction.rollback();
+    throw new Error(`Error deleting campaign: ${error.message}`);
   }
-
-  let imageDeleted = false;
-
-  if (campaign.creativeFile) {
-    try {
-      await DeleteFileFromAWS(campaign.creativeFile);
-      imageDeleted = true;
-    } catch (error) {
-      Logger.error(`Failed to delete file from AWS: ${error.message}`);
-      // Do not throw — proceed with disabling the campaign
-    }
-  }
-
-  campaign.status = false; // Soft delete
-  await campaign.save();
-
-  return {
-    id: campaign.id,
-    campaignName: campaign.campaignName,
-    imageDeleted
-  };
-};
+}
 
 const calculateBaseCost = async (adDevices, productType, targetRegions) => {
 
