@@ -4,6 +4,7 @@ const sendEmail = require('../../utils/send-Email');
 const { User } = require('../../models'); // Import the User model
 const { SuccessReposnse } = require('../../utils');
 const { StatusCodes } = require('http-status-codes');
+const errorResponse = require('../../utils/errorHandler/errorReponse');
 
 exports.createUser = async (req, res, next) => {
   try {
@@ -12,7 +13,8 @@ exports.createUser = async (req, res, next) => {
     // Check for existing user by email
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
-      SuccessReposnse(res,"Email Already Exists !!",StatusCodes.BAD_REQUEST,null);
+      errorResponse(res,StatusCodes.NOT_ACCEPTABLE ,"Email Already Exists !!",null);
+        return
     }
 
     // Proceed to create new user
@@ -24,7 +26,7 @@ exports.createUser = async (req, res, next) => {
     await sendEmail(user);
     logger.info(`Notification email sent for user: ${user.id}`);
 
-   SuccessReposnse(res,"User Created SuccessFully !",StatusCodes.OK,null);
+   SuccessReposnse(res,"User Created SuccessFully !", StatusCodes.CREATED ,null);
   } catch (error) {
     logger.error(`Error in createUser: ${error.message}`);
     next(error);
