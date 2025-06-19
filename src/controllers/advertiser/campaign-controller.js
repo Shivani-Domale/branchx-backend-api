@@ -84,13 +84,13 @@ const getCampaignById = async (req, res) => {
 
 const getUserCampaignByToken = async (req, res) => {
   try {
-    const user = req.user;
+    // const user = req.user;
 
-    if (!user) {
-      ErrorReponse(res, StatusCodes.UNAUTHORIZED, "Please Login in..");
-    }
+    // if (!user) {
+    //   ErrorReponse(res, StatusCodes.UNAUTHORIZED, "Please Login in..");
+    // }
 
-    const campaigns = await CampaignService.getAllCampaigns(user.id);
+    const campaigns = await CampaignService.getAllCampaigns(47);
 
 
     if (!campaigns || campaigns.length === 0) {
