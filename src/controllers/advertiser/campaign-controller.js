@@ -12,6 +12,8 @@ const createCampaign = async (req, res) => {
     if (!user) {
       ErrorReponse(res, StatusCodes.UNAUTHORIZED, "Please Login...");
     }
+    console.log(req.body);
+
 
     Logger.info("------------");
     Logger.info("Received request to create campaign");
@@ -52,7 +54,7 @@ const updateCampaignStatus = async (req, res) => {
     if (!campaign) {
       ErrorReponse(res, StatusCodes.NOT_FOUND, 'Unable To Update Campaign Status');
     }
-  
+
     const message = `${campaign.campaignName} Ad ${status === true ? 'Activated' : 'Deactivated'} successfully`;
 
     return SuccessReposnse(res, message, StatusCodes.OK, null);
@@ -66,10 +68,10 @@ const getCampaignById = async (req, res) => {
 
   const { campaignId } = req.params;
   try {
-    
+
     const campaign = await CampaignService.getCampaignById(campaignId);
 
-  
+
     if (!campaign) {
       return ErrorReponse(res, StatusCodes.BAD_REQUEST, 'Campaign not found');
     }
@@ -190,9 +192,7 @@ const deleteCampaign = async (req, res) => {
     SuccessReposnse(res, 'Campaign deleted', StatusCodes.OK, result);
   } catch (error) {
     Logger.error('Error deleting campaign:', error);
-    if (!res.headersSent) {
-      ErrorReponse(res, StatusCodes.BAD_REQUEST, error.message);
-    }
+    ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error.message);
   }
 };
 
