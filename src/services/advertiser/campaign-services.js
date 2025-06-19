@@ -1,10 +1,6 @@
 
 const { CampaignRepository, ProductRepository, DeviceRepository, LocationRepository } = require("../../repositories");
-<<<<<<< HEAD
 const { UploadFile, GenerateBaseCostForCampaigns, DeleteFileFromAWS } = require("../../utils");
-=======
-const { UploadFile, GenerateBaseCostForCampaigns } = require("../../utils");
->>>>>>> 52270e06e3b65583cf828d6f070162a9a4407628
 const { sequelize } = require("../../models");
 const { Logger } = require("../../config");
 
