@@ -90,7 +90,7 @@ const getUserCampaignByToken = async (req, res) => {
     //   ErrorReponse(res, StatusCodes.UNAUTHORIZED, "Please Login in..");
     // }
 
-    const campaigns = await CampaignService.getAllCampaigns(47);
+    const campaigns = await CampaignService.getAllCampaigns(41);
 
 
     if (!campaigns || campaigns.length === 0) {
