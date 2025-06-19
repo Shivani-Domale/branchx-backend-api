@@ -12,7 +12,7 @@ const createCampaign = async (req, res) => {
     if (!user) {
       return ErrorReponse(res, StatusCodes.UNAUTHORIZED, "Please Login...");
     }
-    console.log(req.body);
+   
 
 
     Logger.info("------------");
@@ -204,7 +204,7 @@ const deleteCampaign = async (req, res) => {
 const calculateBaseCost = async (req, res) => {
   try {
     const { adDevices, productType, targetRegions } = req.body;
-    console.log(req.body);
+ 
     const baseCost = await CampaignService.calculateBaseCost(adDevices, productType, targetRegions);
 
     return SuccessReposnse(res, "Base cost calculated successfully", StatusCodes.OK, { baseCost });
