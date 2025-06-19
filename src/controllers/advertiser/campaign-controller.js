@@ -33,7 +33,7 @@ const createCampaign = async (req, res) => {
     Logger.info("Campaign created successfully");
     Logger.info("------------");
 
-    SuccessReposnse(res, null, StatusCodes.OK, campaign);
+    return SuccessReposnse(res, null, StatusCodes.OK, campaign);
 
   } catch (error) {
     Logger.error("Error creating campaign:", error);
