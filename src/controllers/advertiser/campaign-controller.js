@@ -2,25 +2,25 @@ const { Logger } = require("../../config");
 const { CampaignService } = require("../../services");
 const { StatusCodes } = require('http-status-codes');
 const { SuccessReposnse, ErrorReponse } = require("../../utils");
+const { log } = require("winston");
 
 
 
 const createCampaign = async (req, res) => {
   try {
-    // const user = req.user;
-    // console.log("User from request:", user);
-    // if (!user) {
-    //   ErrorReponse(res, StatusCodes.UNAUTHORIZED, "Please Login...");
-    // }
+    const user = req.user;
+    if (!user) {
+      return ErrorReponse(res, StatusCodes.UNAUTHORIZED, "Please Login...");
+    }
     console.log(req.body);
 
- 
+
     Logger.info("------------");
     Logger.info("Received request to create campaign");
 
     if (!req.file) {
       Logger.error(" video/images file is required");
-     return ErrorReponse(res, StatusCodes.NO_CONTENT, "video/image required !");
+      return ErrorReponse(res, StatusCodes.NO_CONTENT, "video/image required !");
     }
 
     Logger.info(`Uploaded file name: ${req.file.originalname}, size: ${req.file.size} bytes`);
@@ -28,7 +28,7 @@ const createCampaign = async (req, res) => {
     const fileBuffer = req.file.buffer;
     const originalName = req.file.originalname;
 
-    const campaign = await CampaignService.createCampaign(req.body, fileBuffer, originalName, 41);
+    const campaign = await CampaignService.createCampaign(req.body, fileBuffer, originalName, user.id);
 
     Logger.info("Campaign created successfully");
     Logger.info("------------");
@@ -84,13 +84,13 @@ const getCampaignById = async (req, res) => {
 
 const getUserCampaignByToken = async (req, res) => {
   try {
-    // const user = req.user;
+    const user = req.user;
 
-    // if (!user) {
-    //   ErrorReponse(res, StatusCodes.UNAUTHORIZED, "Please Login in..");
-    // }
+    if (!user) {
+      ErrorReponse(res, StatusCodes.UNAUTHORIZED, "Please Login in..");
+    }
 
-    const campaigns = await CampaignService.getAllCampaigns(41);
+    const campaigns = await CampaignService.getAllCampaigns(user.id);
 
 
     if (!campaigns || campaigns.length === 0) {
@@ -169,7 +169,7 @@ const updateCampaign = async (req, res) => {
     const user = req.user;
 
     if (!user) {
-      return ErrorReponse(res, StatusCodes.UNAUTHORIZED, "Please Login...");
+      ErrorReponse(res, StatusCodes.UNAUTHORIZED, "Please Login...");
     }
 
     const fileBuffer = req.file ? req.file.buffer : null;
@@ -186,10 +186,15 @@ const updateCampaign = async (req, res) => {
 
 const deleteCampaign = async (req, res) => {
   try {
-    const { id } = req.params;
-    const result = await CampaignService.deleteCampaign(id);
+     const user = req.user;
+    if (!user) {
+      return ErrorReponse(res, StatusCodes.UNAUTHORIZED, "Please Login...");
+    }
 
-    SuccessReposnse(res, 'Campaign deleted', StatusCodes.OK, result);
+    const { campaignId } = req.params;
+    const result = await CampaignService.deleteCampaign(campaignId);
+
+    SuccessReposnse(res, 'Campaign soft deleted successfully.', StatusCodes.OK, result);
   } catch (error) {
     Logger.error('Error deleting campaign:', error);
     ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error.message);
