@@ -21,6 +21,9 @@ const findUserByEmail = async (email) => {
 
 const updateUserProfile = async (userId, role, updateData, roleFields) => {
   try {
+
+    role = role?.toLowerCase(); // Normalize
+
     const allowedFields = roleFields[role];
     if (!allowedFields) throw new Error('Invalid role');
 
