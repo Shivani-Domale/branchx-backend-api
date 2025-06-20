@@ -21,6 +21,27 @@ class CampaignRepository extends crudRepository {
       ]
     });
   }
+
+  async deleteById(campaignId, transaction) {
+  const campaign = await Campaign.findByPk(campaignId, { transaction });
+
+  if (!campaign) {
+    throw new Error('Campaign not found');
+  }
+
+  // Clear many-to-many relationships
+  await campaign.setDevices([], { transaction });
+  await campaign.setLocations([], { transaction });
+
+  // Delete the campaign itself
+  await Campaign.destroy({
+    where: { id: campaignId },
+    transaction
+  });
+
+  return { id: campaignId, message: 'Campaign permanently deleted' };
+}
+
 }
 
 module.exports = CampaignRepository;

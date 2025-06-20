@@ -7,20 +7,20 @@ const { SuccessReposnse, ErrorReponse } = require("../../utils");
 
 const createCampaign = async (req, res) => {
   try {
-    const user = req.user;
-
-    if (!user) {
-      ErrorReponse(res, StatusCodes.UNAUTHORIZED, "Please Login...");
-    }
+    // const user = req.user;
+    // console.log("User from request:", user);
+    // if (!user) {
+    //   ErrorReponse(res, StatusCodes.UNAUTHORIZED, "Please Login...");
+    // }
     console.log(req.body);
 
-
+ 
     Logger.info("------------");
     Logger.info("Received request to create campaign");
 
     if (!req.file) {
       Logger.error(" video/images file is required");
-      ErrorReponse(res, StatusCodes.NO_CONTENT, "video/image required !");
+     return ErrorReponse(res, StatusCodes.NO_CONTENT, "video/image required !");
     }
 
     Logger.info(`Uploaded file name: ${req.file.originalname}, size: ${req.file.size} bytes`);
@@ -28,17 +28,17 @@ const createCampaign = async (req, res) => {
     const fileBuffer = req.file.buffer;
     const originalName = req.file.originalname;
 
-    const campaign = await CampaignService.createCampaign(req.body, fileBuffer, originalName, user.id);
+    const campaign = await CampaignService.createCampaign(req.body, fileBuffer, originalName, 41);
 
     Logger.info("Campaign created successfully");
     Logger.info("------------");
 
-    SuccessReposnse(res, null, StatusCodes.OK, campaign);
+    return SuccessReposnse(res, null, StatusCodes.OK, campaign);
 
   } catch (error) {
     Logger.error("Error creating campaign:", error);
     Logger.error("------------");
-    ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error);
+    return ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error);
   }
 };
 
@@ -84,13 +84,13 @@ const getCampaignById = async (req, res) => {
 
 const getUserCampaignByToken = async (req, res) => {
   try {
-    const user = req.user;
+    // const user = req.user;
 
-    if (!user) {
-      ErrorReponse(res, StatusCodes.UNAUTHORIZED, "Please Login in..");
-    }
+    // if (!user) {
+    //   ErrorReponse(res, StatusCodes.UNAUTHORIZED, "Please Login in..");
+    // }
 
-    const campaigns = await CampaignService.getAllCampaigns(user.id);
+    const campaigns = await CampaignService.getAllCampaigns(41);
 
 
     if (!campaigns || campaigns.length === 0) {

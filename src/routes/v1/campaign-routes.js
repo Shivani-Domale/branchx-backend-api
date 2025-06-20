@@ -8,10 +8,10 @@ const router = express.Router();
 
 
 /* campaign routes */
-router.post('/createCampaign',VerifyToken,UploadFileCampaign.upload.single('creativeFile'),ValidateCampaign, CampaignController.createCampaign);
+router.post('/createCampaign',UploadFileCampaign.upload.single('creativeFile'), CampaignController.createCampaign);
 router.put('/:id/status', CampaignController.updateCampaignStatus);
 router.get('/:campaignId/getCampaign',CampaignController.getCampaignById);
-router.get('/getUserCampaign',VerifyToken,CampaignController.getUserCampaignByToken);
+router.get('/getUserCampaign',CampaignController.getUserCampaignByToken);
 router.delete('/:id/deleteCampaign',CampaignController.deleteCampaign);
 router.post('/baseCost',CampaignController.calculateBaseCost);
 
