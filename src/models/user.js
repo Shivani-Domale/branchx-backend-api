@@ -1,16 +1,9 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-   User.hasMany(models.Campaign, { foreignKey: 'userId' });
+      User.hasMany(models.Campaign, { foreignKey: 'userId' });
     }
   }
   User.init({
@@ -22,12 +15,21 @@ module.exports = (sequelize, DataTypes) => {
     city: DataTypes.STRING,
     role: DataTypes.STRING,
     businessName: DataTypes.STRING,
-   message: DataTypes.TEXT,
-    status: {type:
-      DataTypes.STRING,
-      defaultValue:'PENDING',
+    message: DataTypes.TEXT,
+    status: {
+      type: DataTypes.STRING,
+      defaultValue: 'PENDING',
     },
-    password: DataTypes.STRING
+    password: DataTypes.STRING,
+    // :white_check_mark: Fields for OTP-based password reset
+    resetOtp: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    resetOtpExpires: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    }
   }, {
     sequelize,
     modelName: 'User',

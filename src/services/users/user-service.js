@@ -1,6 +1,7 @@
-const UserRepository = require('../../repositories/users/user-repository');
-const { User } = require('../../models');                              
 
+const bcrypt = require('bcryptjs');
+const UserRepository = require('../../repositories/users/user-repository');
+const { sendEmail } = require('../../utils/send-Email');
 
 const userRepository = new UserRepository();
 
@@ -20,6 +21,9 @@ const findUserByEmail = async (email) => {
 
 const updateUserProfile = async (userId, role, updateData, roleFields) => {
   try {
+
+    role = role?.toLowerCase(); // Normalize
+
     const allowedFields = roleFields[role];
     if (!allowedFields) throw new Error('Invalid role');
 
@@ -42,8 +46,30 @@ const updateUserProfile = async (userId, role, updateData, roleFields) => {
   }
 };
 
+const sendOtpToEmail = async (email) => {
+  const user = await userRepository.findUserByEmail(email);
+  if (!user) throw new Error('User not found');
+
+  const otp = Math.floor(100000 + Math.random() * 900000).toString();
+  const expiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes from now
+
+  await userRepository.updateUser(user.id, {
+    resetOtp: otp,
+    resetOtpExpires: expiry,
+  });
+
+  await sendEmail({
+    to: user.email,
+    subject: 'Password Reset OTP',
+    html: `<p>Hello <strong>${user.fullName}</strong>,<br>Your OTP is <strong>${otp}</strong>. It will expire in 10 minutes.</p>`,
+  });
+
+  return true;
+};
+
 module.exports = {
   getUserById,
   findUserByEmail,
   updateUserProfile,
+  sendOtpToEmail,
 };
