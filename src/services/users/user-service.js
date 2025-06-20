@@ -67,9 +67,27 @@ const sendOtpToEmail = async (email) => {
   return true;
 };
 
+const verifyOtpAndResetPassword = async (email, otp, newPassword) => {
+  const user = await userRepository.findUserByEmail(email);
+  if (!user) throw new Error('User not found');
+  const isValidOtp =
+    user.resetOtp === otp &&
+    user.resetOtpExpires &&
+    new Date(user.resetOtpExpires) > new Date();
+  if (!isValidOtp) throw new Error('Invalid or expired OTP');
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+  await userRepository.updateUser(user.id, {
+    password: hashedPassword,
+    resetOtp: null,
+    resetOtpExpires: null,
+  });
+  return true;
+};
+
 module.exports = {
   getUserById,
   findUserByEmail,
   updateUserProfile,
   sendOtpToEmail,
+  verifyOtpAndResetPassword,
 };
