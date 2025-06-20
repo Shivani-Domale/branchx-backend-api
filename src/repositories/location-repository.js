@@ -22,14 +22,14 @@ class LocationRepository extends crudRepository {
     }
 
     async getLocationWithDevices(cityName) {
-    return await this.model.findOne({
-        where: { city: cityName },
-        include: [{
-            model: Device,
-            attributes: ['deviceType', 'price', 'availableCount'],
-        }]
-    });
-}
+        return await this.model.findOne({
+            where: { city: cityName },
+            include: [{
+                model: Device,
+                attributes: ['deviceType', 'price', 'availableCount'],
+            }]
+        });
+    }
 
 }
 

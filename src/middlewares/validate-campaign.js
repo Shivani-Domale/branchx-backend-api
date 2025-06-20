@@ -1,24 +1,48 @@
-const { body, validationResult } = require("express-validator");
+const { body, validationResult, matchedData } = require("express-validator");
 const { StatusCodes } = require("http-status-codes");
 const { ErrorReponse } = require("../utils");
 
 const validateCampaign = [
+  // Basic string fields
   body("campaignName").notEmpty().withMessage("Campaign name is required"),
   body("campaignDescription").notEmpty().withMessage("Campaign description is required"),
   body("campaignObjective").notEmpty().withMessage("Campaign objective is required"),
   body("campaignType").notEmpty().withMessage("Campaign type is required"),
-  body("baseCost").isInt({ min: 1 }).withMessage("Base bid must be greater than 0"),
-  body("budgetLimit").isInt({ min: 1 }).withMessage("Budget limit must be a positive integer"),
   body("demographic").notEmpty().withMessage("Demographic is required"),
+
+  // Integer fields
+  body("baseCost").isInt({ min: 1 }).withMessage("Base cost must be greater than 0"),
+  body("budgetLimit").isInt({ min: 1 }).withMessage("Budget limit must be a positive integer"),
   body("duration").isInt({ min: 1 }).withMessage("Duration must be a positive integer"),
-  body("interval").optional().isInt({ min: 0 }),
-  body("maxBidCap").optional().isInt({ min: 0 }),
-  body("scheduleStartDate").optional().isString(),
-  body("scheduleEndDate").optional().isString(),
-  body("selectedDays").notEmpty().withMessage("Selected days are required"),
+  body("interval").optional().isInt({ min: 0 }).withMessage("Interval must be a non-negative integer"),
+  body("maxBid").optional().isInt({ min: 0 }).withMessage("Max bid must be a non-negative integer"),
+  body("minBid").optional().isInt({ min: 0 }).withMessage("Min bid must be a non-negative integer"),
+
+  // Date fields
+  body("scheduleStartDate")
+    .optional()
+    .isISO8601()
+    .withMessage("scheduleStartDate must be a valid ISO date"),
+  body("scheduleEndDate")
+    .optional()
+    .isISO8601()
+    .withMessage("scheduleEndDate must be a valid ISO date"),
+
+  // Array fields in stringified JSON format
+  body("selectedDays").custom(value => {
+    try {
+      const parsed = typeof value === "string" ? JSON.parse(value) : value;
+      if (!Array.isArray(parsed) || parsed.length === 0) {
+        throw new Error("selectedDays must be a non-empty array");
+      }
+      return true;
+    } catch (err) {
+      throw new Error("Invalid selectedDays format: must be a valid JSON array");
+    }
+  }),
+
   body("timeSlot").notEmpty().withMessage("Time slot is required"),
 
-  // Validate adDevices as JSON string and check its structure
   body("adDevices").custom(value => {
     try {
       const parsed = typeof value === "string" ? JSON.parse(value) : value;
@@ -36,7 +60,6 @@ const validateCampaign = [
     }
   }),
 
-  // Validate targetRegions as JSON string and check array
   body("targetRegions").custom(value => {
     try {
       const parsed = typeof value === "string" ? JSON.parse(value) : value;
@@ -49,7 +72,6 @@ const validateCampaign = [
     }
   }),
 
-  // Validate productType JSON with a `name`
   body("productType").custom(value => {
     try {
       const parsed = typeof value === "string" ? JSON.parse(value) : value;
@@ -62,13 +84,13 @@ const validateCampaign = [
     }
   }),
 
-  // FINAL handler
+
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       const errorMessages = [];
-
       const seen = new Set();
+
       errors.array().forEach(err => {
         if (!seen.has(err.param)) {
           errorMessages.push({ message: err.msg });
@@ -76,8 +98,11 @@ const validateCampaign = [
         }
       });
 
-     ErrorReponse(res,StatusCodes.NOT_FOUND,errorMessages);
+      return ErrorReponse(res, StatusCodes.UNPROCESSABLE_ENTITY, errorMessages);
     }
+
+    
+    req.body = matchedData(req, { includeOptionals: true });
 
     next();
   }

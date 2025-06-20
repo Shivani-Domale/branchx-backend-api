@@ -21,11 +21,7 @@ class crudRepository {
         }
     }
 
-    async findByUserId(userId) {
-        return await this.model.findAll({
-            where: { userId }  // Make sure your `Campaign` table has a `userId` field
-        });
-    }
+ 
     async findById(id) {
         try {
             const response = await this.model.findByPk(id);
@@ -60,13 +56,13 @@ class crudRepository {
     }
 
     async findOne(where) {
-    try {
-        return await this.model.findOne({ where });
-    } catch (error) {
-        Logger.error("Error in findOne: ", error);
-        throw error;
+        try {
+            return await this.model.findOne({ where });
+        } catch (error) {
+            Logger.error("Error in findOne: ", error);
+            throw error;
+        }
     }
-}
 
 
 }
