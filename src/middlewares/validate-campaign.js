@@ -76,7 +76,7 @@ const validateCampaign = [
         }
       });
 
-     ErrorReponse(res,StatusCodes.NOT_FOUND,errorMessages);
+      ErrorReponse(res, StatusCodes.NOT_FOUND, errorMessages);
     }
 
     next();

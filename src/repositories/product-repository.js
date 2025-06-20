@@ -23,7 +23,7 @@ class ProductRepository extends crudRepository {
             throw new Error(`Error fetching product by type: ${error.message}`);
         }
     }
-    
+
     async findProductById(productType) {
         try {
             const product = await this.model.findOne({

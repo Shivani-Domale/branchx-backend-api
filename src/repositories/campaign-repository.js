@@ -24,29 +24,29 @@ class CampaignRepository extends crudRepository {
 
 
 
-async deleteById(campaignId, transaction) {
-  const campaign = await Campaign.findOne({
-    where: { id: campaignId, isDeleted: false },
-    transaction
-  });
+  async deleteById(campaignId, transaction) {
+    const campaign = await Campaign.findOne({
+      where: { id: campaignId, isDeleted: false },
+      transaction
+    });
 
-  if (!campaign) {
-    throw new Error('Campaign not found or already deleted');
+    if (!campaign) {
+      throw new Error('Campaign not found or already deleted');
+    }
+
+    await campaign.setDevices([], { transaction });
+    await campaign.setLocations([], { transaction });
+
+    await campaign.update(
+      {
+        isDeleted: true,
+        deletedAt: new Date()
+      },
+      { transaction }
+    );
+
+    return { message: 'Campaign marked as deleted (soft delete).' };
   }
-
-  await campaign.setDevices([], { transaction });
-  await campaign.setLocations([], { transaction });
-
-  await campaign.update(
-    {
-      isDeleted: true,
-      deletedAt: new Date()
-    },
-    { transaction }
-  );
-
-  return { message: 'Campaign marked as deleted (soft delete).' };
-}
 
 
 }

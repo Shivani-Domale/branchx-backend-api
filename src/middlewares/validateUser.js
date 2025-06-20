@@ -4,7 +4,7 @@ const { ErrorReponse } = require("../utils");
 module.exports = (req, res, next) => {
   const { fullName, phone, email, country, state, city, role, businessName, message } = req.body;
   if (!fullName || !phone || !email || !country || !state || !city || !role || !businessName || !message) {
-   ErrorReponse(res,StatusCodes.BAD_REQUEST,"All fields required !");
+    ErrorReponse(res, StatusCodes.BAD_REQUEST, "All fields required !");
   }
   next();
 };
