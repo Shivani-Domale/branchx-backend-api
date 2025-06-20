@@ -21,11 +21,7 @@ class crudRepository {
         }
     }
 
-    async findByUserId(userId) {
-        return await this.model.findAll({
-            where: { userId }  // Make sure your `Campaign` table has a `userId` field
-        });
-    }
+ 
     async findById(id) {
         try {
             const response = await this.model.findByPk(id);
