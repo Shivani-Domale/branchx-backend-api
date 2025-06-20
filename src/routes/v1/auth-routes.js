@@ -1,10 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const { LoginUserController } = require('../../controllers');
+const {
+  loginUser,
+  forgotPassword,
+  resetPassword
+} = require('../../controllers/auth/login-user');
 const { authenticateToken, authorizeRoles } = require('../../middlewares/auth');
 
-router.post('/login', LoginUserController.loginUser);
-module.exports = router;
+router.post('/login', loginUser);
+router.post('/forgot-password', forgotPassword);
+router.post('/reset-password', resetPassword);
+
 
 router.get('/distributor/dashboard',
   authenticateToken,
@@ -14,7 +20,6 @@ router.get('/distributor/dashboard',
   }
 );
 
-// Advertisers and retailers can access this route
 router.get('/Advertiser/dashboard',
   authenticateToken,
   authorizeRoles('advertiser', 'retailer'),
@@ -22,3 +27,5 @@ router.get('/Advertiser/dashboard',
     res.send('Welcome Advertiser or Retailer');
   }
 );
+
+module.exports = router;
