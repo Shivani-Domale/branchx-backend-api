@@ -1,4 +1,4 @@
-const { Campaign, Location, Device } = require('../models');
+const { Campaign, Location, Device,Product } = require('../models');
 const crudRepository = require('./crud-repository');
 
 class CampaignRepository extends crudRepository {
@@ -17,6 +17,9 @@ class CampaignRepository extends crudRepository {
         {
           model: Device,
           through: { attributes: [] }, // Exclude junction table fields
+        },
+        {
+          model:Product
         }
       ]
     });

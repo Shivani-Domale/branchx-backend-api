@@ -171,10 +171,9 @@ const getCampaignById = async (campaignId) => {
     }));
 
 
-    campaignData.product_type = {
-      name: campaignData.product?.product_type
+    campaignData.productType = {
+      name: campaignData.Product?.product_type
     };
-
     return campaignData;
   } catch (error) {
     throw new Error(`Error fetching campaign by ID: ${error?.message}`);
