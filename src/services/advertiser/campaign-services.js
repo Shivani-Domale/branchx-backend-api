@@ -160,21 +160,27 @@ const getCampaignById = async (campaignId) => {
       throw new Error("Campaign not found");
     }
 
-    const campaignData = campaign?.toJSON();
+    const campaignData = campaign.toJSON();
 
-    campaignData.Locations = campaignData?.Locations?.map(location => ({
-      city: location?.city
+    campaignData.targetRegions = campaignData?.Locations?.map(location => ({
+      name: location?.city
     }));
 
-    campaignData.Devices = campaignData?.Devices?.map(device => ({
-      deviceType: device?.deviceType
+    campaignData.adDevices = campaignData?.Devices?.map(device => ({
+      name: device?.deviceType
     }));
+
+
+    campaignData.productType = {
+      name: campaignData.Product?.productType
+    };
 
     return campaignData;
   } catch (error) {
     throw new Error(`Error fetching campaign by ID: ${error?.message}`);
   }
 };
+
 
 const getDeviceTypes = async () => {
   try {
