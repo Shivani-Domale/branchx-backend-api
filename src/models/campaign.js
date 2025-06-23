@@ -1,7 +1,5 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class Campaign extends Model {
@@ -38,10 +36,12 @@ module.exports = (sequelize, DataTypes) => {
     demographic: DataTypes.STRING,
     duration: DataTypes.INTEGER,
     interval: DataTypes.INTEGER,
-    scheduleStartDate: DataTypes.STRING,
-    scheduleEndDate: DataTypes.STRING,
-    selectedDays: DataTypes.STRING,
-    timeSlot: DataTypes.STRING,
+    daysOfWeek: DataTypes.STRING,
+    startDate: DataTypes.DATE,         
+    endDate: DataTypes.DATE,           
+    startTime: DataTypes.TIME,         
+    endTime: DataTypes.TIME,           
+
     status: {
       type: DataTypes.BOOLEAN,
       defaultValue: false
@@ -57,7 +57,7 @@ module.exports = (sequelize, DataTypes) => {
     baseCost: DataTypes.INTEGER,
     maxBid: DataTypes.INTEGER,
     minBid: DataTypes.INTEGER,
-    budgetLimit: DataTypes.INTEGER,
+    estimatedPrice: DataTypes.INTEGER,
     userId: DataTypes.INTEGER,
     productId: DataTypes.INTEGER,
     remark: {
@@ -68,11 +68,15 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: false
     },
-    deletedAt: DataTypes.DATE
+    deletedAt: DataTypes.DATE,
+    isDraft: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    }
   }, {
     sequelize,
     modelName: 'Campaign',
-    paranoid: false // You can set this to true if using Sequelize's built-in soft delete
+    paranoid: false
   });
 
   Campaign.addHook('beforeCreate', async (campaign, options) => {
@@ -95,6 +99,6 @@ module.exports = (sequelize, DataTypes) => {
 
     campaign.campaignCode = `${brandPrefix}${nextNumber}`;
   });
+
   return Campaign;
 };
-
