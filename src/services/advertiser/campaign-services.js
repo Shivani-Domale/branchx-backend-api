@@ -171,8 +171,8 @@ const getCampaignById = async (campaignId) => {
     }));
 
 
-    campaignData.productType = {
-      name: campaignData.Product?.productType
+    campaignData.product_type = {
+      name: campaignData.product?.product_type
     };
 
     return campaignData;
