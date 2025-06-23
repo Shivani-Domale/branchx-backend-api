@@ -7,11 +7,13 @@ const SECRET = process.env.JWT_SECRET;
 
 // Login Controller
 const loginUser = async (req, res) => {
-  const { email, role, password } = req.body;
-  console.log(req.body);
   try {
+    const email = req?.body?.email;
+    const role = req?.body?.role;
+    const password = req?.body?.password;
+
     const user = await User.findOne({ where: { email, role } });
-    console.log(user);
+
     if (!user) {
       return res.status(404).json({
         message: 'User not found with this email and role.',
@@ -21,7 +23,7 @@ const loginUser = async (req, res) => {
       });
     }
 
-    if (user.status !== 'ACTIVE') {
+    if (user?.status !== 'ACTIVE') {
       return res.status(403).json({
         message: 'Your account has not been approved yet.',
         data: null,
@@ -30,7 +32,8 @@ const loginUser = async (req, res) => {
       });
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await bcrypt.compare(password, user?.password);
+
     if (!isPasswordValid) {
       return res.status(401).json({
         message: 'Invalid Credentials.',
@@ -41,7 +44,7 @@ const loginUser = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { id: user.id, email: user.email, role: user.role },
+      { id: user?.id, email: user?.email, role: user?.role },
       SECRET,
       { expiresIn: '1d' }
     );
@@ -50,43 +53,52 @@ const loginUser = async (req, res) => {
       message: 'Login successful',
       token,
       user: {
-        id: user.id,
-        email: user.email,
-        role: user.role,
-        fullName: user.fullName,
-        status: user.status,
+        id: user?.id,
+        email: user?.email,
+        role: user?.role,
+        fullName: user?.fullName,
+        status: user?.status,
       },
     });
-  } catch (error) {
-    console.error('Login error:', error);
-    res.status(500).json({ message: 'Something went wrong while logging in.' });
+  } catch (err) {
+    console.error('Login Error:', err);
+    res.status(500).json({
+      message: 'An error occurred while logging in.',
+      data: null,
+      success: false,
+      error: 'InternalServerError',
+    });
   }
 };
 
 // Forgot Password Controller
 const forgotPassword = async (req, res) => {
-  const { email } = req.body;
   try {
+    const email = req?.body?.email;
     await userService.sendOtpToEmail(email);
     res.status(200).json({ message: 'OTP sent successfully', success: true });
   } catch (err) {
-    res.status(404).json({ message: err.message, success: false });
+    res.status(404).json({ message: err?.message, success: false });
   }
 };
 
 const resetPassword = async (req, res) => {
-  const { email, otp, newPassword } = req.body;
   try {
+    const email = req?.body?.email;
+    const otp = req?.body?.otp;
+    const newPassword = req?.body?.newPassword;
+
     await userService.verifyOtpAndResetPassword(email, otp, newPassword);
+
     res.status(200).json({ message: 'Password reset successful', success: true });
   } catch (err) {
-    res.status(400).json({ message: err.message, success: false });
+    console.error('Reset Password Error:', err);
+    res.status(400).json({ message: err?.message, success: false });
   }
 };
+
 module.exports = {
   loginUser,
   forgotPassword,
   resetPassword,
 };
-
-
