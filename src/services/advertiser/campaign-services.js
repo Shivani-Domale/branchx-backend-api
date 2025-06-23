@@ -1,5 +1,5 @@
 const { CampaignRepository, ProductRepository, DeviceRepository, LocationRepository } = require("../../repositories");
-const { GenerateBaseCostForCampaigns, UploadFile } = require("../../utils");
+const { GenerateBaseCostForCampaigns, UploadFile, formatToTimeString } = require("../../utils");
 const { sequelize } = require("../../models");
 const { Logger } = require("../../config");
 
@@ -48,7 +48,8 @@ const createCampaign = async (data, fileBuffer, originalName, id) => {
     data.userId = id;
     data.productId = productId;
     data.isPayment = false;
-
+    data.startTime = formatToTimeString(data?.startTime);
+    data.endTime = formatToTimeString(data?.endTime);
     const campaign = await campaignRepository.create(data, { transaction: t });
 
     if (!campaign) {
