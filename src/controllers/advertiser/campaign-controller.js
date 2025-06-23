@@ -41,6 +41,7 @@ const createCampaign = async (req, res) => {
     return SuccessReposnse(res, null, StatusCodes.OK, campaign);
 
   } catch (error) {
+    console.error("Error creating campaign:", error);
     Logger.error("Error creating campaign:", error);
     Logger.error("------------");
     return ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error);
@@ -61,6 +62,7 @@ const updateCampaignStatus = async (req, res) => {
     return SuccessReposnse(res, message, StatusCodes.OK, null);
 
   } catch (error) {
+    console.error("Error updating campaign status:", error);
     Logger.error("Error updating campaign status:", error);
     return ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error);
   }
@@ -77,6 +79,8 @@ const getCampaignById = async (req, res) => {
 
     return SuccessReposnse(res, null, StatusCodes.OK, campaign);
   } catch (error) {
+    console.error("Error fetching campaign by ID:", error);
+    Logger.error("Error fetching campaign by ID:", error);
     return ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error);
   }
 };
@@ -97,7 +101,8 @@ const getUserCampaignByToken = async (req, res) => {
     return SuccessReposnse(res, null, StatusCodes.OK, campaigns);
 
   } catch (error) {
-    Logger.error("Error in getUserCampaignByToken:", error?.message);
+    console.error("Error in getUserCampaignByToken:", error);
+    Logger.error("Error in getUserCampaignByToken:", error);
     return ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error);
   }
 };
@@ -113,7 +118,9 @@ const getDeviceTypes = async (req, res) => {
 
     return SuccessReposnse(res, null, StatusCodes.OK, filteredDevices);
   } catch (error) {
-    return ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error?.message);
+    console.error("Error fetching devices:", error);
+    Logger.error("Error fetching devices:", error);
+    return ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error);
   }
 };
 
@@ -127,7 +134,9 @@ const getLocations = async (req, res) => {
 
     return SuccessReposnse(res, "Data fetched successfully", StatusCodes.OK, locations);
   } catch (error) {
-    return ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error?.message);
+    console.error("Error fetching locations:", error);
+    Logger.error("Error fetching locations:", error);
+    return ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error);
   }
 };
 
@@ -142,7 +151,9 @@ const getProductTypes = async (req, res) => {
 
     return SuccessReposnse(res, null, StatusCodes.OK, filteredProducts);
   } catch (error) {
-    return ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error?.message);
+    console.error("Error fetching product types:", error);
+    Logger.error("Error fetching product types:", error);
+    return ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error);
   }
 };
 
@@ -165,8 +176,9 @@ const updateCampaign = async (req, res) => {
     return SuccessReposnse(res, "Campaign updated successfully", StatusCodes.OK, updatedCampaign);
 
   } catch (error) {
+    console.error("Error updating campaign:", error);
     Logger.error("Error updating campaign:", error);
-    return ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error?.message);
+    return ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error);
   }
 };
 
@@ -182,8 +194,9 @@ const deleteCampaign = async (req, res) => {
 
     return SuccessReposnse(res, 'Campaign soft deleted successfully.', StatusCodes.OK, result);
   } catch (error) {
+    console.error("Error deleting campaign:", error);
     Logger.error('Error deleting campaign:', error);
-    return ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error?.message);
+    return ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error);
   }
 };
 
@@ -195,8 +208,9 @@ const calculateBaseCost = async (req, res) => {
 
     return SuccessReposnse(res, "Base cost calculated successfully", StatusCodes.OK, { baseCost });
   } catch (error) {
-    Logger.error("Error calculating base cost:", error?.message);
-    return ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error?.message);
+    console.error("Error calculating base cost:", error);
+    Logger.error("Error calculating base cost:", error);
+    return ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error);
   }
 };
 
