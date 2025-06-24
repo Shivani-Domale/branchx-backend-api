@@ -260,7 +260,7 @@ const updateCampaign = async (id, data, fileBuffer, originalName) => {
   const t = await sequelize.transaction();
 
   try {
-    const campaign = await campaignRepository.findByIdWithLocation(id); // include Locations only
+    const campaign = await campaignRepository.findById(id); // include Locations only
     if (!campaign) throw new Error("Campaign not found");
 
     data.startTime = formatToTimeString(data?.startTime); // "14:00:00"
