@@ -258,7 +258,7 @@ const getProductTypes = async () => {
 
 const updateCampaign = async (id, data, fileBuffer, originalName) => {
   const t = await sequelize.transaction();
-
+ console.log(data);
   try {
     const campaign = await campaignRepository.findById(id); // include Locations only
     if (!campaign) throw new Error("Campaign not found");
