@@ -71,12 +71,12 @@ const createCampaign = async (data, fileBuffer, originalName, id) => {
     await campaign.save({ transaction: t });
 
     if (deviceIds?.length) {
-     
+
       await campaign?.addDevices(deviceIds, { transaction: t });
     }
 
     if (locationIds?.length) {
-      
+
       await campaign?.addLocations(locationIds, { transaction: t });
     }
 
@@ -86,7 +86,7 @@ const createCampaign = async (data, fileBuffer, originalName, id) => {
 
   } catch (error) {
     await t.rollback();
-   
+
     throw new Error(`Error creating campaign: ${error?.message}`);
   }
 };
@@ -271,11 +271,11 @@ const updateCampaign = async (id, data, fileBuffer, originalName) => {
         await campaign.setDevices(newDeviceRecords, { transaction: t });
       }
     }
-
+    const productName = data?.productType?.name;
     // Handle Product (update productId only if changed)
-    if (data?.productType?.name) {
+    if (productName) {
       const existingProduct = await productRepository.findOne({
-        where: { product_type: data.productType.name }
+        where: { product_type: productName }
       });
 
       if (!existingProduct) {
