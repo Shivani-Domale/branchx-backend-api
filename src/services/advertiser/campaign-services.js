@@ -175,6 +175,11 @@ const getCampaignById = async (campaignId) => {
     campaignData.productType = {
       name: campaignData.Product?.product_type
     };
+
+    delete campaignData.Locations;
+    delete campaignData.Devices;
+    delete campaignData.Product;
+
     return campaignData;
   } catch (error) {
     throw new Error(`Error fetching campaign by ID: ${error?.message}`);

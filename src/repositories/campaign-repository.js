@@ -6,24 +6,31 @@ class CampaignRepository extends crudRepository {
     super(Campaign);
   }
 
-  async findByIdWithLocationAndDevice(campaignId) {
-    return await Campaign.findOne({
-      where: { id: campaignId },
-      include: [
-        {
-          model: Location,
-          through: { attributes: [] }, // Exclude junction table fields
-        },
-        {
-          model: Device,
-          through: { attributes: [] }, // Exclude junction table fields
-        },
-        {
-          model: Product
-        }
-      ]
-    });
-  }
+async findByIdWithLocationAndDevice(campaignId) {
+  return await Campaign.findOne({
+    where: { id: campaignId },
+    include: [
+      {
+        model: Location,
+        attributes: ['city'],           // Only return city
+        through: { attributes: [] },
+      },
+      {
+        model: Device,
+        attributes: ['deviceType'],     // Only return deviceType
+        through: { attributes: [] },
+      },
+      {
+        model: Product,
+        attributes: ['product_type']    // Only return product_type
+      }
+    ],
+    attributes: {
+      exclude: ['createdAt', 'updatedAt', 'deletedAt','productId','userId','remark','isDeleted','isDraft'] // Optional: exclude timestamps from Campaign itself
+    }
+  });
+}
+
 
 
 
