@@ -7,19 +7,39 @@ class UserRepository extends crudRepository {
   }
 
   async findUserById(id) {
-    return await User.findByPk(id);
+    try {
+      return await User?.findByPk(id);
+    } catch (error) {
+      console.error('Error in findUserById:', error?.message);
+      throw error;
+    }
   }
 
   async findUserByEmail(email) {
-    return await User.findOne({ where: { email } });
+    try {
+      return await User?.findOne({ where: { email } });
+    } catch (error) {
+      console.error('Error in findUserByEmail:', error?.message);
+      throw error;
+    }
   }
 
   async updateUser(id, updateData) {
-    return await User.update(updateData, { where: { id } });
+    try {
+      return await User?.update(updateData, { where: { id } });
+    } catch (error) {
+      console.error('Error in updateUser:', error?.message);
+      throw error;
+    }
   }
 
   async create(data) {
-    return await User.create(data);
+    try {
+      return await User?.create(data);
+    } catch (error) {
+      console.error('Error in create:', error?.message);
+      throw error;
+    }
   }
 }
 

@@ -2,49 +2,46 @@ const jwt = require('jsonwebtoken');
 const SECRET = process.env.JWT_SECRET || 'secretkey';
 const logger = require('../config/logger');
 
+// Authenticate JWT Token Middleware
 exports.authenticateToken = (req, res, next) => {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
-  if (!token) return res.status(401).json({ message: 'Token required' });
+  try {
+    const token = req.headers?.authorization?.split(' ')[1];
 
-  jwt.verify(token, SECRET, (err, user) => {
-    if (err) return res.status(403).json({ message: 'Invalid token' });
-    req.user = user; // contains id and role
-    next();
-  });
-};
-
-exports.authorizeRoles = (...roles) => (req, res, next) => {
-  if (!roles.includes(req.user.role)) {
-    return res.status(403).json({ message: 'Access denied: insufficient role' });
-  }
-  next();
-};
-
-exports.authenticateToken = (req, res, next) => {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
-
-  if (!token) {
-    logger.warn(`Unauthorized access - No token provided - ${req.method} ${req.originalUrl} - IP: ${req.ip}`);
-    return res.status(401).json({ message: 'Token required' });
-  }
-
-  jwt.verify(token, SECRET, (err, user) => {
-    if (err) {
-      logger.warn(`Unauthorized access - Invalid token - ${req.method} ${req.originalUrl} - IP: ${req.ip}`);
-      return res.status(403).json({ message: 'Invalid token' });
+    if (!token) {
+      logger.warn(`Unauthorized access - No token provided - ${req.method} ${req.originalUrl} - IP: ${req.ip}`);
+      return res.status(401).json({ message: 'Token required' });
     }
 
-    req.user = user;
-    next();
-  });
+    jwt.verify(token, SECRET, (err, user) => {
+      if (err) {
+        logger.warn(`Unauthorized access - Invalid token - ${req.method} ${req.originalUrl} - IP: ${req.ip}`);
+        return res.status(403).json({ message: 'Invalid token' });
+      }
+
+      req.user = user;
+      next();
+    });
+  } catch (error) {
+    logger.error(`Auth error - ${error.message} - ${req.method} ${req.originalUrl} - IP: ${req.ip}`);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
 };
 
-exports.authorizeRoles = (...roles) => (req, res, next) => {
-  if (!roles.includes(req.user.role)) {
-    logger.warn(`Forbidden access - Role '${req.user.role}' not allowed - ${req.method} ${req.originalUrl} - IP: ${req.ip}`);
-    return res.status(403).json({ message: 'Access denied: insufficient role' });
-  }
-  next();
+// Role-based Authorization Middleware
+exports.authorizeRoles = (...roles) => {
+  return (req, res, next) => {
+    try {
+      const userRole = req?.user?.role;
+
+      if (!roles.includes(userRole)) {
+        logger.warn(`Forbidden access - Role '${userRole}' not allowed - ${req.method} ${req.originalUrl} - IP: ${req.ip}`);
+        return res.status(403).json({ message: 'Access denied: insufficient role' });
+      }
+
+      next();
+    } catch (error) {
+      logger.error(`Role check error - ${error.message} - ${req.method} ${req.originalUrl} - IP: ${req.ip}`);
+      return res.status(500).json({ message: 'Internal server error' });
+    }
+  };
 };
