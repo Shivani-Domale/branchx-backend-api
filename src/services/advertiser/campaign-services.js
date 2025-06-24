@@ -116,7 +116,7 @@ const getAllCampaigns = async (id) => {
         campaignName: campaign?.campaignName,
         scheduleDate: formattedDate,
         startTime: campaign?.startTime,
-        endTime:campaign?.endTime,
+        endTime: campaign?.endTime,
         campaignObjective: campaign?.campaignObjective,
         creativeFile: campaign?.creativeFile,
         status: campaign?.status,
@@ -258,16 +258,20 @@ const deleteCampaign = async (id) => {
 };
 
 const calculateBaseCost = async (adDevices, productType, targetRegions) => {
-  const devices = await deviceRepository.findByDeviceTypes(adDevices);
-  const locations = await locationRepository.findByCities(targetRegions);
-  const product = await productRepository.findProductById(productType);
+  try {
+    const devices = await deviceRepository.findByDeviceTypes(adDevices);
+    const locations = await locationRepository.findByCities(targetRegions);
+    const product = await productRepository.findProductById(productType);
 
-  if (!devices || !locations || !product) {
-    throw new Error("Devices, locations, or product not found.");
+    if (!devices || !locations || !product) {
+      throw new Error("Devices, locations, or product not found.");
+    }
+
+    const baseCost = await GenerateBaseCostForCampaigns({ devices, locations, product });
+    return baseCost;
+  } catch (error) {
+    throw new Error(`Error calculating base cost: ${error?.message}`);
   }
-
-  const baseCost = await GenerateBaseCostForCampaigns({ devices, locations, product });
-  return baseCost;
 };
 
 module.exports = {
