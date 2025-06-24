@@ -1,7 +1,7 @@
 const { CampaignRepository, ProductRepository, DeviceRepository, LocationRepository } = require("../../repositories");
 const { GenerateBaseCostForCampaigns, UploadFile, formatToTimeString, convertTo12HourFormat } = require("../../utils");
 const { sequelize } = require("../../models");
-const { Logger } = require("../../config");
+
 
 
 const campaignRepository = new CampaignRepository();
@@ -13,7 +13,7 @@ const createCampaign = async (data, fileBuffer, originalName, id) => {
   const t = await sequelize.transaction();
 
   try {
-    Logger.info("Starting campaign creation...");
+
 
     const parsedDevices = JSON.parse(data?.adDevices || "[]");
     const DeviceTypes = parsedDevices?.map(device => device?.name);
@@ -71,22 +71,22 @@ const createCampaign = async (data, fileBuffer, originalName, id) => {
     await campaign.save({ transaction: t });
 
     if (deviceIds?.length) {
-      Logger.info("Associating devices...");
+     
       await campaign?.addDevices(deviceIds, { transaction: t });
     }
 
     if (locationIds?.length) {
-      Logger.info("Associating locations...");
+      
       await campaign?.addLocations(locationIds, { transaction: t });
     }
 
     await t.commit();
-    Logger.info("Campaign created successfully.");
+
     return campaign;
 
   } catch (error) {
     await t.rollback();
-    Logger.error("Error creating campaign:", error?.message);
+   
     throw new Error(`Error creating campaign: ${error?.message}`);
   }
 };
