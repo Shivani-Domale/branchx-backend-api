@@ -235,18 +235,17 @@ const updateCampaign = async (id, data, fileBuffer, originalName) => {
     const campaign = await campaignRepository.findByIdWithLocationAndDevice(id);
     if (!campaign) throw new Error("Campaign not found");
 
-    // Format times and day array
+ 
     data.startTime = formatToTimeString(data?.startTime);
     data.endTime = formatToTimeString(data?.endTime);
     data.daysOfWeek = JSON.stringify(data?.daysOfWeek || []);
 
-    // Upload creative file if provided
     if (fileBuffer && originalName) {
       const newCreativeUrl = await UploadFile(fileBuffer, originalName, campaign?.id);
       data.creativeFile = newCreativeUrl;
     }
 
-    // Handle Locations (only update if changed)
+    
     if (data?.targetRegions?.length) {
       const newCities = data?.targetRegions.map(loc => loc?.name?.toLowerCase()).sort();
       const oldCities = campaign?.Locations.map(loc => loc?.city?.toLowerCase()).sort();
@@ -259,7 +258,7 @@ const updateCampaign = async (id, data, fileBuffer, originalName) => {
       }
     }
 
-    // Handle Devices (only update if changed)
+   
     if (data?.adDevices?.length) {
       const newDeviceTypes = data?.adDevices.map(dev => dev?.name?.toLowerCase()).sort();
       const oldDeviceTypes = campaign?.Devices.map(dev => dev?.deviceType?.toLowerCase()).sort();
@@ -272,7 +271,7 @@ const updateCampaign = async (id, data, fileBuffer, originalName) => {
       }
     }
     const productName = data?.productType?.name;
-    // Handle Product (update productId only if changed)
+    console.log(productName);
     if (productName) {
       const existingProduct = await productRepository.findOne({
         where: { product_type: productName }
