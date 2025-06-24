@@ -226,77 +226,69 @@ const getProductTypes = async () => {
   }
 };
 
-// const updateCampaign = async (id, data, fileBuffer, originalName) => {
-//   const t = await sequelize.transaction();
-//   console.log(data);
-  
-//   try {
-//     const campaign = await campaignRepository.findById(id);
-//     if (!campaign) {
-//       throw new Error("Campaign not found");
-//     }
-//     data.startTime = formatToTimeString(data?.startTime);
-//     data.endTime = formatToTimeString(data?.endTime);
-//     data.daysOfWeek = JSON.stringify(data?.daysOfWeek);
-//     Object.assign(campaign, data);
-
-//     if (fileBuffer && originalName) {
-//       const newCreativeUrl = await UploadFile(fileBuffer, originalName, campaign?.id);
-//       campaign.creativeFile = newCreativeUrl;
-//     }
-
-//     await campaign?.save({ transaction: t });
-//     await t.commit();
-
-//     return campaign;
-//   } catch (error) {
-//     await t.rollback();
-//     Logger.error("Error updating campaign:", error?.message);
-//     throw new Error(`Error updating campaign: ${error?.message}`);
-//   }
-// };
-
 const updateCampaign = async (id, data, fileBuffer, originalName) => {
   const t = await sequelize.transaction();
- console.log(data);
+  console.log("Update Campaign Data ===>", data);
+
   try {
-    const campaign = await campaignRepository.findById(id); // include Locations only
+    const campaign = await campaignRepository.findByIdWithLocationAndDevice(id);
     if (!campaign) throw new Error("Campaign not found");
 
-    data.startTime = formatToTimeString(data?.startTime); // "14:00:00"
+    // Format times safely
+    data.startTime = formatToTimeString(data?.startTime);
     data.endTime = formatToTimeString(data?.endTime);
-
     data.daysOfWeek = JSON.stringify(data?.daysOfWeek || []);
 
+    // Upload new creative file (if provided)
     if (fileBuffer && originalName) {
       const newCreativeUrl = await UploadFile(fileBuffer, originalName, campaign?.id);
       data.creativeFile = newCreativeUrl;
     }
 
-    
-    if (data.targetRegions && Array.isArray(data.targetRegions)) {
-      const newCities = data.targetRegions.map(loc => loc.name.toLowerCase()).sort();
-      const oldCities = campaign.Locations.map(loc => loc.city.toLowerCase()).sort();
+    // Update target locations only if changed
+    if (data?.targetRegions?.length) {
+      const newCities = data?.targetRegions?.map(loc => loc?.name?.toLowerCase()).sort();
+      const oldCities = campaign?.Locations?.map(loc => loc?.city?.toLowerCase()).sort();
 
-      const locationsChanged = JSON.stringify(newCities) !== JSON.stringify(oldCities);
-
-      if (locationsChanged) {
-       
-        const newLocationRecords = await locationRepository.findAll({
-          where: {
-            city: newCities
-          }
+      if (JSON.stringify(newCities) !== JSON.stringify(oldCities)) {
+        const newLocationRecords = await Location.findAll({
+          where: { city: newCities }
         });
-
-        // Set new associations (will replace old ones)
-        await campaign.setLocations(newLocationRecords, { transaction: t });
+        await campaign?.setLocations(newLocationRecords, { transaction: t });
       }
     }
 
- 
-    Object.assign(campaign, data);
+    // Update ad devices only if changed
+    if (data?.adDevices?.length) {
+      const newDeviceTypes = data?.adDevices?.map(dev => dev?.name?.toLowerCase()).sort();
+      const oldDeviceTypes = campaign?.Devices?.map(dev => dev?.deviceType?.toLowerCase()).sort();
 
-    await campaign.save({ transaction: t });
+      if (JSON.stringify(newDeviceTypes) !== JSON.stringify(oldDeviceTypes)) {
+        const newDeviceRecords = await Device.findAll({
+          where: { deviceType: newDeviceTypes }
+        });
+        await campaign?.setDevices(newDeviceRecords, { transaction: t });
+      }
+    }
+
+    // Update product type if changed
+    if (data?.productType?.name) {
+      const existingProduct = await Product.findOne({
+        where: { product_type: data?.productType?.name }
+      });
+
+      if (existingProduct && existingProduct?.id !== campaign?.productId) {
+        campaign.productId = existingProduct.id;
+      }
+    }
+
+    // Remove special props before updating remaining data
+    delete data?.productType;
+    delete data?.targetRegions;
+    delete data?.adDevices;
+
+    Object.assign(campaign, data);
+    await campaign?.save({ transaction: t });
     await t.commit();
 
     return campaign;
@@ -306,6 +298,7 @@ const updateCampaign = async (id, data, fileBuffer, originalName) => {
     throw new Error(`Error updating campaign: ${error?.message}`);
   }
 };
+
 
 const deleteCampaign = async (id) => {
   const transaction = await sequelize.transaction();
