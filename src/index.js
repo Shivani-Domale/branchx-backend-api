@@ -17,9 +17,20 @@ app.use(express.urlencoded({ extended: true }));
 app.use(errorHandler)
 
 
+const allowedOrigins = [
+  'http://139.59.23.86',
+  'http://localhost:5173', 
+  'http://127.0.0.1:3000',
+  'http://127.0.0.1:5174'
+];
+
 app.use(cors({
   origin: function (origin, callback) {
-    callback(null, origin || '*'); // Dynamically reflect origin
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
   },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
