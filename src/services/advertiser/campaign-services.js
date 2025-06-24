@@ -251,7 +251,7 @@ const updateCampaign = async (id, data, fileBuffer, originalName) => {
       const oldCities = campaign?.Locations?.map(loc => loc?.city?.toLowerCase()).sort();
 
       if (JSON.stringify(newCities) !== JSON.stringify(oldCities)) {
-        const newLocationRecords = await Location.findAll({
+        const newLocationRecords = await locationRepository.findAll({
           where: { city: newCities }
         });
         await campaign?.setLocations(newLocationRecords, { transaction: t });
@@ -264,7 +264,7 @@ const updateCampaign = async (id, data, fileBuffer, originalName) => {
       const oldDeviceTypes = campaign?.Devices?.map(dev => dev?.deviceType?.toLowerCase()).sort();
 
       if (JSON.stringify(newDeviceTypes) !== JSON.stringify(oldDeviceTypes)) {
-        const newDeviceRecords = await Device.findAll({
+        const newDeviceRecords = await deviceRepository.findAll({
           where: { deviceType: newDeviceTypes }
         });
         await campaign?.setDevices(newDeviceRecords, { transaction: t });
@@ -273,7 +273,7 @@ const updateCampaign = async (id, data, fileBuffer, originalName) => {
 
     // Update product type if changed
     if (data?.productType?.name) {
-      const existingProduct = await Product.findOne({
+      const existingProduct = await productRepository.findOne({
         where: { product_type: data?.productType?.name }
       });
 
