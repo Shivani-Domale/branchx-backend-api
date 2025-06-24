@@ -273,9 +273,7 @@ const updateCampaign = async (id, data, fileBuffer, originalName) => {
     const productName = data?.productType?.name;
     console.log(productName);
     if (productName) {
-      const existingProduct = await productRepository.findOne({
-        where: { product_type: productName }
-      });
+      const existingProduct = await productRepository.findByProductName(productName);
 
       if (!existingProduct) {
         throw new Error(`Product not found: ${data.productType.name}`);
