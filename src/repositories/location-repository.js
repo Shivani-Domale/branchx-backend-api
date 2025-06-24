@@ -31,6 +31,19 @@ class LocationRepository extends crudRepository {
         });
     }
 
+     async findByDeviceTypes(deviceTypes = []) {
+    try {
+      return await this.model.findAll({
+        where: {
+          deviceType: deviceTypes
+        }
+      });
+    } catch (error) {
+      console.error("Error in findByDeviceTypes:", error);
+      throw error;
+    }
+  }
+
 }
 
 module.exports = LocationRepository;

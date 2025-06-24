@@ -251,9 +251,7 @@ const updateCampaign = async (id, data, fileBuffer, originalName) => {
       const oldCities = campaign?.Locations.map(loc => loc?.city?.toLowerCase()).sort();
 
       if (JSON.stringify(newCities) !== JSON.stringify(oldCities)) {
-        const newLocationRecords = await locationRepository.findAll({
-          where: { city: newCities }
-        });
+        const newLocationRecords = await locationRepository.findByCities(newCities);
         await campaign.setLocations(newLocationRecords, { transaction: t });
       }
     }
@@ -264,9 +262,7 @@ const updateCampaign = async (id, data, fileBuffer, originalName) => {
       const oldDeviceTypes = campaign?.Devices.map(dev => dev?.deviceType?.toLowerCase()).sort();
 
       if (JSON.stringify(newDeviceTypes) !== JSON.stringify(oldDeviceTypes)) {
-        const newDeviceRecords = await deviceRepository.findAll({
-          where: { deviceType: newDeviceTypes }
-        });
+        const newDeviceRecords = await deviceRepository.findByDeviceTypes(newDeviceTypes);
         await campaign.setDevices(newDeviceRecords, { transaction: t });
       }
     }
