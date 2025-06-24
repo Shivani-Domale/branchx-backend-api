@@ -295,7 +295,6 @@ const updateCampaign = async (id, data, fileBuffer, originalName) => {
     return campaign;
   } catch (error) {
     await t.rollback();
-    Logger.error("Error updating campaign:", error?.message);
     throw new Error(`Error updating campaign: ${error?.message}`);
   }
 };
