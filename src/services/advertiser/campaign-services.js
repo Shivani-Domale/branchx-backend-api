@@ -226,26 +226,77 @@ const getProductTypes = async () => {
   }
 };
 
+// const updateCampaign = async (id, data, fileBuffer, originalName) => {
+//   const t = await sequelize.transaction();
+//   console.log(data);
+  
+//   try {
+//     const campaign = await campaignRepository.findById(id);
+//     if (!campaign) {
+//       throw new Error("Campaign not found");
+//     }
+//     data.startTime = formatToTimeString(data?.startTime);
+//     data.endTime = formatToTimeString(data?.endTime);
+//     data.daysOfWeek = JSON.stringify(data?.daysOfWeek);
+//     Object.assign(campaign, data);
+
+//     if (fileBuffer && originalName) {
+//       const newCreativeUrl = await UploadFile(fileBuffer, originalName, campaign?.id);
+//       campaign.creativeFile = newCreativeUrl;
+//     }
+
+//     await campaign?.save({ transaction: t });
+//     await t.commit();
+
+//     return campaign;
+//   } catch (error) {
+//     await t.rollback();
+//     Logger.error("Error updating campaign:", error?.message);
+//     throw new Error(`Error updating campaign: ${error?.message}`);
+//   }
+// };
+
 const updateCampaign = async (id, data, fileBuffer, originalName) => {
   const t = await sequelize.transaction();
-  console.log(data);
-  
+
   try {
-    const campaign = await campaignRepository.findById(id);
-    if (!campaign) {
-      throw new Error("Campaign not found");
-    }
-    data.startTime = formatToTimeString(data?.startTime);
+    const campaign = await campaignRepository.findByIdWithLocation(id); // include Locations only
+    if (!campaign) throw new Error("Campaign not found");
+
+    data.startTime = formatToTimeString(data?.startTime); // "14:00:00"
     data.endTime = formatToTimeString(data?.endTime);
-    data.daysOfWeek = JSON.stringify(data?.daysOfWeek);
-    Object.assign(campaign, data);
+
+    data.daysOfWeek = JSON.stringify(data?.daysOfWeek || []);
 
     if (fileBuffer && originalName) {
       const newCreativeUrl = await UploadFile(fileBuffer, originalName, campaign?.id);
-      campaign.creativeFile = newCreativeUrl;
+      data.creativeFile = newCreativeUrl;
     }
 
-    await campaign?.save({ transaction: t });
+    
+    if (data.targetRegions && Array.isArray(data.targetRegions)) {
+      const newCities = data.targetRegions.map(loc => loc.name.toLowerCase()).sort();
+      const oldCities = campaign.Locations.map(loc => loc.city.toLowerCase()).sort();
+
+      const locationsChanged = JSON.stringify(newCities) !== JSON.stringify(oldCities);
+
+      if (locationsChanged) {
+       
+        const newLocationRecords = await locationRepository.findAll({
+          where: {
+            city: newCities
+          }
+        });
+
+        // Set new associations (will replace old ones)
+        await campaign.setLocations(newLocationRecords, { transaction: t });
+      }
+    }
+
+ 
+    Object.assign(campaign, data);
+
+    await campaign.save({ transaction: t });
     await t.commit();
 
     return campaign;
