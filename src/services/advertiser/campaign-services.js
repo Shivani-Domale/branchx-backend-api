@@ -230,7 +230,8 @@ const updateCampaign = async (id, data, fileBuffer, originalName) => {
     if (!campaign) {
       throw new Error("Campaign not found");
     }
-
+    data.startTime = formatToTimeString(data?.startTime);
+    data.endTime = formatToTimeString(data?.endTime);
     Object.assign(campaign, data);
 
     if (fileBuffer && originalName) {
