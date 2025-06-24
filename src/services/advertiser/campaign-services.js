@@ -233,6 +233,7 @@ const updateCampaign = async (id, data, fileBuffer, originalName) => {
     }
     data.startTime = formatToTimeString(data?.startTime);
     data.endTime = formatToTimeString(data?.endTime);
+    data.daysOfWeek = JSON.stringify(data?.daysOfWeek);
     Object.assign(campaign, data);
 
     if (fileBuffer && originalName) {
