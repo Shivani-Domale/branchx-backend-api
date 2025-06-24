@@ -3,6 +3,7 @@ const { GenerateBaseCostForCampaigns, UploadFile, formatToTimeString, convertTo1
 const { sequelize } = require("../../models");
 const { Logger } = require("../../config");
 
+
 const campaignRepository = new CampaignRepository();
 const productRepository = new ProductRepository();
 const deviceRepository = new DeviceRepository();
