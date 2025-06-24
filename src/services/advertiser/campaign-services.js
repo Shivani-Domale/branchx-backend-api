@@ -1,5 +1,5 @@
 const { CampaignRepository, ProductRepository, DeviceRepository, LocationRepository } = require("../../repositories");
-const { GenerateBaseCostForCampaigns, UploadFile, formatToTimeString } = require("../../utils");
+const { GenerateBaseCostForCampaigns, UploadFile, formatToTimeString, convertTo12HourFormat } = require("../../utils");
 const { sequelize } = require("../../models");
 const { Logger } = require("../../config");
 
@@ -175,6 +175,10 @@ const getCampaignById = async (campaignId) => {
     campaignData.productType = {
       name: campaignData.Product?.product_type
     };
+
+
+    campaignData.startTime = convertTo12HourFormat(campaignData.startTime);
+    campaignData.endTime = convertTo12HourFormat(campaignData.endTime);
 
     delete campaignData.Locations;
     delete campaignData.Devices;
