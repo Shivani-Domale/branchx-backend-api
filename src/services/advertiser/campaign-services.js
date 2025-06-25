@@ -229,8 +229,6 @@ const getProductTypes = async () => {
 
 const updateCampaign = async (id, data, fileBuffer, originalName) => {
   const t = await sequelize.transaction();
-  console.log("Update Campaign Data ===>", data);
-
   try {
     const campaign = await campaignRepository.findByIdWithLocationAndDevice(id);
     if (!campaign) throw new Error("Campaign not found");
@@ -247,8 +245,8 @@ const updateCampaign = async (id, data, fileBuffer, originalName) => {
 
     
     if (data?.targetRegions?.length) {
-      const newCities = data?.targetRegions.map(loc => loc?.name?.toLowerCase()).sort();
-      const oldCities = campaign?.Locations.map(loc => loc?.city?.toLowerCase()).sort();
+      const newCities = data?.targetRegions.map(loc => loc?.name).sort();
+      const oldCities = campaign?.Locations.map(loc => loc?.city).sort();
 
       if (JSON.stringify(newCities) !== JSON.stringify(oldCities)) {
         const newLocationRecords = await locationRepository.findByCities(newCities);
@@ -258,8 +256,8 @@ const updateCampaign = async (id, data, fileBuffer, originalName) => {
 
    
     if (data?.adDevices?.length) {
-      const newDeviceTypes = data?.adDevices.map(dev => dev?.name?.toLowerCase()).sort();
-      const oldDeviceTypes = campaign?.Devices.map(dev => dev?.deviceType?.toLowerCase()).sort();
+      const newDeviceTypes = data?.adDevices.map(dev => dev?.name).sort();
+      const oldDeviceTypes = campaign?.Devices.map(dev => dev?.deviceType).sort();
 
       if (JSON.stringify(newDeviceTypes) !== JSON.stringify(oldDeviceTypes)) {
         const newDeviceRecords = await deviceRepository.findByDeviceTypes(newDeviceTypes);
@@ -267,7 +265,7 @@ const updateCampaign = async (id, data, fileBuffer, originalName) => {
       }
     }
     const productName = data?.productType?.name;
-    console.log(productName);
+   
     if (productName) {
       const existingProduct = await productRepository.findByProductName(productName);
 
