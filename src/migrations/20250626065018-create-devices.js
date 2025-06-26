@@ -1,7 +1,7 @@
 'use strict';
-/** @type {import('sequelize-cli').Migration} */
+
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Devices', {
       id: {
         allowNull: false,
@@ -10,32 +10,37 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       deviceType: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false
       },
       price: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull: false
       },
       locationId: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         references: {
-          model: 'Locations',
+          model: 'Locations', // Make sure the Locations table exists
           key: 'id'
         },
         onUpdate: 'CASCADE',
-        onDelete: 'SET NULL'
-      }
-      ,
+        onDelete: 'CASCADE'
+      },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn('NOW')
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn('NOW')
       }
     });
   },
-  async down(queryInterface, Sequelize) {
+
+  down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('Devices');
   }
 };
