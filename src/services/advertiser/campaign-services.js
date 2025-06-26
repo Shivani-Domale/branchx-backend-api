@@ -1,7 +1,8 @@
 const { CampaignRepository, ProductRepository, DeviceRepository, LocationRepository } = require("../../repositories");
-const { GenerateBaseCostForCampaigns, UploadFile, formatToTimeString } = require("../../utils");
+const { GenerateBaseCostForCampaigns, UploadFile, formatToTimeString, convertTo12HourFormat } = require("../../utils");
 const { sequelize } = require("../../models");
-const { Logger } = require("../../config");
+
+
 
 const campaignRepository = new CampaignRepository();
 const productRepository = new ProductRepository();
@@ -12,7 +13,7 @@ const createCampaign = async (data, fileBuffer, originalName, id) => {
   const t = await sequelize.transaction();
 
   try {
-    Logger.info("Starting campaign creation...");
+
 
     const parsedDevices = JSON.parse(data?.adDevices || "[]");
     const DeviceTypes = parsedDevices?.map(device => device?.name);
@@ -70,22 +71,22 @@ const createCampaign = async (data, fileBuffer, originalName, id) => {
     await campaign.save({ transaction: t });
 
     if (deviceIds?.length) {
-      Logger.info("Associating devices...");
+     
       await campaign?.addDevices(deviceIds, { transaction: t });
     }
 
     if (locationIds?.length) {
-      Logger.info("Associating locations...");
+      
       await campaign?.addLocations(locationIds, { transaction: t });
     }
 
     await t.commit();
-    Logger.info("Campaign created successfully.");
+
     return campaign;
 
   } catch (error) {
     await t.rollback();
-    Logger.error("Error creating campaign:", error?.message);
+   
     throw new Error(`Error creating campaign: ${error?.message}`);
   }
 };
@@ -176,6 +177,10 @@ const getCampaignById = async (campaignId) => {
       name: campaignData.Product?.product_type
     };
 
+
+    campaignData.startTime = convertTo12HourFormat(campaignData.startTime);
+    campaignData.endTime = convertTo12HourFormat(campaignData.endTime);
+
     delete campaignData.Locations;
     delete campaignData.Devices;
     delete campaignData.Product;
@@ -224,30 +229,76 @@ const getProductTypes = async () => {
 
 const updateCampaign = async (id, data, fileBuffer, originalName) => {
   const t = await sequelize.transaction();
+  console.log("Update Campaign Data ===>", data);
 
   try {
-    const campaign = await campaignRepository.findById(id);
-    if (!campaign) {
-      throw new Error("Campaign not found");
-    }
+    const campaign = await campaignRepository.findByIdWithLocationAndDevice(id);
+    if (!campaign) throw new Error("Campaign not found");
 
-    Object.assign(campaign, data);
+    // Format times safely
+    data.startTime = formatToTimeString(data?.startTime);
+    data.endTime = formatToTimeString(data?.endTime);
+    data.daysOfWeek = JSON.stringify(data?.daysOfWeek || []);
 
+    // Upload new creative file (if provided)
     if (fileBuffer && originalName) {
       const newCreativeUrl = await UploadFile(fileBuffer, originalName, campaign?.id);
-      campaign.creativeFile = newCreativeUrl;
+      data.creativeFile = newCreativeUrl;
     }
 
+    // Update target locations only if changed
+    if (data?.targetRegions?.length) {
+      const newCities = data?.targetRegions?.map(loc => loc?.name?.toLowerCase()).sort();
+      const oldCities = campaign?.Locations?.map(loc => loc?.city?.toLowerCase()).sort();
+
+      if (JSON.stringify(newCities) !== JSON.stringify(oldCities)) {
+        const newLocationRecords = await locationRepository.findAll({
+          where: { city: newCities }
+        });
+        await campaign?.setLocations(newLocationRecords, { transaction: t });
+      }
+    }
+
+    // Update ad devices only if changed
+    if (data?.adDevices?.length) {
+      const newDeviceTypes = data?.adDevices?.map(dev => dev?.name?.toLowerCase()).sort();
+      const oldDeviceTypes = campaign?.Devices?.map(dev => dev?.deviceType?.toLowerCase()).sort();
+
+      if (JSON.stringify(newDeviceTypes) !== JSON.stringify(oldDeviceTypes)) {
+        const newDeviceRecords = await deviceRepository.findAll({
+          where: { deviceType: newDeviceTypes }
+        });
+        await campaign?.setDevices(newDeviceRecords, { transaction: t });
+      }
+    }
+
+    // Update product type if changed
+    if (data?.productType?.name) {
+      const existingProduct = await productRepository.findOne({
+        where: { product_type: data?.productType?.name }
+      });
+
+      if (existingProduct && existingProduct?.id !== campaign?.productId) {
+        campaign.productId = existingProduct.id;
+      }
+    }
+
+    // Remove special props before updating remaining data
+    delete data?.productType;
+    delete data?.targetRegions;
+    delete data?.adDevices;
+
+    Object.assign(campaign, data);
     await campaign?.save({ transaction: t });
     await t.commit();
 
     return campaign;
   } catch (error) {
     await t.rollback();
-    Logger.error("Error updating campaign:", error?.message);
     throw new Error(`Error updating campaign: ${error?.message}`);
   }
 };
+
 
 const deleteCampaign = async (id) => {
   const transaction = await sequelize.transaction();

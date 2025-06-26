@@ -93,7 +93,6 @@ const getUserCampaignByToken = async (req, res) => {
     }
 
     const campaigns = await CampaignService.getAllCampaigns(user?.id);
- console.log(campaigns);
     if (!campaigns || campaigns?.length === 0) {
       return ErrorReponse(res, StatusCodes.NOT_FOUND, 'No campaign found');
     }

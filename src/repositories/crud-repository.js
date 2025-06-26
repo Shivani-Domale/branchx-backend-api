@@ -1,3 +1,5 @@
+const { Logger } = require("../config");
+
 class crudRepository {
     constructor(model) {
         this.model = model;
