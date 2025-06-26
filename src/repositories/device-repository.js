@@ -20,6 +20,18 @@ class DeviceRepository extends crudRepository {
     async getAll() {
         return await this.model.findAll();
     }
+    async findByCities(cityNames = []) {
+    try {
+      return await this.model.findAll({
+        where: {
+          city: cityNames
+        }
+      });
+    } catch (error) {
+      console.error("Error in findByCities:", error);
+      throw error;
+    }
+  }
 
 }
 

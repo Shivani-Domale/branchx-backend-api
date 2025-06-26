@@ -45,6 +45,24 @@ class ProductRepository extends crudRepository {
     async getAll() {
         return await this.model.findAll();
     }
+
+    async findByProductName(name) {
+    try {
+      if (!name || typeof name !== "string") {
+        throw new Error("Invalid product name.");
+      }
+
+      const product = await Product.findOne({
+        where: { product_type: name.trim() }
+      });
+
+      return product;
+    } catch (error) {
+      console.error("Error in findByProductName:", error.message);
+      throw new Error(`Error fetching product by name: ${error.message}`);
+    }
+  }
 }
+
 
 module.exports = ProductRepository;
