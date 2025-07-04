@@ -48,7 +48,6 @@ const createCampaign = async (data, fileBuffer, originalName, id) => {
 
     data.userId = id;
     data.productId = productId;
-    data.isPayment = false;
     data.startTime = formatToTimeString(data?.startTime);
     data.endTime = formatToTimeString(data?.endTime);
     const campaign = await campaignRepository.create(data, { transaction: t });
@@ -67,7 +66,7 @@ const createCampaign = async (data, fileBuffer, originalName, id) => {
       throw new Error("Failed to upload video/image");
     }
 
-    campaign.creativeFile = creativeUrl;
+    campaign.productFiles = creativeUrl;
     await campaign.save({ transaction: t });
 
     if (deviceIds?.length) {
