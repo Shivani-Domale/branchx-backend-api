@@ -3,51 +3,85 @@ const { CampaignService } = require("../../services");
 const { StatusCodes } = require('http-status-codes');
 const { SuccessReposnse, ErrorReponse } = require("../../utils");
 
+// const createCampaign = async (req, res) => {
+//   try {
+//     const user = req?.user;
+//    // console.log(user.id);
+//     if (!user) {
+//       return ErrorReponse(res, StatusCodes.UNAUTHORIZED, "Please Login...");
+//     }
+
+
+//     Logger.info("------------");
+//     Logger.info("Received request to create campaign");
+
+//     const files = req?.files;
+//     if (!files || files.length === 0) {
+//       Logger.error("At least one video/image file is required");
+//       return ErrorReponse(res, StatusCodes.NO_CONTENT, "At least one video/image file is required!");
+//     }
+
+//     const allowedTypes = ["image/jpeg", "image/png", "video/mp4", "video/avi"];
+//     for (const file of files) {
+//       if (!allowedTypes.includes(file?.mimetype)) {
+//         Logger.error("Invalid file type:", file?.mimetype);
+//         return ErrorReponse(
+//           res,
+//           StatusCodes.UNSUPPORTED_MEDIA_TYPE,
+//           "Invalid file type. Only JPG, PNG, MP4, AVI allowed."
+//         );
+//       }
+//     }
+
+//     Logger.info(`Uploaded ${files.length} files`);
+
+//     const campaign = await CampaignService.createCampaign(req?.body, files, user?.id);
+
+//     Logger.info("Campaign created successfully");
+//     Logger.info("------------");
+
+//     return SuccessReposnse(res, null, StatusCodes.OK, campaign);
+
+//   } catch (error) {
+//     console.error("Error creating campaign:", error);
+//     Logger.error("Error creating campaign:", error);
+//     Logger.error("------------");
+//     return ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error);
+//   }
+// };
+
 const createCampaign = async (req, res) => {
   try {
-    const user = req?.user;
+    const user = req.user;
+
     if (!user) {
       return ErrorReponse(res, StatusCodes.UNAUTHORIZED, "Please Login...");
     }
 
-    Logger.info("------------");
-    Logger.info("Received request to create campaign");
-
-    const files = req?.files;
+    const files = req.files;
     if (!files || files.length === 0) {
-      Logger.error("At least one video/image file is required");
-      return ErrorReponse(res, StatusCodes.NO_CONTENT, "At least one video/image file is required!");
+      Logger.error("No creative files found.");
+      return ErrorReponse(res, StatusCodes.BAD_REQUEST, "At least one image or video is required.");
     }
 
     const allowedTypes = ["image/jpeg", "image/png", "video/mp4", "video/avi"];
     for (const file of files) {
       if (!allowedTypes.includes(file?.mimetype)) {
-        Logger.error("Invalid file type:", file?.mimetype);
         return ErrorReponse(
           res,
           StatusCodes.UNSUPPORTED_MEDIA_TYPE,
-          "Invalid file type. Only JPG, PNG, MP4, AVI allowed."
+          `Invalid file type: ${file.originalname}`
         );
       }
     }
 
-    Logger.info(`Uploaded ${files.length} files`);
-
-    const campaign = await CampaignService.createCampaign(req?.body, files, user?.id);
-
-    Logger.info("Campaign created successfully");
-    Logger.info("------------");
-
+    const campaign = await CampaignService.createCampaign(req.body, files, user.id);
     return SuccessReposnse(res, null, StatusCodes.OK, campaign);
-
   } catch (error) {
-    console.error("Error creating campaign:", error);
-    Logger.error("Error creating campaign:", error);
-    Logger.error("------------");
-    return ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error);
+    Logger.error("Campaign creation failed:", error);
+    return ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error.message);
   }
 };
-
 
 const updateCampaignStatus = async (req, res) => {
   try {

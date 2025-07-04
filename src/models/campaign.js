@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       Campaign.belongsToMany(models.Device, {
         through: 'CampaignDeviceTypes',
         foreignKey: 'campaignId',
-        otherKey: 'deviceId',
+        otherKey: 'deviceTypeId',
         as: 'devices'
       });
 
