@@ -6,30 +6,33 @@ class CampaignRepository extends crudRepository {
     super(Campaign);
   }
 
-async findByIdWithLocationAndDevice(campaignId) {
-  return await Campaign.findOne({
-    where: { id: campaignId },
-    include: [
-      {
-        model: Location,
-        attributes: ['city'],           // Only return city
-        through: { attributes: [] },
-      },
-      {
-        model: Device,
-        attributes: ['deviceType'],     // Only return deviceType
-        through: { attributes: [] },
-      },
-      {
-        model: Product,
-        attributes: ['product_type']    // Only return product_type
+  async findByIdWithLocationAndDevice(campaignId) {
+    return await Campaign.findOne({
+      where: { id: campaignId },
+      include: [
+        {
+          model: Location,
+          attributes: ['city'],
+          as: 'locations',           // Only return city
+          through: { attributes: [] },
+        },
+        {
+          model: Device,
+          attributes: ['deviceName'],
+          as: 'devices',     // Only return deviceType
+          through: { attributes: [] },
+        },
+        {
+          model: Product,
+          as: 'product', // Assuming the association is named 'products'
+          attributes: ['product_type']    // Only return product_type
+        }
+      ],
+      attributes: {
+        exclude: ['createdAt', 'updatedAt', 'deletedAt', 'productId', 'userId', 'remark', 'isDeleted', 'isDraft'] // Optional: exclude timestamps from Campaign itself
       }
-    ],
-    attributes: {
-      exclude: ['createdAt', 'updatedAt', 'deletedAt','productId','userId','remark','isDeleted','isDraft'] // Optional: exclude timestamps from Campaign itself
-    }
-  });
-}
+    });
+  }
 
 
 
