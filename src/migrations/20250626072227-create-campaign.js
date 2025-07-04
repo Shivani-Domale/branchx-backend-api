@@ -1,79 +1,59 @@
 'use strict';
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Campaigns', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER
-      },
-      campaignName: {
-        type: Sequelize.STRING
-      },
-      campaignCode: {
-        type: Sequelize.STRING
-      },
-      startDate: {
+    await Promise.all([
+      queryInterface.addColumn('Campaigns', 'startDate', {
         type: Sequelize.DATE
-      },
-      endDate: {
+      }),
+      queryInterface.addColumn('Campaigns', 'endDate', {
         type: Sequelize.DATE
-      },
-      startTime: {
+      }),
+      queryInterface.addColumn('Campaigns', 'startTime', {
         type: Sequelize.TIME
-      },
-      endTime: {
+      }),
+      queryInterface.addColumn('Campaigns', 'endTime', {
         type: Sequelize.TIME
-      },
-      status: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false
-      },
-      baseBid: {
-        type: Sequelize.INTEGER
-      },
-      maxBid: {
-        type: Sequelize.INTEGER
-      },
-      campaignBudget: {
+      }),
+
+      queryInterface.addColumn('Campaigns', 'campaignBudget', {
         type: Sequelize.STRING
-      },
-      adType: {
+      }),
+      queryInterface.addColumn('Campaigns', 'adType', {
         type: Sequelize.STRING
-      },
-      storeType: {
+      }),
+      queryInterface.addColumn('Campaigns', 'storeType', {
         type: Sequelize.STRING
-      },
-      productFiles: {
+      }),
+      queryInterface.addColumn('Campaigns', 'productFiles', {
         type: Sequelize.JSON
-      },
-      userId: {
-        type: Sequelize.INTEGER
-      },
-      productId: {
-        type: Sequelize.INTEGER
-      },
-      remark: {
-        type: Sequelize.STRING,
-        allowNull: true
-      },
-      isDeleted: {
+      }),
+
+      queryInterface.addColumn('Campaigns', 'isDeleted', {
         type: Sequelize.BOOLEAN,
         defaultValue: false
-      },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      }
-    });
+      }),
+
+      queryInterface.addColumn('Campaigns', 'deletedAt', {
+        type: Sequelize.DATE,
+        defaultValue: null
+      })
+    ]);
   },
+
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Campaigns');
+    await Promise.all([
+      queryInterface.removeColumn('Campaigns', 'startDate'),
+      queryInterface.removeColumn('Campaigns', 'endDate'),
+      queryInterface.removeColumn('Campaigns', 'startTime'),
+      queryInterface.removeColumn('Campaigns', 'endTime'),
+      queryInterface.removeColumn('Campaigns', 'campaignBudget'),
+      queryInterface.removeColumn('Campaigns', 'adType'),
+      queryInterface.removeColumn('Campaigns', 'storeType'),
+      queryInterface.removeColumn('Campaigns', 'productFiles'),
+      queryInterface.removeColumn('Campaigns', 'isDeleted'),
+      queryInterface.removeColumn('Campaigns', 'deletedAt')
+    ]);
   }
 };
