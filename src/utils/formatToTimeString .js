@@ -1,5 +1,8 @@
-const formatToTimeString = (isoString) => {
-  return new Date(isoString).toISOString().substring(11, 19); 
+const formatToTimeString = (timeStr) => {
+  if (!/^\d{2}:\d{2}:\d{2}$/.test(timeStr)) {
+    throw new Error("Invalid time format. Expected HH:mm:ss");
+  }
+  return timeStr;
 };
 
 module.exports = formatToTimeString;
