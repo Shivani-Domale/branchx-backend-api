@@ -6,16 +6,15 @@ class DeviceRepository extends crudRepository {
     constructor() {
         super(Device);
     }
-
-    async findByDeviceTypes(deviceTypes) {
-        return await this.model.findAll({
-            where: {
-                deviceType: {
-                    [Op.in]: deviceTypes.map(p => p.trim())
-                }
-            }
-        });
+async findByDeviceTypes(deviceNames) {
+  return await this.model.findAll({
+    where: {
+      deviceName: {
+        [Op.in]: deviceNames.map(p => p.trim())
+      }
     }
+  });
+}
 
     async getAll() {
         return await this.model.findAll();
