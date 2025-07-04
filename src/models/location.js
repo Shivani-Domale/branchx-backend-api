@@ -20,7 +20,8 @@ module.exports = (sequelize, DataTypes) => {
     city: DataTypes.STRING,
     tier: DataTypes.STRING,
     price: DataTypes.INTEGER,
-    deviceCount: DataTypes.INTEGER
+    deviceCount: DataTypes.INTEGER,
+    pincode:DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Location',

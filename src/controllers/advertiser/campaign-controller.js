@@ -13,27 +13,27 @@ const createCampaign = async (req, res) => {
     Logger.info("------------");
     Logger.info("Received request to create campaign");
 
-    if (!req?.file) {
-      Logger.error("video/image file is required");
-      return ErrorReponse(res, StatusCodes.NO_CONTENT, "video/image file is required!");
+    const files = req?.files;
+    if (!files || files.length === 0) {
+      Logger.error("At least one video/image file is required");
+      return ErrorReponse(res, StatusCodes.NO_CONTENT, "At least one video/image file is required!");
     }
 
     const allowedTypes = ["image/jpeg", "image/png", "video/mp4", "video/avi"];
-    if (!allowedTypes.includes(req?.file?.mimetype)) {
-      Logger.error("Invalid file type:", req?.file?.mimetype);
-      return ErrorReponse(
-        res,
-        StatusCodes.UNSUPPORTED_MEDIA_TYPE,
-        "Invalid file type. Only JPG, PNG, MP4, AVI allowed."
-      );
+    for (const file of files) {
+      if (!allowedTypes.includes(file?.mimetype)) {
+        Logger.error("Invalid file type:", file?.mimetype);
+        return ErrorReponse(
+          res,
+          StatusCodes.UNSUPPORTED_MEDIA_TYPE,
+          "Invalid file type. Only JPG, PNG, MP4, AVI allowed."
+        );
+      }
     }
 
-    Logger.info(`Uploaded file: ${req?.file?.originalname}, size: ${req?.file?.size} bytes`);
+    Logger.info(`Uploaded ${files.length} files`);
 
-    const fileBuffer = req?.file?.buffer;
-    const originalName = req?.file?.originalname;
-
-    const campaign = await CampaignService.createCampaign(req?.body, fileBuffer, originalName, user?.id);
+    const campaign = await CampaignService.createCampaign(req?.body, files, user?.id);
 
     Logger.info("Campaign created successfully");
     Logger.info("------------");
@@ -47,6 +47,7 @@ const createCampaign = async (req, res) => {
     return ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error);
   }
 };
+
 
 const updateCampaignStatus = async (req, res) => {
   try {
