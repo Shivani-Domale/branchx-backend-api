@@ -1,104 +1,74 @@
 'use strict';
-const { Model } = require('sequelize');
-
+const {
+  Model
+} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Campaign extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
     static associate(models) {
-      Campaign.belongsToMany(models.Device, {
-        through: 'CampaignDeviceTypes',
-        foreignKey: 'campaignId'
-      });
-
-      Campaign.belongsToMany(models.Location, {
-        through: 'CampaignLocations',
-        foreignKey: 'campaignId'
-      });
-
+      // Belongs to one Product
       Campaign.belongsTo(models.Product, {
-        foreignKey: 'productId'
+        foreignKey: 'productId',
+        as: 'product'
       });
 
+      // Belongs to one User
       Campaign.belongsTo(models.User, {
         foreignKey: 'userId',
         as: 'user'
       });
+
+      // Belongs to many Devices
+      Campaign.belongsToMany(models.Device, {
+        through: 'CampaignDeviceTypes',
+        foreignKey: 'campaignId',
+        otherKey: 'deviceId',
+        as: 'devices'
+      });
+
+      // Belongs to many Locations
+      Campaign.belongsToMany(models.Location, {
+        through: 'CampaignLocations',
+        foreignKey: 'campaignId',
+        otherKey: 'locationId',
+        as: 'locations'
+      });
     }
   }
-
   Campaign.init({
     campaignName: DataTypes.STRING,
     campaignCode: DataTypes.STRING,
-    campaignDescription: DataTypes.STRING,
-    campaignObjective: DataTypes.STRING,
-    campaignType: DataTypes.STRING,
-    creativeFile: DataTypes.STRING,
-    creativeType: DataTypes.STRING,
-    demographic: DataTypes.STRING,
-    duration: DataTypes.INTEGER,
-    interval: DataTypes.INTEGER,
-    daysOfWeek: DataTypes.STRING,
-    startDate: DataTypes.DATE,         
-    endDate: DataTypes.DATE,           
-    startTime: DataTypes.TIME,         
-    endTime: DataTypes.TIME,           
-
+    startDate: DataTypes.DATE,
+    endDate: DataTypes.DATE,
+    startTime: DataTypes.TIME,
+    endTime: DataTypes.TIME,
     status: {
       type: DataTypes.BOOLEAN,
       defaultValue: false
     },
-    isApproved: {
-      type: DataTypes.STRING,
-      defaultValue: "PENDING"
-    },
-    isPayment: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
-    },
-    baseCost: DataTypes.INTEGER,
+    baseBid: DataTypes.INTEGER,
     maxBid: DataTypes.INTEGER,
-    minBid: DataTypes.INTEGER,
-    estimatedPrice: DataTypes.INTEGER,
+    campaignBudget: DataTypes.STRING,
+    adType: DataTypes.STRING,
+    storeType: DataTypes.STRING,
+    productFiles: DataTypes.JSON,
     userId: DataTypes.INTEGER,
     productId: DataTypes.INTEGER,
     remark: {
       type: DataTypes.STRING,
-      defaultValue: null
+      allowNull: true
     },
     isDeleted: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
-    },
-    deletedAt: DataTypes.DATE,
-    isDraft: {
       type: DataTypes.BOOLEAN,
       defaultValue: false
     }
   }, {
     sequelize,
     modelName: 'Campaign',
-    paranoid: false
   });
-
-  Campaign.addHook('beforeCreate', async (campaign, options) => {
-    const brandPrefix = campaign.campaignName.slice(0, 3).toUpperCase();
-
-    const lastCampaign = await Campaign.findOne({
-      where: {
-        campaignCode: {
-          [sequelize.Sequelize.Op.like]: `${brandPrefix}%`
-        }
-      },
-      order: [['createdAt', 'DESC']]
-    });
-
-    let nextNumber = '001';
-    if (lastCampaign && lastCampaign.campaignCode) {
-      const lastNumber = parseInt(lastCampaign.campaignCode.slice(3));
-      nextNumber = String(lastNumber + 1).padStart(3, '0');
-    }
-
-    campaign.campaignCode = `${brandPrefix}${nextNumber}`;
-  });
-
   return Campaign;
 };
