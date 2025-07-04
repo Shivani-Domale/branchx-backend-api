@@ -3,52 +3,6 @@ const { CampaignService } = require("../../services");
 const { StatusCodes } = require('http-status-codes');
 const { SuccessReposnse, ErrorReponse } = require("../../utils");
 
-// const createCampaign = async (req, res) => {
-//   try {
-//     const user = req?.user;
-//    // console.log(user.id);
-//     if (!user) {
-//       return ErrorReponse(res, StatusCodes.UNAUTHORIZED, "Please Login...");
-//     }
-
-
-//     Logger.info("------------");
-//     Logger.info("Received request to create campaign");
-
-//     const files = req?.files;
-//     if (!files || files.length === 0) {
-//       Logger.error("At least one video/image file is required");
-//       return ErrorReponse(res, StatusCodes.NO_CONTENT, "At least one video/image file is required!");
-//     }
-
-//     const allowedTypes = ["image/jpeg", "image/png", "video/mp4", "video/avi"];
-//     for (const file of files) {
-//       if (!allowedTypes.includes(file?.mimetype)) {
-//         Logger.error("Invalid file type:", file?.mimetype);
-//         return ErrorReponse(
-//           res,
-//           StatusCodes.UNSUPPORTED_MEDIA_TYPE,
-//           "Invalid file type. Only JPG, PNG, MP4, AVI allowed."
-//         );
-//       }
-//     }
-
-//     Logger.info(`Uploaded ${files.length} files`);
-
-//     const campaign = await CampaignService.createCampaign(req?.body, files, user?.id);
-
-//     Logger.info("Campaign created successfully");
-//     Logger.info("------------");
-
-//     return SuccessReposnse(res, null, StatusCodes.OK, campaign);
-
-//   } catch (error) {
-//     console.error("Error creating campaign:", error);
-//     Logger.error("Error creating campaign:", error);
-//     Logger.error("------------");
-//     return ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error);
-//   }
-// };
 
 const createCampaign = async (req, res) => {
   try {
@@ -144,7 +98,7 @@ const getUserCampaignByToken = async (req, res) => {
 const getDeviceTypes = async (req, res) => {
   try {
     const devices = await CampaignService.getDeviceTypes();
-    const filteredDevices = devices?.map(d => ({ deviceType: d?.deviceType }));
+    const filteredDevices = devices?.map(d => ({ deviceName: d?.deviceName }));
 
     if (!filteredDevices || filteredDevices?.length === 0) {
       return ErrorReponse(res, StatusCodes.NOT_FOUND, 'No Devices Found');
@@ -194,27 +148,28 @@ const getProductTypes = async (req, res) => {
 const updateCampaign = async (req, res) => {
   try {
     const { id } = req?.params;
-
-    Logger.info("Received request to update campaign with ID:", id);
-
     const user = req?.user;
+
     if (!user) {
       return ErrorReponse(res, StatusCodes.UNAUTHORIZED, "Please Login...");
     }
 
-    const fileBuffer = req?.file?.buffer || null;
-    const originalName = req?.file?.originalname || null;
+    const files = req?.files || [];
 
-    const updatedCampaign = await CampaignService.updateCampaign(id, req?.body, fileBuffer, originalName);
+    const updatedCampaign = await CampaignService.updateCampaign(
+      id,
+      req?.body,
+      files,
+      user.id
+    );
 
     return SuccessReposnse(res, "Campaign updated successfully", StatusCodes.OK, updatedCampaign);
-
   } catch (error) {
-    console.error("Error updating campaign:", error);
     Logger.error("Error updating campaign:", error);
-    return ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error);
+    return ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error.message);
   }
 };
+
 
 const deleteCampaign = async (req, res) => {
   try {
