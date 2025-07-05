@@ -239,8 +239,8 @@ const getAllCampaigns = async (userId) => {
         productFiles: imageOnly || [],
         startDate: formattedStartDate,
         endDate: formattedEndDate,
-        startTime: campaign.startTime,
-        endTime: campaign.endTime,
+        startTime:convertTo12HourFormat( campaign.startTime).toUpperCase(),
+        endTime: convertTo12HourFormat(campaign.endTime).toUpperCase(),
         status: campaign.status
       };
     });
