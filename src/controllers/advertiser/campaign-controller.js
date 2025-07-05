@@ -107,7 +107,7 @@ const getCampaignById = async (req, res) => {
 
 const getUserCampaignByToken = async (req, res) => {
   try {
- 
+
     const user = req?.user;
     if (!user) {
       return ErrorReponse(res, StatusCodes.UNAUTHORIZED, "Please Login...");
@@ -135,7 +135,7 @@ const getDeviceTypes = async (req, res) => {
       return ErrorReponse(res, StatusCodes.NOT_FOUND, 'No Devices Found');
     }
 
-    return SuccessReposnse(res,"Devices fetched successfully", StatusCodes.OK, filteredDevices);
+    return SuccessReposnse(res, "Devices fetched successfully", StatusCodes.OK, filteredDevices);
   } catch (error) {
     console.error("Error fetching devices:", error);
     Logger.error("Error fetching devices:", error);
@@ -223,7 +223,7 @@ const deleteCampaign = async (req, res) => {
 // const calculateBaseCost = async (req, res) => {
 //   try {
 //     console.log(req.body);
-    
+
 //     const { adDevices, productType, targetRegions } = req?.body;
 
 //     const baseCost = await CampaignService.calculateBaseCost(adDevices, productType, targetRegions);
