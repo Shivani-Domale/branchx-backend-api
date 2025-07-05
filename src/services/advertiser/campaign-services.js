@@ -166,43 +166,44 @@ const getAllCampaigns = async (userId) => {
     }
 
     const formattedCampaigns = campaigns.map(campaign => {
-      const campaignData = campaign.toJSON();
+      const data = campaign.toJSON();
 
-      const regions = campaignData?.locations?.map(location => location?.city) || [];
+      const regions = data?.locations?.map(location => location?.city) || [];
 
-      const targetDevices = campaignData?.devices?.map(device => device?.deviceName) || [];
+      const targetDevices = data?.devices?.map(device => device?.deviceName) || [];
 
+      const product = [data?.product?.product_type || ""];
 
-      const product = {
-        product_type: campaignData?.product?.product_type || ""
-      };
-
-      const image = (campaignData.productFiles || []).find(file =>
+      const image = (data.productFiles || []).find(file =>
         typeof file === 'string' &&
         (file.endsWith('.jpg') || file.endsWith('.jpeg') || file.endsWith('.png'))
       );
 
+      const dateRange = {
+        start: new Date(data.startDate).toISOString().split("T")[0],
+        end: new Date(data.endDate).toISOString().split("T")[0]
+      };
+
+      const timings = `${data?.startTime?.toUpperCase() || ""}-${data?.endTime?.toUpperCase() || ""}`;
+
       return {
-        id: campaignData.id,
-        campaignName: campaignData.campaignName,
-        brandName: campaignData.brandName,
-        startDate: new Date(campaignData.startDate).toLocaleDateString("en-IN"),
-        endDate: new Date(campaignData.endDate).toLocaleDateString("en-IN"),
-        startTime: campaignData?.startTime?.toUpperCase(),
-        endTime: campaignData?.endTime?.toUpperCase(),
-        status: campaignData.status,
-        baseBid: campaignData.baseBid,
-        maxBid: campaignData.maxBid,
-        campaignBudget: campaignData.campaignBudget,
-        adType: campaignData.adType,
-        storeType: campaignData.storeType,
-        duration: campaignData.duration,
-        isApproved: campaignData.isApproved,
-        isPayment: campaignData.isPayment,
-        targeting: campaignData.targeting,
-        achieveStatus: campaignData.achieveStatus,
-        productFiles: campaignData.productFiles,
+        id: data.id,
+        campaignName: data.campaignName,
+        brandName: data.brandName,
+        adType: data.adType,
+        duration: data.duration?.toString(),
+        baseBid: data.baseBid,
+        maxBidCap: data.maxBid,
+        campaignBudget: data.campaignBudget,
+        storeTypes: data.storeType,
+        targeting: data.targeting,
+        achieveStatus: data.achieveStatus,
+        isApproved: data.isApproved,
+        isPayment: data.isPayment,
+        productFiles: data.productFiles,
         image, // single image
+        dateRange,
+        timings,
         regions,
         targetDevices,
         product
