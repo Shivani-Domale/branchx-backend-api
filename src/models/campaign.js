@@ -1,14 +1,8 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class Campaign extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
       // Belongs to one Product
       Campaign.belongsTo(models.Product, {
@@ -59,6 +53,10 @@ module.exports = (sequelize, DataTypes) => {
     productFiles: DataTypes.JSON,
     userId: DataTypes.INTEGER,
     productId: DataTypes.INTEGER,
+    duration: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
     remark: {
       type: DataTypes.STRING,
       allowNull: true
@@ -78,7 +76,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Campaign',
-    paranoid: true  // Optional: Sequelize will automatically use deletedAt for soft deletes
+    paranoid: true // Sequelize uses deletedAt for soft deletes
   });
 
   return Campaign;

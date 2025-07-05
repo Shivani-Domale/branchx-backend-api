@@ -6,7 +6,7 @@ const { SuccessReposnse, ErrorReponse } = require("../../utils");
 
 const createCampaign = async (req, res) => {
   try {
-    console.log(req.body);
+    console.log(req);
     const user = req.user;
     if (!user) {
       return ErrorReponse(res, StatusCodes.UNAUTHORIZED, "Please Login...");
