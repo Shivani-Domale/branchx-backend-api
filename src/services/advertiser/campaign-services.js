@@ -17,9 +17,17 @@ const createCampaign = async (data, fileBuffer, userId) => {
   try {
     const urls = [];
 
-    const DeviceTypes = data?.targetDevices || [];
-    const ProductTypes = data?.product || [];
-    const Locations = data?.regions || [];
+     const DeviceTypes = typeof data?.targetDevices === 'string'
+      ? JSON.parse(data.targetDevices)
+      : data?.targetDevices || [];
+
+    const ProductTypes = typeof data?.product === 'string'
+      ? JSON.parse(data.product)
+      : data?.product || [];
+
+    const Locations = typeof data?.regions === 'string'
+      ? JSON.parse(data.regions)
+      : data?.regions || [];
 
     if (!Array.isArray(DeviceTypes) || DeviceTypes.length === 0) {
       throw new Error("Device types must be a non-empty array.");
@@ -32,7 +40,6 @@ const createCampaign = async (data, fileBuffer, userId) => {
     if (!Array.isArray(ProductTypes) || ProductTypes.length === 0) {
       throw new Error("Product type must be a non-empty array.");
     }
-
     const deviceRecords = await deviceRepository.findByDeviceTypes(DeviceTypes);
     const locationRecords = await locationRepository.findByCities(Locations);
     const productId = await productRepository.findIdByProductType(ProductTypes[0]); // pick first
