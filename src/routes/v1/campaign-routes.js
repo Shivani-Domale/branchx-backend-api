@@ -8,14 +8,11 @@ const router = express.Router();
 
 
 /* campaign routes */
-router.post('/createCampaign', VerifyToken, 
-    UploadFileCampaign.upload.fields([
-    { name: 'productImages', maxCount: 10 }])
-, CampaignController.createCampaign);
-router.put('/:id/status', VerifyToken, CampaignController.updateCampaignStatus);
-router.get('/:campaignId/getCampaign', VerifyToken, CampaignController.getCampaignById);
+router.post('/createCampaign', VerifyToken, UploadFileCampaign.upload.array('productImages',10), CampaignController.createCampaign);
+router.put('/:id/status', VerifyToken,CampaignController.updateCampaignStatus);
+router.get('/:campaignId/getCampaign',VerifyToken, CampaignController.getCampaignById);
 router.get('/getUserCampaign', VerifyToken, CampaignController.getUserCampaignByToken);
-router.delete('/:campaignId/deleteCampaign', VerifyToken, CampaignController.deleteCampaign);
+router.delete('/:campaignId/deleteCampaign', VerifyToken,CampaignController.deleteCampaign);
 router.post('/baseCost', CampaignController.calculateBaseCost);
 
 
