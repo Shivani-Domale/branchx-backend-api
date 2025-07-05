@@ -107,11 +107,11 @@ const getCampaignById = async (req, res) => {
 
 const getUserCampaignByToken = async (req, res) => {
   try {
+    console.log(req);
     const user = req?.user;
     if (!user) {
       return ErrorReponse(res, StatusCodes.UNAUTHORIZED, "Please Login...");
     }
-
     const campaigns = await CampaignService.getAllCampaigns(user?.id);
     if (!campaigns || campaigns?.length === 0) {
       return ErrorReponse(res, StatusCodes.NOT_FOUND, 'No campaign found');
