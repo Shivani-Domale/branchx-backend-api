@@ -107,7 +107,7 @@ const getCampaignById = async (req, res) => {
 
 const getUserCampaignByToken = async (req, res) => {
   try {
-    console.log(req);
+ 
     const user = req?.user;
     if (!user) {
       return ErrorReponse(res, StatusCodes.UNAUTHORIZED, "Please Login...");
