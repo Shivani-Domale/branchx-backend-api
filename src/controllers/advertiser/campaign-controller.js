@@ -195,6 +195,8 @@ const deleteCampaign = async (req, res) => {
 
 const calculateBaseCost = async (req, res) => {
   try {
+    console.log(req.body);
+    
     const { adDevices, productType, targetRegions } = req?.body;
 
     const baseCost = await CampaignService.calculateBaseCost(adDevices, productType, targetRegions);
