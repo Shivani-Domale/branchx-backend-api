@@ -69,6 +69,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       defaultValue: 'PENDING'
     },
+    isPayment: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
     deletedAt: {
       type: DataTypes.DATE,
       allowNull: true
