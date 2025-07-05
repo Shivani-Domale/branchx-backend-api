@@ -17,7 +17,7 @@ const createCampaign = async (data, fileBuffer, userId) => {
   try {
     const urls = [];
 
-     const DeviceTypes = typeof data?.targetDevices === 'string'
+    const DeviceTypes = typeof data?.targetDevices === 'string'
       ? JSON.parse(data.targetDevices)
       : data?.targetDevices || [];
 
@@ -53,8 +53,12 @@ const createCampaign = async (data, fileBuffer, userId) => {
     const endTime = formatToTimeString(endTimeRaw);
 
     // Extract dates
-    const startDate = data?.dateRange?.start;
-    const endDate = data?.dateRange?.end;
+    const parsedDateRange = typeof data?.dateRange === 'string'
+      ? JSON.parse(data.dateRange)
+      : data.dateRange || {};
+
+    const startDate = parsedDateRange?.start ? new Date(parsedDateRange.start) : null;
+    const endDate = parsedDateRange?.end ? new Date(parsedDateRange.end) : null;
 
     const campaignPayload = {
       campaignName: data.campaignName,
