@@ -17,13 +17,9 @@ const createCampaign = async (data, fileBuffer, userId) => {
   try {
     const urls = [];
 
-    const parsedDevices = JSON.parse(data?.adDevices || "[]");
-    const DeviceTypes = parsedDevices.map(device => device?.name);
-
-    const parsedProduct = JSON.parse(data?.productType || "{}");
-    const ProductType = parsedProduct?.name;
-
-    const Locations = JSON.parse(data?.targetRegions || "[]");
+    const DeviceTypes = data?.targetDevices || [];
+    const ProductTypes = data?.product || [];
+    const Locations = data?.regions || [];
 
     if (!Array.isArray(DeviceTypes) || DeviceTypes.length === 0) {
       throw new Error("Device types must be a non-empty array.");
@@ -33,23 +29,44 @@ const createCampaign = async (data, fileBuffer, userId) => {
       throw new Error("Target locations must be a non-empty array.");
     }
 
+    if (!Array.isArray(ProductTypes) || ProductTypes.length === 0) {
+      throw new Error("Product type must be a non-empty array.");
+    }
+
     const deviceRecords = await deviceRepository.findByDeviceTypes(DeviceTypes);
     const locationRecords = await locationRepository.findByCities(Locations);
-    const productId = await productRepository.findIdByProductType(ProductType);
-
-    console.log(deviceRecords);
+    const productId = await productRepository.findIdByProductType(ProductTypes[0]); // pick first
 
     const deviceIds = deviceRecords.map(d => d.id);
     const locationIds = locationRecords.map(l => l.id);
 
-    data.userId = userId;
-    data.productId = productId;
-    data.startTime = formatToTimeString(data?.startTime);
-    data.endTime = formatToTimeString(data?.endTime);
+    // Extract timings
+    const [startTimeRaw, endTimeRaw] = (data?.timings || "").split("-") || [];
+    const startTime = formatToTimeString(startTimeRaw); // e.g., "01:00:00"
+    const endTime = formatToTimeString(endTimeRaw);
 
-    const campaign = await campaignRepository.create(data, { transaction: t });
+    // Extract dates
+    const startDate = data?.dateRange?.start;
+    const endDate = data?.dateRange?.end;
 
-    // Handle media files
+    const campaignPayload = {
+      campaignName: data.campaignName,
+      brandName: data.brandName,
+      adType: data.adType,
+      baseBid: data.baseBid,
+      maxBid: data.maxBidCap,
+      campaignBudget: data.campaignBudget,
+      storeType: data.storeTypes,
+      startDate,
+      endDate,
+      startTime,
+      endTime,
+      userId,
+      productId,
+    };
+
+    const campaign = await campaignRepository.create(campaignPayload, { transaction: t });
+
     for (const file of fileBuffer) {
       const fileName = file?.originalname || `file-${Date.now()}.${file.mimetype?.split("/")?.[1] || "bin"}`;
       if (!file.buffer) throw new Error(`Invalid file buffer for: ${fileName}`);
@@ -71,6 +88,68 @@ const createCampaign = async (data, fileBuffer, userId) => {
     throw new Error(`Error creating campaign: ${error.message}`);
   }
 };
+
+
+// const createCampaign = async (data, fileBuffer, userId) => {
+//   const t = await sequelize.transaction();
+
+//   try {
+//     const urls = [];
+
+//     const parsedDevices = JSON.parse(data?.adDevices || "[]");
+//     const DeviceTypes = parsedDevices.map(device => device?.name);
+
+//     const parsedProduct = JSON.parse(data?.productType || "{}");
+//     const ProductType = parsedProduct?.name;
+
+//     const Locations = JSON.parse(data?.targetRegions || "[]");
+
+//     if (!Array.isArray(DeviceTypes) || DeviceTypes.length === 0) {
+//       throw new Error("Device types must be a non-empty array.");
+//     }
+
+//     if (!Array.isArray(Locations) || Locations.length === 0) {
+//       throw new Error("Target locations must be a non-empty array.");
+//     }
+
+//     const deviceRecords = await deviceRepository.findByDeviceTypes(DeviceTypes);
+//     const locationRecords = await locationRepository.findByCities(Locations);
+//     const productId = await productRepository.findIdByProductType(ProductType);
+
+//     console.log(deviceRecords);
+
+//     const deviceIds = deviceRecords.map(d => d.id);
+//     const locationIds = locationRecords.map(l => l.id);
+
+//     data.userId = userId;
+//     data.productId = productId;
+//     data.startTime = formatToTimeString(data?.startTime);
+//     data.endTime = formatToTimeString(data?.endTime);
+
+//     const campaign = await campaignRepository.create(data, { transaction: t });
+
+//     // Handle media files
+//     for (const file of fileBuffer) {
+//       const fileName = file?.originalname || `file-${Date.now()}.${file.mimetype?.split("/")?.[1] || "bin"}`;
+//       if (!file.buffer) throw new Error(`Invalid file buffer for: ${fileName}`);
+
+//       const url = await UploadFile(file.buffer, fileName, campaign.id);
+//       urls.push(url);
+//     }
+
+//     campaign.productFiles = urls;
+//     await campaign.save({ transaction: t });
+
+//     await campaign.addDevices(deviceIds, { transaction: t });
+//     await campaign.addLocations(locationIds, { transaction: t });
+
+//     await t.commit();
+//     return campaign;
+//   } catch (error) {
+//     await t.rollback();
+//     throw new Error(`Error creating campaign: ${error.message}`);
+//   }
+// };
 
 // const getAllCampaigns = async (id) => {
 //   try {
