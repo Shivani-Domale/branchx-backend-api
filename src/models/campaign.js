@@ -52,7 +52,7 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: false
     },
     baseBid: DataTypes.INTEGER,
-    maxBid: DataTypes.INTEGER,
+    maxBid: DataTypes.STRING,
     campaignBudget: DataTypes.STRING,
     adType: DataTypes.STRING,
     storeType: DataTypes.STRING,
