@@ -49,8 +49,8 @@ const createCampaign = async (data, fileBuffer, userId) => {
 
     // Extract timings
     const [startTimeRaw, endTimeRaw] = (data?.timings || "").split("-") || [];
-    const startTime = formatToTimeString(startTimeRaw); // e.g., "01:00:00"
-    const endTime = formatToTimeString(endTimeRaw);
+    const startTime = startTimeRaw; // e.g., "01:00:00"
+    const endTime = endTimeRaw;
 
     // Extract dates
     const parsedDateRange = typeof data?.dateRange === 'string'
@@ -239,8 +239,8 @@ const getAllCampaigns = async (userId) => {
         productFiles: imageOnly || [],
         startDate: formattedStartDate,
         endDate: formattedEndDate,
-        startTime:convertTo12HourFormat( campaign.startTime).toUpperCase(),
-        endTime: convertTo12HourFormat(campaign.endTime).toUpperCase(),
+        startTime:(campaign.startTime).toUpperCase(),
+        endTime: (campaign.endTime).toUpperCase(),
         status: campaign.status
       };
     });
