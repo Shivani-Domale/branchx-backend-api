@@ -5,13 +5,9 @@ const { SuccessReposnse, ErrorReponse } = require("../../utils");
 
 
 const createCampaign = async (req, res) => {
-  console.log(req.body);
-
-
-
   try {
+    console.log(req.body);
     const user = req.user;
-    console.log(user);
     if (!user) {
       return ErrorReponse(res, StatusCodes.UNAUTHORIZED, "Please Login...");
     }
@@ -25,21 +21,52 @@ const createCampaign = async (req, res) => {
     const allowedTypes = ["image/jpeg", "image/png", "video/mp4", "video/avi"];
     for (const file of files) {
       if (!allowedTypes.includes(file?.mimetype)) {
-        return ErrorReponse(
-          res,
-          StatusCodes.UNSUPPORTED_MEDIA_TYPE,
-          `Invalid file type: ${file.originalname}`
-        );
+        return ErrorReponse(res, StatusCodes.UNSUPPORTED_MEDIA_TYPE, `Invalid file type: ${file.originalname}`);
       }
     }
 
     const campaign = await CampaignService.createCampaign(req.body, files, user.id);
-    return SuccessReposnse(res, null, StatusCodes.OK, campaign);
+    return SuccessReposnse(res, "Campaign created successfully", StatusCodes.OK, campaign);
   } catch (error) {
     Logger.error("Campaign creation failed:", error);
     return ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error.message);
   }
 };
+
+// const createCampaign = async (req, res) => {
+//   console.log(req.body);
+
+//   try {
+//     const user = req.user;
+//     console.log(user);
+//     if (!user) {
+//       return ErrorReponse(res, StatusCodes.UNAUTHORIZED, "Please Login...");
+//     }
+
+//     const files = req.files;
+//     if (!files || files.length === 0) {
+//       Logger.error("No creative files found.");
+//       return ErrorReponse(res, StatusCodes.BAD_REQUEST, "At least one image or video is required.");
+//     }
+
+//     const allowedTypes = ["image/jpeg", "image/png", "video/mp4", "video/avi"];
+//     for (const file of files) {
+//       if (!allowedTypes.includes(file?.mimetype)) {
+//         return ErrorReponse(
+//           res,
+//           StatusCodes.UNSUPPORTED_MEDIA_TYPE,
+//           `Invalid file type: ${file.originalname}`
+//         );
+//       }
+//     }
+
+//     const campaign = await CampaignService.createCampaign(req.body, files, user.id);
+//     return SuccessReposnse(res, null, StatusCodes.OK, campaign);
+//   } catch (error) {
+//     Logger.error("Campaign creation failed:", error);
+//     return ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error.message);
+//   }
+// };
 
 const updateCampaignStatus = async (req, res) => {
   try {
