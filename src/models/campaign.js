@@ -41,6 +41,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Campaign.init({
     campaignName: DataTypes.STRING,
+    brandName: DataTypes.STRING,
     startDate: DataTypes.DATE,
     endDate: DataTypes.DATE,
     startTime: DataTypes.TIME,
