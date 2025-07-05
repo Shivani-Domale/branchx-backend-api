@@ -173,7 +173,7 @@ const getAllCampaigns = async (userId) => {
       const targetDevices = data?.devices?.map(device => device?.deviceName) || [];
 
       const product = [data?.product?.product_type || ""];
-
+ ;
       const image = (data.productFiles || []).find(file =>
         typeof file === 'string' &&
         (file.endsWith('.jpg') || file.endsWith('.jpeg') || file.endsWith('.png'))
@@ -207,10 +207,10 @@ const getAllCampaigns = async (userId) => {
         regions,
         targetDevices,
         product,
-        startDate: new Date(campaignData.startDate).toLocaleDateString("en-IN"),
-        endDate: new Date(campaignData.endDate).toLocaleDateString("en-IN"),
-        startTime: campaignData?.startTime?.toUpperCase(),
-        endTime: campaignData?.endTime?.toUpperCase(),
+        startDate: new Date(data.startDate).toISOString().split("T")[0],
+        endDate: new Date(data.endDate).toISOString().split("T")[0],
+        startTime: campaigns?.startTime?.toUpperCase(),
+        endTime: campaigns?.endTime?.toUpperCase(),
       };
     });
 
