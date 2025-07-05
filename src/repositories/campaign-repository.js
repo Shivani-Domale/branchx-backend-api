@@ -61,14 +61,29 @@ class CampaignRepository extends crudRepository {
     return { message: 'Campaign marked as deleted (soft delete).' };
   }
 
-  async findByUserId(userId) {
-    return await this.model.findAll({
-      where: {
-        userId: userId,
-        isDeleted: false
+async findByUserId(userId) {
+  return await this.model.findAll({
+    where: {
+      userId: userId,
+      isDeleted: false
+    },
+    include: [
+      {
+        association: 'devices', // from Campaign model `as: 'devices'`
+        attributes: ['deviceName']
+      },
+      {
+        association: 'locations', // from Campaign model `as: 'locations'`
+        attributes: ['city']
+      },
+      {
+        association: 'product', // from Campaign model `as: 'product'`
+        attributes: ['product_type']
       }
-    });
-  }
+    ]
+  });
+}
+
 
 }
 

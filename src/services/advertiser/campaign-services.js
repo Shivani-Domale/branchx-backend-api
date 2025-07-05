@@ -102,106 +102,54 @@ const createCampaign = async (data, fileBuffer, userId) => {
 };
 
 
-// const createCampaign = async (data, fileBuffer, userId) => {
-//   const t = await sequelize.transaction();
 
+// const getAllCampaigns = async (userId) => {
 //   try {
-//     const urls = [];
-
-//     const parsedDevices = JSON.parse(data?.adDevices || "[]");
-//     const DeviceTypes = parsedDevices.map(device => device?.name);
-
-//     const parsedProduct = JSON.parse(data?.productType || "{}");
-//     const ProductType = parsedProduct?.name;
-
-//     const Locations = JSON.parse(data?.targetRegions || "[]");
-
-//     if (!Array.isArray(DeviceTypes) || DeviceTypes.length === 0) {
-//       throw new Error("Device types must be a non-empty array.");
-//     }
-
-//     if (!Array.isArray(Locations) || Locations.length === 0) {
-//       throw new Error("Target locations must be a non-empty array.");
-//     }
-
-//     const deviceRecords = await deviceRepository.findByDeviceTypes(DeviceTypes);
-//     const locationRecords = await locationRepository.findByCities(Locations);
-//     const productId = await productRepository.findIdByProductType(ProductType);
-
-//     console.log(deviceRecords);
-
-//     const deviceIds = deviceRecords.map(d => d.id);
-//     const locationIds = locationRecords.map(l => l.id);
-
-//     data.userId = userId;
-//     data.productId = productId;
-//     data.startTime = formatToTimeString(data?.startTime);
-//     data.endTime = formatToTimeString(data?.endTime);
-
-//     const campaign = await campaignRepository.create(data, { transaction: t });
-
-//     // Handle media files
-//     for (const file of fileBuffer) {
-//       const fileName = file?.originalname || `file-${Date.now()}.${file.mimetype?.split("/")?.[1] || "bin"}`;
-//       if (!file.buffer) throw new Error(`Invalid file buffer for: ${fileName}`);
-
-//       const url = await UploadFile(file.buffer, fileName, campaign.id);
-//       urls.push(url);
-//     }
-
-//     campaign.productFiles = urls;
-//     await campaign.save({ transaction: t });
-
-//     await campaign.addDevices(deviceIds, { transaction: t });
-//     await campaign.addLocations(locationIds, { transaction: t });
-
-//     await t.commit();
-//     return campaign;
-//   } catch (error) {
-//     await t.rollback();
-//     throw new Error(`Error creating campaign: ${error.message}`);
-//   }
-// };
-
-// const getAllCampaigns = async (id) => {
-//   try {
-//     if (!id) {
+//     if (!userId) {
 //       throw new Error("User ID is required");
 //     }
 
-//     const campaigns = await campaignRepository.findByUserId(id);
+//     const campaigns = await campaignRepository.findByUserId(userId);
 
-//     if (!campaigns || campaigns?.length === 0) {
+//     if (!campaigns || campaigns.length === 0) {
 //       throw new Error("No campaign found");
 //     }
 
-//     const data = campaigns?.map(campaign => {
-//       const date = new Date(campaign?.startDate);
-//       const formattedDate = date.toLocaleString("en-IN", {
+//     const data = campaigns.map(campaign => {
+//       const formattedStartDate = new Date(campaign.startDate).toLocaleDateString("en-IN", {
 //         timeZone: "Asia/Kolkata",
 //         year: "numeric",
 //         month: "2-digit",
 //         day: "2-digit"
 //       });
 
+//       const formattedEndDate = new Date(campaign.endDate).toLocaleDateString("en-IN", {
+//         timeZone: "Asia/Kolkata",
+//         year: "numeric",
+//         month: "2-digit",
+//         day: "2-digit"
+//       });
+//       const imageOnly = (campaign.productFiles || []).find(file =>
+//         typeof file === 'string' &&
+//         (file.endsWith('.jpg') || file.endsWith('.jpeg') || file.endsWith('.png'))
+//       );
 //       return {
-//         id: campaign?.id,
-//         campaignName: campaign?.campaignName,
-//         scheduleDate: formattedDate,
-//         startTime: campaign?.startTime,
-//         endTime: campaign?.endTime,
-//         campaignObjective: campaign?.campaignObjective,
-//         creativeFile: campaign?.creativeFile,
-//         status: campaign?.status,
-//         isApproved: campaign?.isApproved,
-//         isPayment: campaign?.isPayment,
-//         campaignCode: campaign?.campaignCode
+//         campaignName: campaign.campaignName,
+//         productFiles: imageOnly || [],
+//         startDate: formattedStartDate,
+//         endDate: formattedEndDate,
+//         startTime: (campaign.startTime).toUpperCase(),
+//         endTime: (campaign.endTime).toUpperCase(),
+//         status: campaign.status,
+//         targeting: campaign.targeting,
+//         achieveStatus: campaign.achieveStatus,
 //       };
 //     });
 
 //     return data;
+
 //   } catch (error) {
-//     throw new Error(`Error fetching campaigns: ${error?.message}`);
+//     throw new Error(`Error fetching campaigns: ${error.message}`);
 //   }
 // };
 
@@ -211,44 +159,57 @@ const getAllCampaigns = async (userId) => {
       throw new Error("User ID is required");
     }
 
-    const campaigns = await campaignRepository.findByUserId(userId);
+    const campaigns = await campaignRepository.findByUserId(userId); // includes associations
 
     if (!campaigns || campaigns.length === 0) {
-      throw new Error("No campaign found");
+      throw new Error("No campaigns found");
     }
 
-    const data = campaigns.map(campaign => {
-      const formattedStartDate = new Date(campaign.startDate).toLocaleDateString("en-IN", {
-        timeZone: "Asia/Kolkata",
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit"
-      });
+    const formattedCampaigns = campaigns.map(campaign => {
+      const campaignData = campaign.toJSON();
 
-      const formattedEndDate = new Date(campaign.endDate).toLocaleDateString("en-IN", {
-        timeZone: "Asia/Kolkata",
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit"
-      });
-      const imageOnly = (campaign.productFiles || []).find(file =>
+      const regions = campaignData?.locations?.map(location => location?.city) || [];
+
+      const targetDevices = campaignData?.devices?.map(device => device?.deviceName) || [];
+
+
+      const product = {
+        product_type: campaignData?.product?.product_type || ""
+      };
+
+      const image = (campaignData.productFiles || []).find(file =>
         typeof file === 'string' &&
         (file.endsWith('.jpg') || file.endsWith('.jpeg') || file.endsWith('.png'))
       );
+
       return {
-        campaignName: campaign.campaignName,
-        productFiles: imageOnly || [],
-        startDate: formattedStartDate,
-        endDate: formattedEndDate,
-        startTime:(campaign.startTime).toUpperCase(),
-        endTime: (campaign.endTime).toUpperCase(),
-        status: campaign.status,
-        targeting:campaign.targeting,
-        achieveStatus: campaign.achieveStatus,
+        id: campaignData.id,
+        campaignName: campaignData.campaignName,
+        brandName: campaignData.brandName,
+        startDate: new Date(campaignData.startDate).toLocaleDateString("en-IN"),
+        endDate: new Date(campaignData.endDate).toLocaleDateString("en-IN"),
+        startTime: campaignData?.startTime?.toUpperCase(),
+        endTime: campaignData?.endTime?.toUpperCase(),
+        status: campaignData.status,
+        baseBid: campaignData.baseBid,
+        maxBid: campaignData.maxBid,
+        campaignBudget: campaignData.campaignBudget,
+        adType: campaignData.adType,
+        storeType: campaignData.storeType,
+        duration: campaignData.duration,
+        isApproved: campaignData.isApproved,
+        isPayment: campaignData.isPayment,
+        targeting: campaignData.targeting,
+        achieveStatus: campaignData.achieveStatus,
+        productFiles: campaignData.productFiles,
+        image, // single image
+        regions,
+        targetDevices,
+        product
       };
     });
 
-    return data;
+    return formattedCampaigns;
 
   } catch (error) {
     throw new Error(`Error fetching campaigns: ${error.message}`);
@@ -301,8 +262,8 @@ const getCampaignById = async (campaignId) => {
     };
 
 
-    campaignData.startTime = convertTo12HourFormat(campaignData.startTime);
-    campaignData.endTime = convertTo12HourFormat(campaignData.endTime);
+    campaignData.startTime = campaignData?.startTime?.toUpperCase();
+    campaignData.endTime = campaignData?.endTime?.toUpperCase();
 
     delete campaignData.Locations;
     delete campaignData.Devices;
@@ -350,69 +311,73 @@ const getProductTypes = async () => {
   }
 };
 
-// const updateCampaign = async (id, data, fileBuffer, originalName) => {
+
+
+// const updateCampaign = async (id, data, fileBuffer = [], userId) => {
 //   const t = await sequelize.transaction();
 //   try {
 //     const campaign = await campaignRepository.findByIdWithLocationAndDevice(id);
 //     if (!campaign) throw new Error("Campaign not found");
 
+//     const urls = [];
 
+//     // Parse & validate inputs
+//     const parsedDevices = JSON.parse(data?.adDevices || "[]");
+//     const deviceTypes = parsedDevices.map(device => device?.name);
+
+//     const parsedProduct = JSON.parse(data?.productType || "{}");
+//     const productType = parsedProduct?.name;
+
+//     const locations = JSON.parse(data?.targetRegions || "[]");
+
+//     if (!Array.isArray(deviceTypes) || deviceTypes.length === 0) {
+//       throw new Error("Device types must be a non-empty array.");
+//     }
+
+//     if (!Array.isArray(locations) || locations.length === 0) {
+//       throw new Error("Target locations must be a non-empty array.");
+//     }
+
+//     const deviceRecords = await deviceRepository.findByDeviceTypes(deviceTypes);
+//     const locationRecords = await locationRepository.findByCities(locations);
+//     const productId = await productRepository.findIdByProductType(productType);
+
+//     const deviceIds = deviceRecords.map(d => d.id);
+//     const locationIds = locationRecords.map(l => l.id);
+
+//     data.productId = productId;
 //     data.startTime = formatToTimeString(data?.startTime);
 //     data.endTime = formatToTimeString(data?.endTime);
 //     data.daysOfWeek = JSON.stringify(data?.daysOfWeek || []);
 
-//     if (fileBuffer && originalName) {
-//       const newCreativeUrl = await UploadFile(fileBuffer, originalName, campaign?.id);
-//       data.creativeFile = newCreativeUrl;
-//     }
+//     // Upload new media files if present
+//     if (fileBuffer?.length) {
+//       for (const file of fileBuffer) {
+//         const fileName = file?.originalname || `file-${Date.now()}.${file.mimetype?.split("/")?.[1] || "bin"}`;
+//         if (!file.buffer) throw new Error(`Invalid file buffer for: ${fileName}`);
 
-
-//     if (data?.targetRegions?.length) {
-//       const newCities = data?.targetRegions.map(loc => loc?.name).sort();
-//       const oldCities = campaign?.Locations.map(loc => loc?.city).sort();
-
-//       if (JSON.stringify(newCities) !== JSON.stringify(oldCities)) {
-//         const newLocationRecords = await locationRepository.findByCities(newCities);
-//         await campaign.setLocations(newLocationRecords, { transaction: t });
-//       }
-//     }
-
-
-//     if (data?.adDevices?.length) {
-//       const newDeviceTypes = data?.adDevices.map(dev => dev?.name).sort();
-//       const oldDeviceTypes = campaign?.Devices.map(dev => dev?.deviceType).sort();
-
-//       if (JSON.stringify(newDeviceTypes) !== JSON.stringify(oldDeviceTypes)) {
-//         const newDeviceRecords = await deviceRepository.findByDeviceTypes(newDeviceTypes);
-//         await campaign.setDevices(newDeviceRecords, { transaction: t });
-//       }
-//     }
-//     const productName = data?.productType?.name;
-
-//     if (productName) {
-//       const existingProduct = await productRepository.findByProductName(productName);
-
-//       if (!existingProduct) {
-//         throw new Error(`Product not found: ${data.productType.name}`);
+//         const url = await UploadFile(file.buffer, fileName, campaign.id);
+//         urls.push(url);
 //       }
 
-//       if (existingProduct?.id !== campaign?.productId) {
-//         campaign.productId = existingProduct.id;
-//       }
+//       campaign.productFiles = urls;
 //     }
 
-//     // Clean up unnecessary props before bulk assigning
+//     // Update associations
+//     await campaign.setDevices(deviceIds, { transaction: t });
+//     await campaign.setLocations(locationRecords, { transaction: t });
+
+//     // Clean unnecessary fields before assigning
 //     delete data.productType;
-//     delete data.targetRegions;
 //     delete data.adDevices;
+//     delete data.targetRegions;
 
-//     // Assign rest of data
 //     Object.assign(campaign, data);
-
 //     await campaign.save({ transaction: t });
-//     await t.commit();
 
+//     await t.commit();
 //     return campaign;
+
 //   } catch (error) {
 //     await t.rollback();
 //     console.error("Error updating campaign:", error);
@@ -429,36 +394,52 @@ const updateCampaign = async (id, data, fileBuffer = [], userId) => {
 
     const urls = [];
 
-    // Parse & validate inputs
-    const parsedDevices = JSON.parse(data?.adDevices || "[]");
-    const deviceTypes = parsedDevices.map(device => device?.name);
+    // Parse & validate input
+    const DeviceTypes = typeof data?.targetDevices === 'string'
+      ? JSON.parse(data.targetDevices)
+      : data?.targetDevices || [];
 
-    const parsedProduct = JSON.parse(data?.productType || "{}");
-    const productType = parsedProduct?.name;
+    const ProductTypes = typeof data?.product === 'string'
+      ? JSON.parse(data.product)
+      : data?.product || [];
 
-    const locations = JSON.parse(data?.targetRegions || "[]");
+    const Locations = typeof data?.regions === 'string'
+      ? JSON.parse(data.regions)
+      : data?.regions || [];
 
-    if (!Array.isArray(deviceTypes) || deviceTypes.length === 0) {
+    if (!Array.isArray(DeviceTypes) || DeviceTypes.length === 0) {
       throw new Error("Device types must be a non-empty array.");
     }
 
-    if (!Array.isArray(locations) || locations.length === 0) {
+    if (!Array.isArray(Locations) || Locations.length === 0) {
       throw new Error("Target locations must be a non-empty array.");
     }
 
-    const deviceRecords = await deviceRepository.findByDeviceTypes(deviceTypes);
-    const locationRecords = await locationRepository.findByCities(locations);
-    const productId = await productRepository.findIdByProductType(productType);
+    if (!Array.isArray(ProductTypes) || ProductTypes.length === 0) {
+      throw new Error("Product type must be a non-empty array.");
+    }
+
+    const deviceRecords = await deviceRepository.findByDeviceTypes(DeviceTypes);
+    const locationRecords = await locationRepository.findByCities(Locations);
+    const productId = await productRepository.findIdByProductType(ProductTypes[0]);
 
     const deviceIds = deviceRecords.map(d => d.id);
     const locationIds = locationRecords.map(l => l.id);
 
-    data.productId = productId;
-    data.startTime = formatToTimeString(data?.startTime);
-    data.endTime = formatToTimeString(data?.endTime);
-    data.daysOfWeek = JSON.stringify(data?.daysOfWeek || []);
+    // Extract timings
+    const [startTimeRaw, endTimeRaw] = (data?.timings || "").split("-") || [];
+    const startTime = startTimeRaw;
+    const endTime = endTimeRaw;
 
-    // Upload new media files if present
+    // Extract and parse dates
+    const parsedDateRange = typeof data?.dateRange === 'string'
+      ? JSON.parse(data.dateRange)
+      : data.dateRange || {};
+
+    const startDate = parsedDateRange?.start ? new Date(parsedDateRange.start) : null;
+    const endDate = parsedDateRange?.end ? new Date(parsedDateRange.end) : null;
+
+    // Upload files if provided
     if (fileBuffer?.length) {
       for (const file of fileBuffer) {
         const fileName = file?.originalname || `file-${Date.now()}.${file.mimetype?.split("/")?.[1] || "bin"}`;
@@ -471,18 +452,28 @@ const updateCampaign = async (id, data, fileBuffer = [], userId) => {
       campaign.productFiles = urls;
     }
 
-    // Update associations
+    // Update campaign associations
     await campaign.setDevices(deviceIds, { transaction: t });
-    await campaign.setLocations(locationRecords, { transaction: t });
+    await campaign.setLocations(locationIds, { transaction: t });
 
-    // Clean unnecessary fields before assigning
-    delete data.productType;
-    delete data.adDevices;
-    delete data.targetRegions;
+    // Update campaign fields
+    Object.assign(campaign, {
+      campaignName: data.campaignName,
+      brandName: data.brandName,
+      adType: data.adType,
+      baseBid: data.baseBid,
+      maxBid: data.maxBidCap,
+      campaignBudget: data.campaignBudget,
+      storeType: data.storeTypes,
+      startDate,
+      endDate,
+      startTime,
+      endTime,
+      productId,
+      duration: data.duration
+    });
 
-    Object.assign(campaign, data);
     await campaign.save({ transaction: t });
-
     await t.commit();
     return campaign;
 
@@ -492,7 +483,6 @@ const updateCampaign = async (id, data, fileBuffer = [], userId) => {
     throw new Error(`Error updating campaign: ${error?.message}`);
   }
 };
-
 
 const deleteCampaign = async (id) => {
   const transaction = await sequelize.transaction();
