@@ -4,19 +4,16 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Campaign extends Model {
     static associate(models) {
-      // Belongs to one Product
       Campaign.belongsTo(models.Product, {
         foreignKey: 'productId',
         as: 'product'
       });
 
-      // Belongs to one User
       Campaign.belongsTo(models.User, {
         foreignKey: 'userId',
         as: 'user'
       });
 
-      // Belongs to many Devices
       Campaign.belongsToMany(models.Device, {
         through: 'CampaignDeviceTypes',
         foreignKey: 'campaignId',
@@ -24,7 +21,6 @@ module.exports = (sequelize, DataTypes) => {
         as: 'devices'
       });
 
-      // Belongs to many Locations
       Campaign.belongsToMany(models.Location, {
         through: 'CampaignLocations',
         foreignKey: 'campaignId',
@@ -39,8 +35,8 @@ module.exports = (sequelize, DataTypes) => {
     brandName: DataTypes.STRING,
     startDate: DataTypes.DATE,
     endDate: DataTypes.DATE,
-    startTime: DataTypes.TIME,
-    endTime: DataTypes.TIME,
+    startTime: DataTypes.STRING,
+    endTime: DataTypes.STRING,
     status: {
       type: DataTypes.BOOLEAN,
       defaultValue: false
@@ -80,7 +76,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Campaign',
-    paranoid: true // Sequelize uses deletedAt for soft deletes
+    paranoid: true
   });
 
   return Campaign;
