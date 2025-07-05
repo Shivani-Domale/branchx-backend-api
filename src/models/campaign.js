@@ -39,6 +39,7 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
   }
+
   Campaign.init({
     campaignName: DataTypes.STRING,
     brandName: DataTypes.STRING,
@@ -65,10 +66,20 @@ module.exports = (sequelize, DataTypes) => {
     isDeleted: {
       type: DataTypes.BOOLEAN,
       defaultValue: false
+    },
+    isApproved: {
+      type: DataTypes.STRING,
+      defaultValue: 'PENDING'
+    },
+    deletedAt: {
+      type: DataTypes.DATE,
+      allowNull: true
     }
   }, {
     sequelize,
     modelName: 'Campaign',
+    paranoid: true  // Optional: Sequelize will automatically use deletedAt for soft deletes
   });
+
   return Campaign;
 };

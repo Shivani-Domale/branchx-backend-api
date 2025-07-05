@@ -10,90 +10,10 @@ const deviceRepository = new DeviceRepository();
 const locationRepository = new LocationRepository();
 
 
-//   const t = await sequelize.transaction();
-//   try {
-    
-//     console.log(id);
-//     const urls = [];
-
-//     const parsedDevices = JSON.parse(data?.adDevices || "[]");
-//     const DeviceTypes = parsedDevices?.map(device => device?.name);
-
-//     const parsedProduct = JSON.parse(data?.productType || "{}");
-//     const ProductType = parsedProduct?.name;
-
-//     const Locations = JSON.parse(data?.targetRegions || "[]");
-
-//     if (!Array.isArray(DeviceTypes) || DeviceTypes?.length === 0) {
-//       throw new Error("Device types must be a non-empty array.");
-//     }
-
-//     if (!Array.isArray(Locations) || Locations?.length === 0) {
-//       throw new Error("Cities (locations) must be a non-empty array.");
-//     }
-
-//     const deviceRecords = await deviceRepository.findByDeviceTypes(DeviceTypes);
-//     const locationRecords = await locationRepository.findByCities(Locations);
-//     const productId = await productRepository.findIdByProductType(ProductType);
-
-//     const deviceIds = deviceRecords?.map(device => device?.id);
-//     const locationIds = locationRecords?.map(loc => loc?.id);
-
-//     if (deviceIds?.length === 0) {
-//       throw new Error("No matching devices found for selected types.");
-//     }
-
-//     if (locationIds?.length === 0) {
-//       throw new Error("No matching locations found for selected cities.");
-//     }
-
-//     data.userId = id;
-//     data.productId = productId;
-//     data.startTime = formatToTimeString(data?.startTime);
-//     data.endTime = formatToTimeString(data?.endTime);
-//     const campaign = await campaignRepository.create(data, { transaction: t });
-
-//     if (!campaign) {
-//       throw new Error("Campaign creation failed");
-//     }
-
-//     if (!fileBuffer) {
-//       throw new Error("Creative file is required.");
-//     }
-
-//     for (const file of fileBuffer) {
-//       if(!file?.buffer || !file?.originalname){
-//         throw new Error(`Invalid file: ${file?.originalname}`);
-//       }
-//       const creativeUrl = await UploadFile(file.buffer, file.originalname, campaign?.id);
-//       urls.push(creativeUrl);
-//     }
-//     campaign.productFiles = urls;
-//     await campaign.save({ transaction: t });
-
-//     if (deviceIds?.length) {
-
-//       await campaign?.addDevices(deviceIds, { transaction: t });
-//     }
-
-//     if (locationIds?.length) {
-
-//       await campaign?.addLocations(locationIds, { transaction: t });
-//     }
-
-//     await t.commit();
-
-//     return campaign;
-
-//   } catch (error) {
-//     await t.rollback();
-
-//     throw new Error(`Error creating campaign: ${error?.message}`);
-//   }
-// };
 
 const createCampaign = async (data, fileBuffer, userId) => {
   const t = await sequelize.transaction();
+
   try {
     const urls = [];
 
@@ -118,7 +38,7 @@ const createCampaign = async (data, fileBuffer, userId) => {
     const productId = await productRepository.findIdByProductType(ProductType);
 
     console.log(deviceRecords);
-    
+
     const deviceIds = deviceRecords.map(d => d.id);
     const locationIds = locationRecords.map(l => l.id);
 
@@ -220,7 +140,7 @@ const getAllCampaigns = async (userId) => {
         month: "2-digit",
         day: "2-digit"
       });
-   const imageOnly = (campaign.productFiles || []).find(file =>
+      const imageOnly = (campaign.productFiles || []).find(file =>
         typeof file === 'string' &&
         (file.endsWith('.jpg') || file.endsWith('.jpeg') || file.endsWith('.png'))
       );

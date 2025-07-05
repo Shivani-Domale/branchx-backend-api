@@ -108,7 +108,7 @@ const getDeviceTypes = async (req, res) => {
       return ErrorReponse(res, StatusCodes.NOT_FOUND, 'No Devices Found');
     }
 
-    return SuccessReposnse(res, null, StatusCodes.OK, filteredDevices);
+    return SuccessReposnse(res,"Devices fetched successfully", StatusCodes.OK, filteredDevices);
   } catch (error) {
     console.error("Error fetching devices:", error);
     Logger.error("Error fetching devices:", error);
@@ -124,7 +124,7 @@ const getLocations = async (req, res) => {
       return ErrorReponse(res, StatusCodes.NOT_FOUND, 'No Cities Found');
     }
 
-    return SuccessReposnse(res, "Data fetched successfully", StatusCodes.OK, locations);
+    return SuccessReposnse(res, "Locations fetched successfully", StatusCodes.OK, locations);
   } catch (error) {
     console.error("Error fetching locations:", error);
     Logger.error("Error fetching locations:", error);
@@ -141,7 +141,7 @@ const getProductTypes = async (req, res) => {
       return ErrorReponse(res, StatusCodes.NOT_FOUND, 'No Product Category Found');
     }
 
-    return SuccessReposnse(res, null, StatusCodes.OK, filteredProducts);
+    return SuccessReposnse(res, "Products fetched successfully", StatusCodes.OK, filteredProducts);
   } catch (error) {
     console.error("Error fetching product types:", error);
     Logger.error("Error fetching product types:", error);
