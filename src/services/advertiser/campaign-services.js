@@ -65,6 +65,7 @@ const createCampaign = async (data, fileBuffer, userId) => {
       brandName: data.brandName,
       adType: data.adType,
       baseBid: data.baseBid,
+      duration: data.duration,
       maxBid: data.maxBidCap,
       campaignBudget: data.campaignBudget,
       storeType: data.storeTypes,
