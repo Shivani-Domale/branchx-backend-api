@@ -206,7 +206,11 @@ const getAllCampaigns = async (userId) => {
         timings,
         regions,
         targetDevices,
-        product
+        product,
+        startDate: new Date(campaignData.startDate).toLocaleDateString("en-IN"),
+        endDate: new Date(campaignData.endDate).toLocaleDateString("en-IN"),
+        startTime: campaignData?.startTime?.toUpperCase(),
+        endTime: campaignData?.endTime?.toUpperCase(),
       };
     });
 
