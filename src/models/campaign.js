@@ -69,6 +69,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: false
     },
+    targeting: {
+      type: DataTypes.STRING,
+      defaultValue: '5000 Clicks'
+    },
+    achieveStatus: {
+      type: DataTypes.STRING,
+      defaultValue: '45% Achieved'
+    },
     deletedAt: {
       type: DataTypes.DATE,
       allowNull: true

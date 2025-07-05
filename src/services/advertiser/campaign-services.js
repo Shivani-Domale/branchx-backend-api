@@ -241,7 +241,9 @@ const getAllCampaigns = async (userId) => {
         endDate: formattedEndDate,
         startTime:(campaign.startTime).toUpperCase(),
         endTime: (campaign.endTime).toUpperCase(),
-        status: campaign.status
+        status: campaign.status,
+        targeting:campaign.targeting,
+        achieveStatus: campaign.achieveStatus,
       };
     });
 
