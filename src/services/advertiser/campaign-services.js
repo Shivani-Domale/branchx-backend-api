@@ -209,8 +209,8 @@ const getAllCampaigns = async (userId) => {
         product,
         startDate: new Date(data.startDate).toISOString().split("T")[0],
         endDate: new Date(data.endDate).toISOString().split("T")[0],
-        startTime: campaigns?.startTime?.toUpperCase(),
-        endTime: campaigns?.endTime?.toUpperCase(),
+        startTime: (data?.startTime).toUpperCase(),
+     endTime: (data?.endTime).toUpperCase(),
       };
     });
 
