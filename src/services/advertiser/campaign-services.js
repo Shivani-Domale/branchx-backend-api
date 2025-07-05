@@ -413,23 +413,53 @@ const deleteCampaign = async (id) => {
   }
 };
 
-const calculateBaseCost = async (adDevices, productType, targetRegions) => {
+// const calculateBaseCost = async (adDevices, productType, targetRegions) => {
+//   try {
+//     const devices = await deviceRepository.findByDeviceTypes(adDevices);
+//     const locations = await locationRepository.findByCities(targetRegions);
+//     const product = await productRepository.findProductById(productType);
+
+//     if (!devices || !locations || !product) {
+//       throw new Error("Devices, locations, or product not found.");
+//     }
+
+//     const baseCost = await GenerateBaseCostForCampaigns({ devices, locations, product });
+//     return baseCost;
+//   } catch (error) {
+//     throw new Error(`Error calculating base cost: ${error?.message}`);
+//   }
+// };
+
+const calculateBaseCost = async (productTypes, targetRegions, adDevices) => {
   try {
     const devices = await deviceRepository.findByDeviceTypes(adDevices);
     const locations = await locationRepository.findByCities(targetRegions);
-    const product = await productRepository.findProductById(productType);
 
-    if (!devices || !locations || !product) {
-      throw new Error("Devices, locations, or product not found.");
+    const products = await Promise.all(
+      productTypes.map(async (type) => await productRepository.findProductById(type))
+    );
+
+    if (!devices.length || !locations.length || products.includes(null)) {
+      throw new Error("Devices, locations, or one or more products not found.");
     }
 
-    const baseCost = await GenerateBaseCostForCampaigns({ devices, locations, product });
-    return baseCost;
+    let totalBaseCost = 0;
+
+    for (const product of products) {
+      const cost = await GenerateBaseCostForCampaigns({
+        devices,
+        locations,
+        product,
+      });
+      totalBaseCost += cost;
+    }
+
+    return totalBaseCost;
+
   } catch (error) {
-    throw new Error(`Error calculating base cost: ${error?.message}`);
+    throw new Error(`Error calculating base cost: ${error.message}`);
   }
 };
-
 module.exports = {
   createCampaign,
   getAllCampaigns,

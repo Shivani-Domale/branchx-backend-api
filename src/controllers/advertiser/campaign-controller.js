@@ -193,15 +193,34 @@ const deleteCampaign = async (req, res) => {
   }
 };
 
+// const calculateBaseCost = async (req, res) => {
+//   try {
+//     console.log(req.body);
+    
+//     const { adDevices, productType, targetRegions } = req?.body;
+
+//     const baseCost = await CampaignService.calculateBaseCost(adDevices, productType, targetRegions);
+
+//     return SuccessReposnse(res, "Base cost calculated successfully", StatusCodes.OK, { baseCost });
+//   } catch (error) {
+//     console.error("Error calculating base cost:", error);
+//     Logger.error("Error calculating base cost:", error);
+//     return ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error);
+//   }
+// };
+
 const calculateBaseCost = async (req, res) => {
   try {
-    console.log(req.body);
-    
-    const { adDevices, productType, targetRegions } = req?.body;
+    const { productTypes = [], regions = [], devices = [] } = req.body;
 
-    const baseCost = await CampaignService.calculateBaseCost(adDevices, productType, targetRegions);
+    if (!productTypes.length || !regions.length || !devices.length) {
+      return ErrorReponse(res, StatusCodes.BAD_REQUEST, { message: 'Product types, regions, and devices are required.' });
+    }
+
+    const baseCost = await CampaignService.calculateBaseCost(productTypes, regions, devices);
 
     return SuccessReposnse(res, "Base cost calculated successfully", StatusCodes.OK, { baseCost });
+
   } catch (error) {
     console.error("Error calculating base cost:", error);
     Logger.error("Error calculating base cost:", error);
