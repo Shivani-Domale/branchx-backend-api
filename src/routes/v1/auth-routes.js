@@ -3,13 +3,13 @@ const router = express.Router();
 const {
   loginUser,
   forgotPassword,
-  resetPassword
+  resetPasswordWithOldPassword
 } = require('../../controllers/auth/login-user');
 const { authenticateToken, authorizeRoles } = require('../../middlewares/auth');
 
 router.post('/login', loginUser);
 router.post('/forgot-password', forgotPassword);
-router.post('/reset-password', resetPassword);
+router.post('/reset-password', authenticateToken,resetPasswordWithOldPassword);
 
 
 router.get('/distributor/dashboard',

@@ -82,23 +82,27 @@ const forgotPassword = async (req, res) => {
   }
 };
 
-const resetPassword = async (req, res) => {
+
+const resetPasswordWithOldPassword = async (req, res) => {
   try {
-    const email = req?.body?.email;
-    const otp = req?.body?.otp;
-    const newPassword = req?.body?.newPassword;
+    const userId = req.user.id; // from JWT middleware
+    const { currentPassword, newPassword } = req.body;
 
-    await userService.verifyOtpAndResetPassword(email, otp, newPassword);
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ success: false, message: 'current and new password are required.' });
+    }
 
-    res.status(200).json({ message: 'Password reset successful', success: true });
+    await userService.resetPassword(userId, currentPassword, newPassword);
+
+    return res.status(200).json({ success: true, message: 'Password updated successfully.' });
   } catch (err) {
     console.error('Reset Password Error:', err);
-    res.status(400).json({ message: err?.message, success: false });
+    return res.status(400).json({ success: false, message: err.message });
   }
 };
 
 module.exports = {
   loginUser,
   forgotPassword,
-  resetPassword,
+  resetPasswordWithOldPassword,
 };

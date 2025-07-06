@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const UserRepository = require('../../repositories/users/user-repository');
 const { sendEmail } = require('../../utils/send-Email');
 
+
 const userRepository = new UserRepository();
 
 const getUserById = async (id) => {
@@ -70,31 +71,24 @@ const sendOtpToEmail = async (email) => {
   }
 };
 
-const verifyOtpAndResetPassword = async (email, otp, newPassword) => {
-  try {
-    const user = await userRepository.findUserByEmail(email);
-    if (!user) throw new Error('User not found');
+const resetPassword = async (userId, currentPassword, newPassword) => {
+  const user = await userRepository.findUserById(userId);
+  if (!user) throw new Error('User not found');
 
-    const isValidOtp =
-      user?.resetOtp === otp &&
-      user?.resetOtpExpires &&
-      new Date(user.resetOtpExpires) > new Date();
-
-    if (!isValidOtp) throw new Error('Invalid or expired OTP');
-
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
-
-    await userRepository.updateUser(user?.id, {
-      password: hashedPassword,
-      resetOtp: null,
-      resetOtpExpires: null,
-    });
-
-    return true;
-  } catch (error) {
-    console.error('Error in verifyOtpAndResetPassword:', error?.message);
-    throw new Error(error?.message || 'OTP verification failed');
+  const isCurrentCorrect = await bcrypt.compare(currentPassword, user.password);
+  if (!isCurrentCorrect) {
+    throw new Error('Incorrect current password');
   }
+
+  const isSamePassword = await bcrypt.compare(newPassword, user.password);
+  if (isSamePassword) {
+    throw new Error('New password must be different from the current password');
+  }
+
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+  await userRepository.updateUser(userId, { password: hashedPassword });
+
+  return true;
 };
 
 module.exports = {
@@ -102,5 +96,5 @@ module.exports = {
   findUserByEmail,
   updateUserProfile,
   sendOtpToEmail,
-  verifyOtpAndResetPassword,
+  resetPassword,
 };
