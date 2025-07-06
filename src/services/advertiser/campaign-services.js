@@ -445,7 +445,7 @@ const updateCampaign = async (id, data, fileBuffer = [], userId) => {
     const endDate = parsedDateRange?.end ? new Date(parsedDateRange.end) : null;
 
     // Upload files if provided
-    if (fileBuffer?.length) {
+   if (fileBuffer?.length) {
       for (const file of fileBuffer) {
         const fileName = file?.originalname || `file-${Date.now()}.${file.mimetype?.split("/")?.[1] || "bin"}`;
         if (!file.buffer) throw new Error(`Invalid file buffer for: ${fileName}`);
@@ -453,8 +453,29 @@ const updateCampaign = async (id, data, fileBuffer = [], userId) => {
         const url = await UploadFile(file.buffer, fileName, campaign.id);
         urls.push(url);
       }
+    }
 
-      campaign.productFiles = urls;
+    // Detect file change
+    let updatedFiles = [...existingFiles];
+
+    const removedFiles = typeof data?.removedFiles === 'string'
+      ? JSON.parse(data.removedFiles)
+      : data?.removedFiles || [];
+
+    const isFileChanged = urls.length > 0 || removedFiles.length > 0;
+
+    if (isFileChanged) {
+      // Remove files
+      if (removedFiles.length > 0) {
+        updatedFiles = updatedFiles.filter(file => !removedFiles.includes(file));
+      }
+
+      // Add new files
+      if (urls.length > 0) {
+        updatedFiles.push(...urls);
+      }
+
+      campaign.productFiles = updatedFiles;
     }
 
     // Update campaign associations
