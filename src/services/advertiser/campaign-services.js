@@ -320,8 +320,8 @@ const getProductTypes = async () => {
 
 const updateCampaign = async (id, data, fileBuffer = [], userId) => {
   const t = await sequelize.transaction();
-  console.log(fileBuffer, "File Buffer in updateCampaign");
   
+
   try {
     const campaign = await campaignRepository.findByIdWithLocationAndDevice(id);
     if (!campaign) throw new Error("Campaign not found");
@@ -341,17 +341,14 @@ const updateCampaign = async (id, data, fileBuffer = [], userId) => {
       ? JSON.parse(data.regions)
       : data?.regions || [];
 
-    if (!Array.isArray(DeviceTypes) || DeviceTypes.length === 0) {
+    if (!Array.isArray(DeviceTypes) || DeviceTypes.length === 0)
       throw new Error("Device types must be a non-empty array.");
-    }
 
-    if (!Array.isArray(Locations) || Locations.length === 0) {
+    if (!Array.isArray(Locations) || Locations.length === 0)
       throw new Error("Target locations must be a non-empty array.");
-    }
 
-    if (!Array.isArray(ProductTypes) || ProductTypes.length === 0) {
+    if (!Array.isArray(ProductTypes) || ProductTypes.length === 0)
       throw new Error("Product type must be a non-empty array.");
-    }
 
     const deviceRecords = await deviceRepository.findByDeviceTypes(DeviceTypes);
     const locationRecords = await locationRepository.findByCities(Locations);
@@ -365,7 +362,7 @@ const updateCampaign = async (id, data, fileBuffer = [], userId) => {
     const startTime = startTimeRaw?.trim();
     const endTime = endTimeRaw?.trim();
 
-    // Extract and parse date range
+    // Parse date range
     const parsedDateRange = typeof data?.dateRange === 'string'
       ? JSON.parse(data.dateRange)
       : data.dateRange || {};
@@ -373,14 +370,8 @@ const updateCampaign = async (id, data, fileBuffer = [], userId) => {
     const startDate = parsedDateRange?.start ? new Date(parsedDateRange.start) : null;
     const endDate = parsedDateRange?.end ? new Date(parsedDateRange.end) : null;
 
-    // Clone current product files from DB
-    const existingFiles = Array.isArray(campaign.productFiles) ? [...campaign.productFiles] : [];
-    console.log("Existing files:", existingFiles);
-    
-    let updatedFiles = [...existingFiles];
-
-    // Upload new files if provided
-    if (fileBuffer?.length) {
+    // Upload new files ONLY if present
+    if (fileBuffer?.length > 0) {
       for (const file of fileBuffer) {
         const fileName = file?.originalname || `file-${Date.now()}.${file.mimetype?.split("/")?.[1] || "bin"}`;
         if (!file.buffer) throw new Error(`Invalid file buffer for: ${fileName}`);
@@ -388,34 +379,16 @@ const updateCampaign = async (id, data, fileBuffer = [], userId) => {
         const url = await UploadFile(file.buffer, fileName, campaign.id);
         urls.push(url);
       }
+
+      //  Only replace if new files are uploaded
+      campaign.productFiles = urls;
     }
 
-    // Detect file change
-    const removedFiles = typeof data?.removedFiles === 'string'
-      ? JSON.parse(data.removedFiles)
-      : data?.removedFiles || [];
-
-    const isFileChanged = urls.length > 0 || removedFiles.length > 0;
-
-    if (isFileChanged) {
-      // Remove files
-      if (removedFiles.length > 0) {
-        updatedFiles = updatedFiles.filter(file => !removedFiles.includes(file));
-      }
-
-      // Add new files
-      if (urls.length > 0) {
-        updatedFiles.push(...urls);
-      }
-
-      campaign.productFiles = updatedFiles;
-    }
-
-    // Update campaign associations
+    // Update associations
     await campaign.setDevices(deviceIds, { transaction: t });
     await campaign.setLocations(locationIds, { transaction: t });
 
-    // Update campaign fields
+    // Update main fields
     Object.assign(campaign, {
       campaignName: data.campaignName,
       brandName: data.brandName,
@@ -438,10 +411,11 @@ const updateCampaign = async (id, data, fileBuffer = [], userId) => {
 
   } catch (error) {
     await t.rollback();
-    console.error("Error updating campaign:", error);
+    console.error("❌ Error updating campaign:", error);
     throw new Error(`Error updating campaign: ${error?.message}`);
   }
 };
+
 
 
 // const updateCampaign = async (id, data, fileBuffer = [], userId) => {
