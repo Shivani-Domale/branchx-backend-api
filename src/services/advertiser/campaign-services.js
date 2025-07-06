@@ -173,7 +173,7 @@ const getAllCampaigns = async (userId) => {
       const targetDevices = data?.devices?.map(device => device?.deviceName) || [];
 
       const product = [data?.product?.product_type || ""];
- ;
+      ;
       const image = (data.productFiles || []).find(file =>
         typeof file === 'string' &&
         (file.endsWith('.jpg') || file.endsWith('.jpeg') || file.endsWith('.png'))
@@ -210,7 +210,7 @@ const getAllCampaigns = async (userId) => {
         startDate: new Date(data.startDate).toISOString().split("T")[0],
         endDate: new Date(data.endDate).toISOString().split("T")[0],
         startTime: (data?.startTime).toUpperCase(),
-     endTime: (data?.endTime).toUpperCase(),
+        endTime: (data?.endTime).toUpperCase(),
       };
     });
 
@@ -320,13 +320,12 @@ const getProductTypes = async () => {
 
 const updateCampaign = async (id, data, fileBuffer = [], userId) => {
   const t = await sequelize.transaction();
-  
+
 
   try {
     const campaign = await campaignRepository.findByIdWithLocationAndDevice(id);
     if (!campaign) throw new Error("Campaign not found");
 
-    const urls = [];
 
     // Parse & validate input
     const DeviceTypes = typeof data?.targetDevices === 'string'
@@ -370,7 +369,8 @@ const updateCampaign = async (id, data, fileBuffer = [], userId) => {
     const startDate = parsedDateRange?.start ? new Date(parsedDateRange.start) : null;
     const endDate = parsedDateRange?.end ? new Date(parsedDateRange.end) : null;
 
-    // Upload new files ONLY if present
+    const urls = [];
+    
     if (fileBuffer?.length > 0) {
       for (const file of fileBuffer) {
         const fileName = file?.originalname || `file-${Date.now()}.${file.mimetype?.split("/")?.[1] || "bin"}`;
