@@ -31,6 +31,8 @@ exports.myProfile = async (req, res, next) => {
 
 exports.editProfile = async (req, res, next) => {
   try {
+    console.log(req.body);
+    
     const userId = req.user.id;
     const role = req.user.role;
     const updateData = req.body;
