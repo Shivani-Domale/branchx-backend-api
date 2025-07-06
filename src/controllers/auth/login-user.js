@@ -44,7 +44,7 @@ const loginUser = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { id: user?.id, email: user?.email, role: user?.role },
+      { id: user?.id,fullName:user?.fullName, email: user?.email, role: user?.role },
       SECRET,
       { expiresIn: '7d' }
     );
@@ -86,10 +86,8 @@ const forgotPassword = async (req, res) => {
 const resetPasswordWithOldPassword = async (req, res) => {
   try {
     console.log(req.body);
-    
     const userId = req.user.id; // from JWT middleware
     const { currentPassword, newPassword } = req.body;
-
     if (!currentPassword || !newPassword) {
       return res.status(400).json({ success: false, message: 'current and new password are required.' });
     }
