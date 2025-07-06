@@ -284,11 +284,23 @@ const getCampaignById = async (campaignId) => {
 const getDeviceTypes = async () => {
   try {
     const devices = await deviceRepository.getAll();
-    return devices;
+
+    const uniqueDevices = [];
+    const seen = new Set();
+
+    for (const device of devices) {
+      if (!seen.has(device.deviceName)) {
+        seen.add(device.deviceName);
+        uniqueDevices.push(device);
+      }
+    }
+
+    return uniqueDevices;
   } catch (error) {
     throw new Error(`Error fetching devices: ${error?.message}`);
   }
 };
+
 
 const getLocations = async () => {
   try {
