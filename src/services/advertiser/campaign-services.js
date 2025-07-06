@@ -373,6 +373,8 @@ const updateCampaign = async (id, data, fileBuffer = [], userId) => {
 
     // Clone current product files from DB
     const existingFiles = Array.isArray(campaign.productFiles) ? [...campaign.productFiles] : [];
+    console.log("Existing files:", existingFiles);
+    
     let updatedFiles = [...existingFiles];
 
     // Upload new files if provided
