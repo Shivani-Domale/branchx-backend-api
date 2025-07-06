@@ -178,30 +178,44 @@ const getProductTypes = async (req, res) => {
 
 const updateCampaign = async (req, res) => {
   try {
-    console.log(req.body);
-    
-    const { id } = req?.params;
-    const user = req?.user;
+    const { id } = req.params;
+    const user = req.user;
 
+    // Log incoming request
+    console.log(" Request Body:", req.body);
+    console.log("Uploaded Files:", req.files);
+
+    // Auth check
     if (!user) {
-      return ErrorReponse(res, StatusCodes.UNAUTHORIZED, "Please Login...");
+      return ErrorReponse(res, StatusCodes.UNAUTHORIZED, "Please login to continue.");
     }
 
-    const files = req?.files || [];
+    // Extract uploaded files (if any)
+    const files = req.files || [];
 
+    // Call service to update campaign
     const updatedCampaign = await CampaignService.updateCampaign(
       id,
-      req?.body,
+      req.body,
       files,
       user.id
     );
 
-    return SuccessReposnse(res, "Campaign updated successfully", StatusCodes.OK, updatedCampaign);
+    // Success response
+    return SuccessReposnse(
+      res,
+      "Campaign updated successfully",
+      StatusCodes.OK,
+      updatedCampaign
+    );
+
   } catch (error) {
-    Logger.error("Error updating campaign:", error);
+    // Log and return error
+    Logger.error(" Error updating campaign:", error);
     return ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error.message);
   }
 };
+
 
 
 const deleteCampaign = async (req, res) => {
