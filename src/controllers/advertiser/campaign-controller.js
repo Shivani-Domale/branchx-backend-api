@@ -183,8 +183,6 @@ const updateCampaign = async (req, res) => {
 
     // Log incoming request
     console.log(" Request Body:", req.body);
-    console.log("Uploaded Files:", req.files);
-
     // Auth check
     if (!user) {
       return ErrorReponse(res, StatusCodes.UNAUTHORIZED, "Please login to continue.");

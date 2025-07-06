@@ -381,7 +381,7 @@ const updateCampaign = async (id, data, fileBuffer = [], userId) => {
     const startDate = parsedDateRange?.start ? new Date(parsedDateRange.start) : null;
     const endDate = parsedDateRange?.end ? new Date(parsedDateRange.end) : null;
 
-    const urls =[];
+    const urls = [];
 
     if (fileBuffer?.length > 0) {
       for (const file of fileBuffer) {
@@ -423,7 +423,7 @@ const updateCampaign = async (id, data, fileBuffer = [], userId) => {
 
   } catch (error) {
     await t.rollback();
-    console.error("❌ Error updating campaign:", error);
+    console.error(" Error updating campaign:", error);
     throw new Error(`Error updating campaign: ${error?.message}`);
   }
 };
