@@ -14,7 +14,7 @@ router.get('/:campaignId/getCampaign',VerifyToken, CampaignController.getCampaig
 router.get('/getUserCampaign', VerifyToken, CampaignController.getUserCampaignByToken);
 router.delete('/:campaignId/deleteCampaign', VerifyToken,CampaignController.deleteCampaign);
 router.post('/baseCost', CampaignController.calculateBaseCost);
-
+    
 
 router.get('/dropdown/devices', CampaignController.getDeviceTypes);
 router.get('/dropdown/products', CampaignController.getProductTypes);
