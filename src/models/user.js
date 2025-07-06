@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.Campaign, { foreignKey: 'userId' });
     }
   }
+
   User.init({
     fullName: DataTypes.STRING,
     phone: DataTypes.STRING,
@@ -13,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
     country: DataTypes.STRING,
     state: DataTypes.STRING,
     city: DataTypes.STRING,
+    address: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     role: DataTypes.STRING,
     businessName: DataTypes.STRING,
     message: DataTypes.TEXT,
@@ -21,7 +26,6 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 'PENDING',
     },
     password: DataTypes.STRING,
-    // :white_check_mark: Fields for OTP-based password reset
     resetOtp: {
       type: DataTypes.STRING,
       allowNull: true,
@@ -34,5 +38,6 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'User',
   });
+
   return User;
 };
