@@ -20,7 +20,7 @@ router.get('/dropdown/devices', CampaignController.getDeviceTypes);
 router.get('/dropdown/products', CampaignController.getProductTypes);
 router.get('/dropdown/locations', CampaignController.getLocations);
 
-router.put('/:id/updateCampaign', VerifyToken, UploadFileCampaign.upload.single('creativeFile'), CampaignController.updateCampaign);
+router.put('/:id/updateCampaign', VerifyToken, UploadFileCampaign.upload.array('productFiles',10), CampaignController.updateCampaign);
 
 
 module.exports = router;
