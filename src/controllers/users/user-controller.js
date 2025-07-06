@@ -6,7 +6,7 @@ const SuccessReposnse = require('../../utils/errorHandler/successReponse');
 
 const allowedFieldsByRole = {
   retailer: ['fullName', 'phone', 'country', 'state', 'businessName', 'city', 'email'],
-  'ad-agency': ['fullName', 'phone', 'businessName', 'email'],
+  'ad-agency': ['fullName', 'phone', 'businessName', 'email','address'],
   //distributor: ['fullName', 'phone', 'country', 'state', 'city', 'email']
 };
 
