@@ -369,7 +369,7 @@ const updateCampaign = async (id, data, fileBuffer = [], userId) => {
     const startDate = parsedDateRange?.start ? new Date(parsedDateRange.start) : null;
     const endDate = parsedDateRange?.end ? new Date(parsedDateRange.end) : null;
 
-    const urls = [];
+    const urls =[];
 
     if (fileBuffer?.length > 0) {
       for (const file of fileBuffer) {
@@ -381,7 +381,7 @@ const updateCampaign = async (id, data, fileBuffer = [], userId) => {
       }
 
       //  Only replace if new files are uploaded
-      campaign.productFiles = [urls];
+      campaign.productFiles = urls;
     }
 
     // Update associations
