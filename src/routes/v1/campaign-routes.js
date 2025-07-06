@@ -8,7 +8,7 @@ const router = express.Router();
 
 
 /* campaign routes */
-router.post('/createCampaign', VerifyToken, UploadFileCampaign.upload.array('productImages',10), CampaignController.createCampaign);
+router.post('/createCampaign', VerifyToken, UploadFileCampaign.upload.array('productFiles',10), CampaignController.createCampaign);
 router.put('/:id/status', VerifyToken,CampaignController.updateCampaignStatus);
 router.get('/:campaignId/getCampaign',VerifyToken, CampaignController.getCampaignById);
 router.get('/getUserCampaign', VerifyToken, CampaignController.getUserCampaignByToken);

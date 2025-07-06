@@ -14,7 +14,7 @@ const createCampaign = async (req, res) => {
 
     const files = req.files;
     if (!files || files.length === 0) {
-      Logger.error("No creative files found.");
+      Logger.error("No files found.");
       return ErrorReponse(res, StatusCodes.BAD_REQUEST, "At least one image or video is required.");
     }
 
