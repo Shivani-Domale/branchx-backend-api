@@ -85,6 +85,8 @@ const forgotPassword = async (req, res) => {
 
 const resetPasswordWithOldPassword = async (req, res) => {
   try {
+    console.log(req.body);
+    
     const userId = req.user.id; // from JWT middleware
     const { currentPassword, newPassword } = req.body;
 
