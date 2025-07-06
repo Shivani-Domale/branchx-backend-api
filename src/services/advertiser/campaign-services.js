@@ -318,79 +318,6 @@ const getProductTypes = async () => {
 
 
 
-// const updateCampaign = async (id, data, fileBuffer = [], userId) => {
-//   const t = await sequelize.transaction();
-//   try {
-//     const campaign = await campaignRepository.findByIdWithLocationAndDevice(id);
-//     if (!campaign) throw new Error("Campaign not found");
-
-//     const urls = [];
-
-//     // Parse & validate inputs
-//     const parsedDevices = JSON.parse(data?.adDevices || "[]");
-//     const deviceTypes = parsedDevices.map(device => device?.name);
-
-//     const parsedProduct = JSON.parse(data?.productType || "{}");
-//     const productType = parsedProduct?.name;
-
-//     const locations = JSON.parse(data?.targetRegions || "[]");
-
-//     if (!Array.isArray(deviceTypes) || deviceTypes.length === 0) {
-//       throw new Error("Device types must be a non-empty array.");
-//     }
-
-//     if (!Array.isArray(locations) || locations.length === 0) {
-//       throw new Error("Target locations must be a non-empty array.");
-//     }
-
-//     const deviceRecords = await deviceRepository.findByDeviceTypes(deviceTypes);
-//     const locationRecords = await locationRepository.findByCities(locations);
-//     const productId = await productRepository.findIdByProductType(productType);
-
-//     const deviceIds = deviceRecords.map(d => d.id);
-//     const locationIds = locationRecords.map(l => l.id);
-
-//     data.productId = productId;
-//     data.startTime = formatToTimeString(data?.startTime);
-//     data.endTime = formatToTimeString(data?.endTime);
-//     data.daysOfWeek = JSON.stringify(data?.daysOfWeek || []);
-
-//     // Upload new media files if present
-//     if (fileBuffer?.length) {
-//       for (const file of fileBuffer) {
-//         const fileName = file?.originalname || `file-${Date.now()}.${file.mimetype?.split("/")?.[1] || "bin"}`;
-//         if (!file.buffer) throw new Error(`Invalid file buffer for: ${fileName}`);
-
-//         const url = await UploadFile(file.buffer, fileName, campaign.id);
-//         urls.push(url);
-//       }
-
-//       campaign.productFiles = urls;
-//     }
-
-//     // Update associations
-//     await campaign.setDevices(deviceIds, { transaction: t });
-//     await campaign.setLocations(locationRecords, { transaction: t });
-
-//     // Clean unnecessary fields before assigning
-//     delete data.productType;
-//     delete data.adDevices;
-//     delete data.targetRegions;
-
-//     Object.assign(campaign, data);
-//     await campaign.save({ transaction: t });
-
-//     await t.commit();
-//     return campaign;
-
-//   } catch (error) {
-//     await t.rollback();
-//     console.error("Error updating campaign:", error);
-//     throw new Error(`Error updating campaign: ${error?.message}`);
-//   }
-// };
-
-
 const updateCampaign = async (id, data, fileBuffer = [], userId) => {
   const t = await sequelize.transaction();
   try {
@@ -433,10 +360,10 @@ const updateCampaign = async (id, data, fileBuffer = [], userId) => {
 
     // Extract timings
     const [startTimeRaw, endTimeRaw] = (data?.timings || "").split("-") || [];
-    const startTime = startTimeRaw;
-    const endTime = endTimeRaw;
+    const startTime = startTimeRaw?.trim();
+    const endTime = endTimeRaw?.trim();
 
-    // Extract and parse dates
+    // Extract and parse date range
     const parsedDateRange = typeof data?.dateRange === 'string'
       ? JSON.parse(data.dateRange)
       : data.dateRange || {};
@@ -444,8 +371,12 @@ const updateCampaign = async (id, data, fileBuffer = [], userId) => {
     const startDate = parsedDateRange?.start ? new Date(parsedDateRange.start) : null;
     const endDate = parsedDateRange?.end ? new Date(parsedDateRange.end) : null;
 
-    // Upload files if provided
-   if (fileBuffer?.length) {
+    // Clone current product files from DB
+    const existingFiles = Array.isArray(campaign.productFiles) ? [...campaign.productFiles] : [];
+    let updatedFiles = [...existingFiles];
+
+    // Upload new files if provided
+    if (fileBuffer?.length) {
       for (const file of fileBuffer) {
         const fileName = file?.originalname || `file-${Date.now()}.${file.mimetype?.split("/")?.[1] || "bin"}`;
         if (!file.buffer) throw new Error(`Invalid file buffer for: ${fileName}`);
@@ -456,8 +387,6 @@ const updateCampaign = async (id, data, fileBuffer = [], userId) => {
     }
 
     // Detect file change
-    let updatedFiles = [...existingFiles];
-
     const removedFiles = typeof data?.removedFiles === 'string'
       ? JSON.parse(data.removedFiles)
       : data?.removedFiles || [];
@@ -509,6 +438,126 @@ const updateCampaign = async (id, data, fileBuffer = [], userId) => {
     throw new Error(`Error updating campaign: ${error?.message}`);
   }
 };
+
+
+// const updateCampaign = async (id, data, fileBuffer = [], userId) => {
+//   const t = await sequelize.transaction();
+//   try {
+//     const campaign = await campaignRepository.findByIdWithLocationAndDevice(id);
+//     if (!campaign) throw new Error("Campaign not found");
+
+//     const urls = [];
+
+//     // Parse & validate input
+//     const DeviceTypes = typeof data?.targetDevices === 'string'
+//       ? JSON.parse(data.targetDevices)
+//       : data?.targetDevices || [];
+
+//     const ProductTypes = typeof data?.product === 'string'
+//       ? JSON.parse(data.product)
+//       : data?.product || [];
+
+//     const Locations = typeof data?.regions === 'string'
+//       ? JSON.parse(data.regions)
+//       : data?.regions || [];
+
+//     if (!Array.isArray(DeviceTypes) || DeviceTypes.length === 0) {
+//       throw new Error("Device types must be a non-empty array.");
+//     }
+
+//     if (!Array.isArray(Locations) || Locations.length === 0) {
+//       throw new Error("Target locations must be a non-empty array.");
+//     }
+
+//     if (!Array.isArray(ProductTypes) || ProductTypes.length === 0) {
+//       throw new Error("Product type must be a non-empty array.");
+//     }
+
+//     const deviceRecords = await deviceRepository.findByDeviceTypes(DeviceTypes);
+//     const locationRecords = await locationRepository.findByCities(Locations);
+//     const productId = await productRepository.findIdByProductType(ProductTypes[0]);
+
+//     const deviceIds = deviceRecords.map(d => d.id);
+//     const locationIds = locationRecords.map(l => l.id);
+
+//     // Extract timings
+//     const [startTimeRaw, endTimeRaw] = (data?.timings || "").split("-") || [];
+//     const startTime = startTimeRaw;
+//     const endTime = endTimeRaw;
+
+//     // Extract and parse dates
+//     const parsedDateRange = typeof data?.dateRange === 'string'
+//       ? JSON.parse(data.dateRange)
+//       : data.dateRange || {};
+
+//     const startDate = parsedDateRange?.start ? new Date(parsedDateRange.start) : null;
+//     const endDate = parsedDateRange?.end ? new Date(parsedDateRange.end) : null;
+
+//     // Upload files if provided
+//    if (fileBuffer?.length) {
+//       for (const file of fileBuffer) {
+//         const fileName = file?.originalname || `file-${Date.now()}.${file.mimetype?.split("/")?.[1] || "bin"}`;
+//         if (!file.buffer) throw new Error(`Invalid file buffer for: ${fileName}`);
+
+//         const url = await UploadFile(file.buffer, fileName, campaign.id);
+//         urls.push(url);
+//       }
+//     }
+
+//     // Detect file change
+//     let updatedFiles = [...existingFiles];
+
+//     const removedFiles = typeof data?.removedFiles === 'string'
+//       ? JSON.parse(data.removedFiles)
+//       : data?.removedFiles || [];
+
+//     const isFileChanged = urls.length > 0 || removedFiles.length > 0;
+
+//     if (isFileChanged) {
+//       // Remove files
+//       if (removedFiles.length > 0) {
+//         updatedFiles = updatedFiles.filter(file => !removedFiles.includes(file));
+//       }
+
+//       // Add new files
+//       if (urls.length > 0) {
+//         updatedFiles.push(...urls);
+//       }
+
+//       campaign.productFiles = updatedFiles;
+//     }
+
+//     // Update campaign associations
+//     await campaign.setDevices(deviceIds, { transaction: t });
+//     await campaign.setLocations(locationIds, { transaction: t });
+
+//     // Update campaign fields
+//     Object.assign(campaign, {
+//       campaignName: data.campaignName,
+//       brandName: data.brandName,
+//       adType: data.adType,
+//       baseBid: data.baseBid,
+//       maxBid: data.maxBidCap,
+//       campaignBudget: data.campaignBudget,
+//       storeType: data.storeTypes,
+//       startDate,
+//       endDate,
+//       startTime,
+//       endTime,
+//       productId,
+//       duration: data.duration
+//     });
+
+//     await campaign.save({ transaction: t });
+//     await t.commit();
+//     return campaign;
+
+//   } catch (error) {
+//     await t.rollback();
+//     console.error("Error updating campaign:", error);
+//     throw new Error(`Error updating campaign: ${error?.message}`);
+//   }
+// };
 
 const deleteCampaign = async (id) => {
   const transaction = await sequelize.transaction();
