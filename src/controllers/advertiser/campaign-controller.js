@@ -178,6 +178,8 @@ const getProductTypes = async (req, res) => {
 
 const updateCampaign = async (req, res) => {
   try {
+    console.log(req.files);
+    
     const { id } = req.params;
     const user = req.user;
 
