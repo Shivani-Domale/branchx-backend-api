@@ -318,5 +318,125 @@
     "price": 29000,
     "deviceCount": 90,
     "pincode": "400071"
+  },
+   {
+    "id": 41,
+    "city": "Indiranagar, Bangalore",
+    "tier": "Tier 1",
+    "price": 31000,
+    "deviceCount": 110,
+    "pincode": "560038"
+  },
+  {
+    "id": 42,
+    "city": "Koramangala, Bangalore",
+    "tier": "Tier 1",
+    "price": 32000,
+    "deviceCount": 120,
+    "pincode": "560034"
+  },
+  {
+    "id": 43,
+    "city": "Whitefield, Bangalore",
+    "tier": "Tier 2",
+    "price": 28000,
+    "deviceCount": 100,
+    "pincode": "560066"
+  },
+  {
+    "id": 44,
+    "city": "HSR Layout, Bangalore",
+    "tier": "Tier 1",
+    "price": 30000,
+    "deviceCount": 115,
+    "pincode": "560102"
+  },
+  {
+    "id": 45,
+    "city": "Jayanagar, Bangalore",
+    "tier": "Tier 1",
+    "price": 29500,
+    "deviceCount": 110,
+    "pincode": "560041"
+  },
+  {
+    "id": 46,
+    "city": "Malleshwaram, Bangalore",
+    "tier": "Tier 2",
+    "price": 27000,
+    "deviceCount": 90,
+    "pincode": "560003"
+  },
+  {
+    "id": 47,
+    "city": "Rajajinagar, Bangalore",
+    "tier": "Tier 2",
+    "price": 26500,
+    "deviceCount": 85,
+    "pincode": "560010"
+  },
+  {
+    "id": 48,
+    "city": "Marathahalli, Bangalore",
+    "tier": "Tier 3",
+    "price": 24000,
+    "deviceCount": 80,
+    "pincode": "560037"
+  },
+  {
+    "id": 49,
+    "city": "Banashankari, Bangalore",
+    "tier": "Tier 3",
+    "price": 23000,
+    "deviceCount": 75,
+    "pincode": "560050"
+  },
+  {
+    "id": 50,
+    "city": "Electronic City, Bangalore",
+    "tier": "Tier 3",
+    "price": 25000,
+    "deviceCount": 90,
+    "pincode": "560100"
+  },
+  {
+    "id": 51,
+    "city": "BTM Layout, Bangalore",
+    "tier": "Tier 2",
+    "price": 25500,
+    "deviceCount": 95,
+    "pincode": "560068"
+  },
+  {
+    "id": 52,
+    "city": "Hebbal, Bangalore",
+    "tier": "Tier 2",
+    "price": 26000,
+    "deviceCount": 85,
+    "pincode": "560024"
+  },
+  {
+    "id": 53,
+    "city": "Yelahanka, Bangalore",
+    "tier": "Tier 3",
+    "price": 22000,
+    "deviceCount": 70,
+    "pincode": "560064"
+  },
+  {
+    "id": 54,
+    "city": "KR Puram, Bangalore",
+    "tier": "Tier 3",
+    "price": 21500,
+    "deviceCount": 75,
+    "pincode": "560036"
+  },
+  {
+    "id": 55,
+    "city": "MG Road, Bangalore",
+    "tier": "Tier 1",
+    "price": 33000,
+    "deviceCount": 125,
+    "pincode": "560001"
   }
 ]
