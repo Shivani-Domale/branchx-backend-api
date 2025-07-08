@@ -1,5 +1,5 @@
 const { CampaignRepository, ProductRepository, DeviceRepository, LocationRepository } = require("../../repositories");
-const { GenerateBaseCostForCampaigns, UploadFile, formatToTimeString, convertTo12HourFormat } = require("../../utils");
+const { GenerateBaseCostForCampaigns, UploadFile, formatToTimeString, convertTo12HourFormat, UpdateMetaDataForFile } = require("../../utils");
 const { sequelize } = require("../../models");
 
 
@@ -94,6 +94,7 @@ const createCampaign = async (data, fileBuffer, userId) => {
     await campaign.addLocations(locationIds, { transaction: t });
 
     await t.commit();
+    UpdateMetaDataForFile(campaign.id);
     return campaign;
   } catch (error) {
     await t.rollback();
