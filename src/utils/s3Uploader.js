@@ -22,7 +22,8 @@ const UploadFile = async (buffer, originalName, adId) => {
     Bucket: BUCKET_NAME,
     Key: key,
     Body: buffer,
-    ContentType: contentType
+    ContentType: contentType,
+    ContentDisposition: 'inline'
   };
 
   await s3.upload(params).promise();

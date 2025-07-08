@@ -10,11 +10,13 @@ const getAllApprovedCampaigns = async () => {
         const formattedCampaigns = campaign.map(campaigns => {
             const data = campaigns.toJSON();
             const targetDevices = [...new Set(data?.devices?.map(device => device?.deviceName) || [])];
-
+            const productFile = (data?.productFiles || []).find(file =>
+                typeof file === 'string' && file.match(/\.(mp4|mov|avi|webm)$/i)
+            ) || null;
             return {
                 id: data.id,
                 campaignName: data?.campaignName,
-                productFiles:data?.productFiles
+                productFile
                 ,
                 targetDevices
             };
