@@ -6,8 +6,7 @@ const { SuccessReposnse, ErrorReponse } = require("../../utils");
 
 const createCampaign = async (req, res) => {
   try {
-    console.log(req.body);
-    const user = req.user;
+    const user = req?.user;
     if (!user) {
       return ErrorReponse(res, StatusCodes.UNAUTHORIZED, "Please Login...");
     }
@@ -21,52 +20,19 @@ const createCampaign = async (req, res) => {
     const allowedTypes = ["image/jpeg", "image/png", "video/mp4", "video/avi"];
     for (const file of files) {
       if (!allowedTypes.includes(file?.mimetype)) {
-        return ErrorReponse(res, StatusCodes.UNSUPPORTED_MEDIA_TYPE, `Invalid file type: ${file.originalname}`);
+        return ErrorReponse(res, StatusCodes?.UNSUPPORTED_MEDIA_TYPE, `Invalid file type: ${file?.originalname}`);
       }
     }
 
-    const campaign = await CampaignService.createCampaign(req.body, files, user.id);
+    const campaign = await CampaignService.createCampaign(req.body, files, user?.id);
     return SuccessReposnse(res, "Campaign created successfully", StatusCodes.OK, campaign);
   } catch (error) {
     Logger.error("Campaign creation failed:", error);
-    return ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error.message);
+    console.error("Campaign creation failed:", error?.message);
+    return ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error?.message);
   }
 };
 
-// const createCampaign = async (req, res) => {
-//   console.log(req.body);
-
-//   try {
-//     const user = req.user;
-//     console.log(user);
-//     if (!user) {
-//       return ErrorReponse(res, StatusCodes.UNAUTHORIZED, "Please Login...");
-//     }
-
-//     const files = req.files;
-//     if (!files || files.length === 0) {
-//       Logger.error("No creative files found.");
-//       return ErrorReponse(res, StatusCodes.BAD_REQUEST, "At least one image or video is required.");
-//     }
-
-//     const allowedTypes = ["image/jpeg", "image/png", "video/mp4", "video/avi"];
-//     for (const file of files) {
-//       if (!allowedTypes.includes(file?.mimetype)) {
-//         return ErrorReponse(
-//           res,
-//           StatusCodes.UNSUPPORTED_MEDIA_TYPE,
-//           `Invalid file type: ${file.originalname}`
-//         );
-//       }
-//     }
-
-//     const campaign = await CampaignService.createCampaign(req.body, files, user.id);
-//     return SuccessReposnse(res, null, StatusCodes.OK, campaign);
-//   } catch (error) {
-//     Logger.error("Campaign creation failed:", error);
-//     return ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error.message);
-//   }
-// };
 
 const updateCampaignStatus = async (req, res) => {
   try {
@@ -75,16 +41,16 @@ const updateCampaignStatus = async (req, res) => {
 
     const campaign = await CampaignService.updateCampaignStatus(id, status);
     if (!campaign) {
-      return ErrorReponse(res, StatusCodes.NOT_FOUND, 'Unable To Update Campaign Status');
+      return ErrorReponse(res, StatusCodes?.NOT_FOUND, 'Unable To Update Campaign Status');
     }
 
     const message = `${campaign?.campaignName} Ad ${status === true ? 'Activated' : 'Deactivated'} successfully`;
-    return SuccessReposnse(res, message, StatusCodes.OK, null);
+    return SuccessReposnse(res, message, StatusCodes?.OK, null);
 
   } catch (error) {
     console.error("Error updating campaign status:", error);
     Logger.error("Error updating campaign status:", error);
-    return ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error);
+    return ErrorReponse(res, StatusCodes?.INTERNAL_SERVER_ERROR, error);
   }
 };
 
@@ -94,10 +60,10 @@ const getCampaignById = async (req, res) => {
     const campaign = await CampaignService.getCampaignById(campaignId);
 
     if (!campaign) {
-      return ErrorReponse(res, StatusCodes.BAD_REQUEST, 'Campaign not found');
+      return ErrorReponse(res, StatusCodes?.BAD_REQUEST, 'Campaign not found');
     }
 
-    return SuccessReposnse(res, null, StatusCodes.OK, campaign);
+    return SuccessReposnse(res, null, StatusCodes?.OK, campaign);
   } catch (error) {
     console.error("Error fetching campaign by ID:", error);
     Logger.error("Error fetching campaign by ID:", error);
@@ -110,19 +76,19 @@ const getUserCampaignByToken = async (req, res) => {
 
     const user = req?.user;
     if (!user) {
-      return ErrorReponse(res, StatusCodes.UNAUTHORIZED, "Please Login...");
+      return ErrorReponse(res, StatusCodes?.UNAUTHORIZED, "Please Login...");
     }
     const campaigns = await CampaignService.getAllCampaigns(user?.id);
     if (!campaigns || campaigns?.length === 0) {
-      return ErrorReponse(res, StatusCodes.NOT_FOUND, 'No campaign found');
+      return ErrorReponse(res, StatusCodes?.NOT_FOUND, 'No campaign found');
     }
 
-    return SuccessReposnse(res, null, StatusCodes.OK, campaigns);
+    return SuccessReposnse(res, null, StatusCodes?.OK, campaigns);
 
   } catch (error) {
     console.error("Error in getUserCampaignByToken:", error);
     Logger.error("Error in getUserCampaignByToken:", error);
-    return ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error);
+    return ErrorReponse(res, StatusCodes?.INTERNAL_SERVER_ERROR, error);
   }
 };
 
@@ -178,10 +144,12 @@ const getProductTypes = async (req, res) => {
 
 const updateCampaign = async (req, res) => {
   try {
-    console.log(req.files);
-    
-    const { id } = req.params;
-    const user = req.user;
+    console.log(req?.files);
+
+    console.log("---------------------");
+
+    const { id } = req?.params;
+    const user = req?.user;
 
     // Log incoming request
     console.log(" Request Body:", req.body);
@@ -212,6 +180,7 @@ const updateCampaign = async (req, res) => {
   } catch (error) {
     // Log and return error
     Logger.error(" Error updating campaign:", error);
+    console.error(" Error updating campaign:", error?.message);
     return ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error.message);
   }
 };
@@ -236,21 +205,6 @@ const deleteCampaign = async (req, res) => {
   }
 };
 
-// const calculateBaseCost = async (req, res) => {
-//   try {
-//     console.log(req.body);
-
-//     const { adDevices, productType, targetRegions } = req?.body;
-
-//     const baseCost = await CampaignService.calculateBaseCost(adDevices, productType, targetRegions);
-
-//     return SuccessReposnse(res, "Base cost calculated successfully", StatusCodes.OK, { baseCost });
-//   } catch (error) {
-//     console.error("Error calculating base cost:", error);
-//     Logger.error("Error calculating base cost:", error);
-//     return ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error);
-//   }
-// };
 
 const calculateBaseCost = async (req, res) => {
   try {
