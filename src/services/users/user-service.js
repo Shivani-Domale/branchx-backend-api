@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const UserRepository = require('../../repositories/users/user-repository');
 const { sendEmail } = require('../../utils/send-Email');
+const jwt = require('jsonwebtoken');
 
 
 const userRepository = new UserRepository();
@@ -91,10 +92,32 @@ const resetPassword = async (userId, currentPassword, newPassword) => {
   return true;
 };
 
+const logoutUser = async (token) => {
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET); // or use const SECRET
+    const expiresAt = new Date(decoded.exp * 1000); // JWT exp to JS date
+    await userRepository.blacklistToken(token, expiresAt);
+    return { success: true };
+  } catch (error) {
+    console.error('Error in logoutUser Service:', error.message);
+    throw new Error('InvalidToken');
+  }
+};
+
+const checkIfTokenBlacklisted = async (token) => {
+  try {
+    return await userRepository.isTokenBlacklisted(token);
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
   getUserById,
   findUserByEmail,
   updateUserProfile,
   sendOtpToEmail,
   resetPassword,
+  logoutUser,
+  checkIfTokenBlacklisted,
 };

@@ -1,5 +1,6 @@
-const { User } = require('../../models');
+const { User, BlacklistedToken} = require('../../models');
 const crudRepository = require('../crud-repository');
+
 
 class UserRepository extends crudRepository {
   constructor() {
@@ -41,7 +42,26 @@ class UserRepository extends crudRepository {
       throw error;
     }
   }
+
+  async blacklistToken(token, expiresAt) {
+    try {
+      return await BlacklistedToken.create({ token, expiresAt });
+    } catch (error) {
+      console.error('Error in blacklistToken:', error.message);
+      throw error;
+    }
+  }
+
+  async isTokenBlacklisted(token) {
+    try {
+      const blacklisted = await BlacklistedToken.findOne({ where: { token } });
+      return !!blacklisted;
+    } catch (error) {
+      console.error('Error in isTokenBlacklisted:', error.message);
+      throw error;
+    }
+  }
+
 }
 
-// ✅ Only export the class
 module.exports = UserRepository;
