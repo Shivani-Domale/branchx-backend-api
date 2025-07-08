@@ -16,7 +16,11 @@ const getAllApprovedCampaigns = async () => {
             return {
                 id: data.id,
                 campaignName: data?.campaignName,
-                productFile
+                productFile,
+                startDate:data?.startDate,
+                endDate:data?.endDate,
+                startTime:data?.startTime,
+                endTime:data?.endTime
                 ,
                 targetDevices
             };
