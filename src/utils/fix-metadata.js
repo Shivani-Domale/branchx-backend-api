@@ -1,4 +1,5 @@
 const AWS = require("aws-sdk");
+const { Logger } = require("../config");
 require("dotenv").config();
 
 const s3 = new AWS.S3({
@@ -24,7 +25,7 @@ const fixMetadata = async (campaignId) => {
     );
 
     for (const file of videoFiles) {
-      console.log(`Fixing metadata: ${file.Key}`);
+     Logger.info(`Fixing metadata: ${file.Key}`);
 
       await s3.copyObject({
         Bucket: BUCKET,
@@ -36,7 +37,7 @@ const fixMetadata = async (campaignId) => {
       }).promise();
     }
 
-    console.log("Metadata fixed for uploaded videos.");
+    Logger.info("Metadata fixed for uploaded videos.");
   } catch (error) {
     console.error("Error in fixMetadata:", error.message);
   }
