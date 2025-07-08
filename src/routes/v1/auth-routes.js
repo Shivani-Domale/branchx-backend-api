@@ -3,13 +3,18 @@ const router = express.Router();
 const {
   loginUser,
   forgotPassword,
-  resetPasswordWithOldPassword
+  resetPasswordWithOldPassword,
+  logoutUser,
 } = require('../../controllers/auth/login-user');
 const { authenticateToken, authorizeRoles } = require('../../middlewares/auth');
+const checkBlacklistedToken = require('../../middlewares/check-blacklist');
 
 router.post('/login', loginUser);
 router.post('/forgot-password', forgotPassword);
 router.post('/reset-password', authenticateToken,resetPasswordWithOldPassword);
+router.post('/logout', checkBlacklistedToken, logoutUser);
+
+
 
 
 router.get('/distributor/dashboard',

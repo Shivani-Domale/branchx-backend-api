@@ -1,7 +1,8 @@
 const { User } = require('../../models');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const userService = require('../../services/users/user-service');
+const userService = require('../../services/users/user-service'); 
+const authService = require('../../services/users/user-service'); // Adjusted import to match the new service structure
 
 const SECRET = process.env.JWT_SECRET;
 
@@ -101,8 +102,37 @@ const resetPasswordWithOldPassword = async (req, res) => {
   }
 };
 
+const logoutUser = async (req, res) => {
+  try {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (!token) {
+      return res.status(401).json({
+        message: 'No token provided.',
+        success: false,
+        error: 'TokenMissing',
+      });
+    }
+
+    await authService.logoutUser(token);
+
+    return res.status(200).json({
+      message: 'Logged out successfully.',
+      success: true,
+    });
+  } catch (error) {
+    console.error('Logout Error:', error.message);
+    return res.status(500).json({
+      message: 'An error occurred during logout.',
+      success: false,
+      error: 'LogoutFailed',
+    });
+  }
+};
 module.exports = {
   loginUser,
   forgotPassword,
   resetPasswordWithOldPassword,
+  logoutUser,
 };
