@@ -9,4 +9,5 @@ module.exports = {
     GenerateBaseCostForCampaigns: require('./generatebasecostforcampaign'),
     formatToTimeString :require('./formatToTimeString '),
     convertTo12HourFormat : require('./convertTo12HourFormat'),
+    UpdateMetaDataForFile :require('./cron/fix-metadata')
 }
