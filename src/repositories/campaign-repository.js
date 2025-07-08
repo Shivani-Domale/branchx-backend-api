@@ -1,4 +1,4 @@
-const { Campaign, Location, Device, Product } = require('../models');
+const { Campaign, Location, Device, Product, Sequelize } = require('../models');
 const crudRepository = require('./crud-repository');
 
 class CampaignRepository extends crudRepository {
@@ -61,28 +61,45 @@ class CampaignRepository extends crudRepository {
     return { message: 'Campaign marked as deleted (soft delete).' };
   }
 
-async findByUserId(userId) {
-  return await this.model.findAll({
-    where: {
-      userId: userId,
-      isDeleted: false
-    },
-    include: [
-      {
-        association: 'devices', // from Campaign model `as: 'devices'`
-        attributes: ['deviceName']
+  async findByUserId(userId) {
+    return await this.model.findAll({
+      where: {
+        userId: userId,
+        isDeleted: false
       },
-      {
-        association: 'locations', // from Campaign model `as: 'locations'`
-        attributes: ['city']
+      include: [
+        {
+          association: 'devices', // from Campaign model `as: 'devices'`
+          attributes: ['deviceName']
+        },
+        {
+          association: 'locations', // from Campaign model `as: 'locations'`
+          attributes: ['city']
+        },
+        {
+          association: 'product', // from Campaign model `as: 'product'`
+          attributes: ['product_type']
+        }
+      ]
+    });
+  }
+
+  async findAllApproved() {
+    return await this.model.findAll({
+      where: {
+        isApproved: 'APPROVED',  // Filter only approved campaigns
+        isDeleted: false   // Optional: ignore soft-deleted ones
       },
-      {
-        association: 'product', // from Campaign model `as: 'product'`
-        attributes: ['product_type']
+      include: [{
+        model: Device,
+        as: 'devices',
+       attributes: ['deviceName']
+      }],
+      attributes: {
+        exclude: ['createdAt', 'updatedAt', 'deletedAt', 'productId', 'userId', 'remark', 'isDeleted', 'isDraft']
       }
-    ]
-  });
-}
+    });
+  }
 
 
 }
