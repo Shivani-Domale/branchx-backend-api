@@ -26,7 +26,8 @@ const allowedOrigins = [
   'http://139.59.23.86',
   'http://139.59.23.86:9092',
   'http://localhost:5173',
-  'http://localhost:5174'
+  'http://localhost:5174',
+  'https://render-react-1.onrender.com'
 ];
 app.use(cors({
   origin: function (origin, callback) {
