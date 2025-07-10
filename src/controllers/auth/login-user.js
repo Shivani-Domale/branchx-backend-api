@@ -72,14 +72,32 @@ const loginUser = async (req, res) => {
   }
 };
 
-// Forgot Password Controller
+//Forgot Password Controller
 const forgotPassword = async (req, res) => {
   try {
-    const email = req?.body?.email;
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({ success: false, message: 'Email is required' });
+    }
+
     await userService.sendOtpToEmail(email);
-    res.status(200).json({ message: 'OTP sent successfully', success: true });
-  } catch (err) {
-    res.status(404).json({ message: err?.message, success: false });
+    res.status(200).json({ success: true, message: 'OTP sent to email successfully' });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
+const resetPasswordWithOtp = async (req, res) => {
+  try {
+    const { email, otp, newPassword } = req.body;
+    if (!email || !otp || !newPassword) {
+      return res.status(400).json({ success: false, message: 'Email, OTP, and new password are required' });
+    }
+
+    await userService.verifyOtpAndResetPassword(email, otp, newPassword);
+    res.status(200).json({ success: true, message: 'Password reset successful' });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
   }
 };
 
@@ -135,4 +153,5 @@ module.exports = {
   forgotPassword,
   resetPasswordWithOldPassword,
   logoutUser,
+  resetPasswordWithOtp
 };

@@ -46,51 +46,50 @@ const updateUserProfile = async (userId, role, updateData, roleFields) => {
   }
 };
 
+
 const sendOtpToEmail = async (email) => {
-  try {
-    const user = await userRepository.findUserByEmail(email);
-    if (!user) throw new Error('User not found');
-
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    const expiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
-
-    await userRepository.updateUser(user?.id, {
-      resetOtp: otp,
-      resetOtpExpires: expiry,
-    });
-
-    await sendEmail({
-      to: user?.email,
-      subject: 'Password Reset OTP',
-      html: `<p>Hello <strong>${user?.fullName}</strong>,<br>Your OTP is <strong>${otp}</strong>. It will expire in 10 minutes.</p>`,
-    });
-
-    return true;
-  } catch (error) {
-    console.error('Error in sendOtpToEmail:', error?.message);
-    throw new Error(`Failed to send OTP: ${error?.message}`);
-  }
-};
-
-const resetPassword = async (userId, currentPassword, newPassword) => {
-  const user = await userRepository.findUserById(userId);
+  const user = await userRepository.findUserByEmail(email);
   if (!user) throw new Error('User not found');
 
-  const isCurrentCorrect = await bcrypt.compare(currentPassword, user.password);
-  if (!isCurrentCorrect) {
-    throw new Error('Incorrect current password');
-  }
+  const otp = Math.floor(100000 + Math.random() * 900000).toString();
+  const expiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
 
-  const isSamePassword = await bcrypt.compare(newPassword, user.password);
-  if (isSamePassword) {
-    throw new Error('New password must be different from the current password');
-  }
+  await userRepository.updateUser(user.id, {
+    resetOtp: otp,
+    resetOtpExpires: expiry,
+  });
 
-  const hashedPassword = await bcrypt.hash(newPassword, 10);
-  await userRepository.updateUser(userId, { password: hashedPassword });
+  await sendEmail({
+    to: email,
+    subject: 'Password Reset OTP',
+    html: `<p>Hello <strong>${user.fullName}</strong>,<br>Your OTP is <strong>${otp}</strong>. It will expire in 10 minutes.</p>`
+  });
 
   return true;
 };
+
+const verifyOtpAndResetPassword = async (email, otp, newPassword) => {
+  const user = await userRepository.findUserByEmail(email);
+  if (!user) throw new Error('User not found');
+
+  const isValidOtp =
+    user.resetOtp === otp &&
+    user.resetOtpExpires &&
+    new Date(user.resetOtpExpires) > new Date();
+
+  if (!isValidOtp) throw new Error('Invalid or expired OTP');
+
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+  await userRepository.updateUser(user.id, {
+    password: hashedPassword,
+    resetOtp: null,
+    resetOtpExpires: null,
+  });
+
+  return true;
+};
+
 
 const logoutUser = async (token) => {
   try {
@@ -117,7 +116,7 @@ module.exports = {
   findUserByEmail,
   updateUserProfile,
   sendOtpToEmail,
-  resetPassword,
+  verifyOtpAndResetPassword,
   logoutUser,
   checkIfTokenBlacklisted,
 };
