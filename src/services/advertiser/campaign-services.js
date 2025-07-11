@@ -12,8 +12,6 @@ const locationRepository = new LocationRepository();
 
 
 const createCampaign = async (data, fileBuffer, userId) => {
-  console.log(data);
-  
   const t = await sequelize.transaction();
 
   try {
@@ -400,10 +398,6 @@ const deleteCampaign = async (id) => {
 
 const calculateBaseCost = async (productTypes, targetRegions, adDevices) => {
   try {
-    console.log(productTypes);
-    console.log(targetRegions);
-    console.log(adDevices);
-    
     const devices = await deviceRepository.findByDeviceTypes(adDevices);
     const locations = await locationRepository.findByCities(targetRegions);
 

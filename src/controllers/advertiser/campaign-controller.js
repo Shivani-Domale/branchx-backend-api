@@ -204,6 +204,7 @@ const deleteCampaign = async (req, res) => {
 const calculateBaseCost = async (req, res) => {
   try {
     const { productTypes = [], regions = [], devices = [] } = req.body;
+console.log(req.body);
 
     if (!productTypes.length || !regions.length || !devices.length) {
       return ErrorReponse(res, StatusCodes.BAD_REQUEST, { message: 'Product types, regions, and devices are required.' });
