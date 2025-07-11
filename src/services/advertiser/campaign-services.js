@@ -12,6 +12,8 @@ const locationRepository = new LocationRepository();
 
 
 const createCampaign = async (data, fileBuffer, userId) => {
+  console.log(data);
+  
   const t = await sequelize.transaction();
 
   try {
@@ -283,10 +285,7 @@ const getProductTypes = async () => {
 
 
 const updateCampaign = async (id, data, fileBuffer = [], userId) => {
-  const t = await sequelize.transaction();
-
-  console.log(fileBuffer);
-  
+  const t = await sequelize.transaction();  
   try {
     const campaign = await campaignRepository.findByIdWithLocationAndDevice(id);
     if (!campaign) throw new Error("Campaign not found");
@@ -380,6 +379,8 @@ const updateCampaign = async (id, data, fileBuffer = [], userId) => {
     throw new Error(`Error updating campaign: ${error?.message}`);
   }
 };
+
+
 
 
 const deleteCampaign = async (id) => {
