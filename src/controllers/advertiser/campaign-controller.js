@@ -144,10 +144,6 @@ const getProductTypes = async (req, res) => {
 
 const updateCampaign = async (req, res) => {
   try {
-    console.log(req?.files);
-
-    console.log("---------------------");
-
     const { id } = req?.params;
     const user = req?.user;
 
@@ -165,8 +161,7 @@ const updateCampaign = async (req, res) => {
     const updatedCampaign = await CampaignService.updateCampaign(
       id,
       req.body,
-      files,
-      user.id
+      files
     );
 
     // Success response
@@ -209,10 +204,11 @@ const deleteCampaign = async (req, res) => {
 const calculateBaseCost = async (req, res) => {
   try {
     const { productTypes = [], regions = [], devices = [] } = req.body;
+console.log(req.body);
 
-    if (!productTypes.length || !regions.length || !devices.length) {
-      return ErrorReponse(res, StatusCodes.BAD_REQUEST, { message: 'Product types, regions, and devices are required.' });
-    }
+    // if (!productTypes.length || !regions.length || !devices.length) {
+    //   return ErrorReponse(res, StatusCodes.BAD_REQUEST, { message: 'Product types, regions, and devices are required.' });
+    // }
 
     const baseCost = await CampaignService.calculateBaseCost(productTypes, regions, devices);
 
