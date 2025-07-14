@@ -134,25 +134,14 @@ router.post('/reset-password-otp', resetPasswordWithOtp);
  */
 router.post('/logout', checkBlacklistedToken, logoutUser);
 
-/**
- * @swagger
- * /auth/Advertiser/dashboard:
- *   get:
- *     summary: Advertiser or Retailer dashboard (protected route)
- *     tags: [Auth]
- *     security:
- *       - bearerAuth: []
- *     responses:
- *       200:
- *         description: Welcome Advertiser or Retailer
- */
-router.get(
-  '/Advertiser/dashboard',
-  authenticateToken,
-  authorizeRoles('advertiser', 'retailer'),
-  (req, res) => {
-    res.send('Welcome Advertiser or Retailer');
-  }
-);
+
+// router.get(
+//   '/Advertiser/dashboard',
+//   authenticateToken,
+//   authorizeRoles('advertiser', 'retailer'),
+//   (req, res) => {
+//     res.send('Welcome Advertiser or Retailer');
+//   }
+// );
 
 module.exports = router;
