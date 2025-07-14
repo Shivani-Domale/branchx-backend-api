@@ -144,10 +144,6 @@ const getProductTypes = async (req, res) => {
 
 const updateCampaign = async (req, res) => {
   try {
-    console.log(req?.files);
-
-    console.log("---------------------");
-
     const { id } = req?.params;
     const user = req?.user;
 
@@ -165,8 +161,7 @@ const updateCampaign = async (req, res) => {
     const updatedCampaign = await CampaignService.updateCampaign(
       id,
       req.body,
-      files,
-      user.id
+      files
     );
 
     // Success response
