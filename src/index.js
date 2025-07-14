@@ -5,6 +5,8 @@ const cors = require('cors');
 const errorHandler = require('./middlewares/error-Handler');
 const authRoutes = require('./routes/v1/auth-routes');
 require('events').EventEmitter.defaultMaxListeners = 20;
+const swaggerUi = require('swagger-ui-express');
+const { Swagger } = require('./docs');
 
 
 
@@ -41,7 +43,7 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
 }));
-
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(Swagger));
 app.use("/api",apiRoutes);
 app.use('/api/auth', authRoutes);
 
