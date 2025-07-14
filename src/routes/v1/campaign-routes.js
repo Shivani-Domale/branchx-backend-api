@@ -27,9 +27,49 @@ const router = express.Router();
  *         multipart/form-data:
  *           schema:
  *             type: object
+ *             required:
+ *               - campaignName
+ *               - brandName
+ *               - startDate
+ *               - endDate
+ *               - productFiles
+ *               - targetDevices
+ *               - targetRegions
  *             properties:
- *               name:
+ *               campaignName:
  *                 type: string
+ *               brandName:
+ *                 type: string
+ *               startDate:
+ *                 type: string
+ *                 format: date
+ *               endDate:
+ *                 type: string
+ *                 format: date
+ *               startTime:
+ *                 type: string
+ *               endTime:
+ *                 type: string
+ *               baseBid:
+ *                 type: number
+ *               maxBid:
+ *                 type: string
+ *               campaignBudget:
+ *                 type: string
+ *               adType:
+ *                 type: string
+ *               storeType:
+ *                 type: string
+ *               duration:
+ *                 type: integer
+ *               productType:
+ *                 type: string
+ *               targetDevices:
+ *                 type: string
+ *                 description: JSON stringified array of device IDs
+ *               targetRegions:
+ *                 type: string
+ *                 description: JSON stringified array of location IDs
  *               productFiles:
  *                 type: array
  *                 items:
