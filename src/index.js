@@ -30,7 +30,8 @@ const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:5174',
   'https://render-react-1.onrender.com',
-  'https://editor.swagger.io'
+  'https://editor.swagger.io',
+  'http://localhost:3000'
 ];
 app.use(cors({
   origin: function (origin, callback) {
