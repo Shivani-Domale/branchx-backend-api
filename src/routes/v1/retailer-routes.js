@@ -17,7 +17,9 @@ const router = express.Router();
  *     tags: [Retailer]
  *     responses:
  *       200:
- *         description: List of approved campaigns
+ *         description: List of approved campaigns fetched successfully
+ *       500:
+ *         description: Internal server error
  */
 router.get('/fetchApproveCampaigns', RetailerController.fetchApprovedCampaigns);
 
