@@ -40,6 +40,14 @@ const checkBlacklistedToken = require('../../middlewares/check-blacklist');
  *     responses:
  *       200:
  *         description: Login successful
+ *       401:
+ *         description: Unauthorized – Invalid credentials
+ *       403:
+ *         description: Forbidden – Account not approved
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal server error
  */
 router.post('/login', loginUser);
 
@@ -67,7 +75,9 @@ router.post('/login', loginUser);
  *                 type: string
  *     responses:
  *       200:
- *         description: Password changed
+ *         description: Password updated successfully
+ *       400:
+ *         description: Bad request – Missing fields or invalid current password
  */
 router.post('/reset-password', authenticateToken, resetPasswordWithOldPassword);
 
@@ -90,7 +100,9 @@ router.post('/reset-password', authenticateToken, resetPasswordWithOldPassword);
  *                 type: string
  *     responses:
  *       200:
- *         description: OTP sent
+ *         description: OTP sent to email successfully
+ *       400:
+ *         description: Bad request – Missing email or failed to send OTP
  */
 router.post('/forgot-password', forgotPassword);
 
@@ -107,16 +119,21 @@ router.post('/forgot-password', forgotPassword);
  *           schema:
  *             type: object
  *             required:
+ *               - email
  *               - otp
  *               - newPassword
  *             properties:
+ *               email:
+ *                 type: string
  *               otp:
  *                 type: string
  *               newPassword:
  *                 type: string
  *     responses:
  *       200:
- *         description: Password reset
+ *         description: Password reset successful
+ *       400:
+ *         description: Bad request – Missing fields or invalid OTP
  */
 router.post('/reset-password-otp', resetPasswordWithOtp);
 
@@ -131,6 +148,10 @@ router.post('/reset-password-otp', resetPasswordWithOtp);
  *     responses:
  *       200:
  *         description: Logged out successfully
+ *       401:
+ *         description: Unauthorized – No token provided
+ *       500:
+ *         description: Internal server error
  */
 router.post('/logout', checkBlacklistedToken, logoutUser);
 

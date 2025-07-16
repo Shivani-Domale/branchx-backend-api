@@ -76,9 +76,18 @@ const router = express.Router();
  *                   type: string
  *                   format: binary
  *     responses:
- *       201:
+ *       200:
  *         description: Campaign created successfully
+ *       400:
+ *         description: Bad Request – Missing or invalid fields, or no files provided
+ *       401:
+ *         description: Unauthorized – User not logged in
+ *       415:
+ *         description: Unsupported Media Type – Invalid file type
+ *       500:
+ *         description: Internal Server Error – Something went wrong on the server
  */
+
 router.post(
   '/createCampaign',
   VerifyToken,
@@ -90,7 +99,7 @@ router.post(
  * @swagger
  * /campaign/{id}/status:
  *   put:
- *     summary: Update campaign status
+ *     summary: Update campaign status (activate or deactivate)
  *     tags: [Campaign]
  *     security:
  *       - bearerAuth: []
@@ -100,19 +109,28 @@ router.post(
  *         required: true
  *         schema:
  *           type: string
+ *         description: ID of the campaign to update
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
+ *             required:
+ *               - status
  *             properties:
  *               status:
- *                 type: string
+ *                 type: boolean
+ *                 description: true to activate, false to deactivate
  *     responses:
  *       200:
- *         description: Campaign status updated
+ *         description: Campaign status updated successfully
+ *       404:
+ *         description: Campaign not found
+ *       500:
+ *         description: Internal server error
  */
+
 router.put('/:id/status', VerifyToken, CampaignController.updateCampaignStatus);
 
 /**
@@ -129,10 +147,16 @@ router.put('/:id/status', VerifyToken, CampaignController.updateCampaignStatus);
  *         required: true
  *         schema:
  *           type: string
+ *         description: ID of the campaign to retrieve
  *     responses:
  *       200:
- *         description: Campaign details fetched
+ *         description: Campaign details fetched successfully
+ *       400:
+ *         description: Campaign not found
+ *       500:
+ *         description: Internal server error
  */
+
 router.get('/:campaignId/getCampaign', VerifyToken, CampaignController.getCampaignById);
 
 /**
@@ -146,28 +170,14 @@ router.get('/:campaignId/getCampaign', VerifyToken, CampaignController.getCampai
  *     responses:
  *       200:
  *         description: List of campaigns
+ *       401:
+ *         description: Unauthorized – Please login
+ *       404:
+ *         description: No campaigns found
+ *       500:
+ *         description: Internal server error
  */
 router.get('/getUserCampaign', VerifyToken, CampaignController.getUserCampaignByToken);
-
-/**
- * @swagger
- * /campaign/{campaignId}/deleteCampaign:
- *   delete:
- *     summary: Delete campaign by ID
- *     tags: [Campaign]
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - name: campaignId
- *         in: path
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Campaign deleted
- */
-router.delete('/:campaignId/deleteCampaign', VerifyToken, CampaignController.deleteCampaign);
 
 /**
  * @swagger
@@ -181,6 +191,10 @@ router.delete('/:campaignId/deleteCampaign', VerifyToken, CampaignController.del
  *         application/json:
  *           schema:
  *             type: object
+ *             required:
+ *               - productTypes
+ *               - targetRegions
+ *               - adDevices
  *             properties:
  *               productTypes:
  *                 type: array
@@ -196,7 +210,11 @@ router.delete('/:campaignId/deleteCampaign', VerifyToken, CampaignController.del
  *                   type: string
  *     responses:
  *       200:
- *         description: Base cost calculated
+ *         description: Base cost calculated successfully
+ *       400:
+ *         description: Bad Request – Missing or invalid input arrays
+ *       500:
+ *         description: Internal server error
  */
 router.post('/baseCost', CampaignController.calculateBaseCost);
 
@@ -208,7 +226,11 @@ router.post('/baseCost', CampaignController.calculateBaseCost);
  *     tags: [Campaign]
  *     responses:
  *       200:
- *         description: List of devices
+ *         description: List of devices fetched successfully
+ *       404:
+ *         description: No devices found
+ *       500:
+ *         description: Internal server error
  */
 router.get('/dropdown/devices', CampaignController.getDeviceTypes);
 
@@ -220,7 +242,11 @@ router.get('/dropdown/devices', CampaignController.getDeviceTypes);
  *     tags: [Campaign]
  *     responses:
  *       200:
- *         description: List of products
+ *         description: List of products fetched successfully
+ *       404:
+ *         description: No product categories found
+ *       500:
+ *         description: Internal server error
  */
 router.get('/dropdown/products', CampaignController.getProductTypes);
 
@@ -232,7 +258,11 @@ router.get('/dropdown/products', CampaignController.getProductTypes);
  *     tags: [Campaign]
  *     responses:
  *       200:
- *         description: List of locations
+ *         description: List of locations fetched successfully
+ *       404:
+ *         description: No cities found
+ *       500:
+ *         description: Internal server error
  */
 router.get('/dropdown/locations', CampaignController.getLocations);
 
@@ -252,6 +282,7 @@ router.get('/dropdown/locations', CampaignController.getLocations);
  *         required: true
  *         schema:
  *           type: string
+ *         description: ID of the campaign to update
  *     requestBody:
  *       required: true
  *       content:
@@ -266,7 +297,11 @@ router.get('/dropdown/locations', CampaignController.getLocations);
  *                   format: binary
  *     responses:
  *       200:
- *         description: Campaign updated
+ *         description: Campaign updated successfully
+ *       401:
+ *         description: Unauthorized – Please login to continue
+ *       500:
+ *         description: Internal server error
  */
 router.put(
   '/:id/updateCampaign',

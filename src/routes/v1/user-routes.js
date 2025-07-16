@@ -37,7 +37,13 @@ const { authenticateToken } = require('../../middlewares/auth');
  *                 type: string
  *     responses:
  *       201:
- *         description: User created
+ *         description: User created successfully
+ *       400:
+ *         description: Bad request – Email is required
+ *       406:
+ *         description: Not acceptable – Email already exists
+ *       500:
+ *         description: Internal server error
  */
 router.post('/createUser', UserController.createUser);
 
@@ -51,7 +57,11 @@ router.post('/createUser', UserController.createUser);
  *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: Profile retrieved
+ *         description: User profile fetched successfully
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal server error
  */
 router.get('/myProfile', authenticateToken, LoginUserController.myProfile);
 
@@ -78,7 +88,11 @@ router.get('/myProfile', authenticateToken, LoginUserController.myProfile);
  *                 type: string
  *     responses:
  *       200:
- *         description: Profile updated
+ *         description: Profile updated successfully
+ *       400:
+ *         description: Bad request – Email already exists
+ *       500:
+ *         description: Internal server error
  */
 router.put('/editProfile', authenticateToken, LoginUserController.editProfile);
 
