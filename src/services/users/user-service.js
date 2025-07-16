@@ -2,9 +2,63 @@ const bcrypt = require('bcryptjs');
 const UserRepository = require('../../repositories/users/user-repository');
 const { sendEmail } = require('../../utils/send-Email');
 const jwt = require('jsonwebtoken');
-
-
 const userRepository = new UserRepository();
+const SECRET = process.env.JWT_SECRET;
+
+
+const loginUserService = async (email, password) => {
+  try {
+    const user = await userRepository.findUserByEmail(email);
+
+    if (!user) {
+      const error = new Error('User not found with this email.');
+      error.status = 404;
+      error.name = 'UserNotFound';
+      throw error;
+    }
+
+    if (user?.status !== 'ACTIVE') {
+      const error = new Error('Your account has not been approved yet.');
+      error.status = 403;
+      error.name = 'AccountNotApproved';
+      throw error;
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user?.password);
+    if (!isPasswordValid) {
+      const error = new Error('Invalid credentials.');
+      error.status = 401;
+      error.name = 'InvalidPassword';
+      throw error;
+    }
+
+    const token = jwt.sign(
+      {
+        id: user?.id,
+        fullName: user?.fullName,
+        email: user?.email,
+        role: user?.role,
+      },
+      SECRET,
+      { expiresIn: '7d' }
+    );
+
+    return {
+      token,
+      user: {
+        id: user?.id,
+        email: user?.email,
+        role: user?.role,
+        fullName: user?.fullName,
+        status: user?.status,
+      },
+    };
+  } catch (err) {
+    console.error('Error in loginUserService:', err.message);
+    throw err;
+  }
+};
+
 
 const getUserById = async (id) => {
   try {
@@ -16,9 +70,6 @@ const getUserById = async (id) => {
   }
 };
 
-const findUserByEmail = async (email) => {
-  return await userRepository.findUserByEmail(email);
-};
 
 const updateUserProfile = async (userId, role, updateData, roleFields) => {
   try {
@@ -112,8 +163,8 @@ const checkIfTokenBlacklisted = async (token) => {
 };
 
 module.exports = {
+  loginUserService,
   getUserById,
-  findUserByEmail,
   updateUserProfile,
   sendOtpToEmail,
   verifyOtpAndResetPassword,
