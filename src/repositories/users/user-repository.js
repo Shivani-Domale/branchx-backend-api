@@ -1,4 +1,4 @@
-const { User, BlacklistedToken} = require('../../models');
+const { User, BlacklistedToken } = require('../../models');
 const crudRepository = require('../crud-repository');
 
 
