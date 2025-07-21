@@ -33,7 +33,12 @@ module.exports = (sequelize, DataTypes) => {
     resetOtpExpires: {
       type: DataTypes.DATE,
       allowNull: true,
+    },
+    activatedAt: {
+      type: DataTypes.DATE,
+      allowNull: true
     }
+
   }, {
     sequelize,
     modelName: 'User',
