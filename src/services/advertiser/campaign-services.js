@@ -13,6 +13,9 @@ const locationRepository = new LocationRepository();
 
 const createCampaign = async (data, fileBuffer, userId) => {
   const t = await sequelize.transaction();
+  console.log(data);
+  console.log(fileBuffer);
+
 
   try {
     const urls = [];
@@ -29,6 +32,9 @@ const createCampaign = async (data, fileBuffer, userId) => {
       ? JSON.parse(data.regions)
       : data?.regions || [];
 
+    console.log(DeviceTypes + "  " + Locations + "  " + ProductTypes);
+
+
     if (!Array.isArray(DeviceTypes) || DeviceTypes.length === 0) {
       throw new Error("Device types must be a non-empty array.");
     }
@@ -42,7 +48,8 @@ const createCampaign = async (data, fileBuffer, userId) => {
     }
     const deviceRecords = await deviceRepository.findByDeviceTypes(DeviceTypes);
     const locationRecords = await locationRepository.findByCities(Locations);
-    const productId = await productRepository.findIdByProductType(ProductTypes[0]); // pick first
+
+    const productId = await productRepository.findIdByProductType(ProductTypes[0]);
 
     const deviceIds = deviceRecords.map(d => d.id);
     const locationIds = locationRecords.map(l => l.id);
@@ -76,6 +83,7 @@ const createCampaign = async (data, fileBuffer, userId) => {
       userId,
       productId,
     };
+    console.log(campaignPayload);
 
     const campaign = await campaignRepository.create(campaignPayload, { transaction: t });
 
@@ -140,6 +148,7 @@ const getAllCampaigns = async (userId) => {
 
       return {
         id: data.id,
+        campaignCode: data.campaignCode,
         campaignName: data.campaignName,
         brandName: data.brandName,
         adType: data.adType,
@@ -148,8 +157,6 @@ const getAllCampaigns = async (userId) => {
         maxBidCap: data.maxBid,
         campaignBudget: data.campaignBudget,
         storeTypes: data.storeType,
-        targeting: data.targeting,
-        achieveStatus: data.achieveStatus,
         isApproved: data.isApproved,
         isPayment: data.isPayment,
         productFiles: data.productFiles,
@@ -283,7 +290,7 @@ const getProductTypes = async () => {
 
 
 const updateCampaign = async (id, data, fileBuffer = [], userId) => {
-  const t = await sequelize.transaction();  
+  const t = await sequelize.transaction();
   try {
     const campaign = await campaignRepository.findByIdWithLocationAndDevice(id);
     if (!campaign) throw new Error("Campaign not found");
@@ -426,11 +433,11 @@ const calculateBaseCost = async (productTypes, targetRegions, adDevices) => {
 
 
 const createOrders = async () => {
-   try {
+  try {
     return "Payment Done !";
-   } catch (error) {
-     throw new Error(`Error while making  payment: ${error.message}`);
-   }
+  } catch (error) {
+    throw new Error(`Error while making  payment: ${error.message}`);
+  }
 };
 
 module.exports = {
