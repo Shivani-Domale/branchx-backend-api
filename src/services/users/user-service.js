@@ -141,6 +141,25 @@ const verifyOtpAndResetPassword = async (email, otp, newPassword) => {
   return true;
 };
 
+const resetPassword = async (userId, currentPassword, newPassword) => {
+  const user = await userRepository.findUserById(userId);
+  if (!user) throw new Error('User not found');
+
+  const isMatch = await bcrypt.compare(currentPassword, user.password);
+  if (!isMatch) throw new Error('Current password is incorrect');
+
+  //  Check if new password is same as old one
+  const isSamePassword = await bcrypt.compare(newPassword, user.password);
+  if (isSamePassword) {
+    throw new Error('New password must be different from the current password');
+  }
+
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+  await userRepository.updateUser(userId, { password: hashedPassword });
+
+  return true;
+};
+
 
 const logoutUser = async (token) => {
   try {
@@ -168,6 +187,7 @@ module.exports = {
   updateUserProfile,
   sendOtpToEmail,
   verifyOtpAndResetPassword,
+  resetPassword,
   logoutUser,
   checkIfTokenBlacklisted,
 };
