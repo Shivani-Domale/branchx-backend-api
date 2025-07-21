@@ -422,6 +422,17 @@ const calculateBaseCost = async (productTypes, targetRegions, adDevices) => {
     throw new Error(`Error calculating base cost: ${error.message}`);
   }
 };
+
+
+
+const createOrders = async () => {
+   try {
+    return "Payment Done !";
+   } catch (error) {
+     throw new Error(`Error while making  payment: ${error.message}`);
+   }
+};
+
 module.exports = {
   createCampaign,
   getAllCampaigns,
@@ -432,5 +443,6 @@ module.exports = {
   getLocations,
   deleteCampaign,
   updateCampaign,
-  calculateBaseCost
+  calculateBaseCost,
+  createOrders
 };
