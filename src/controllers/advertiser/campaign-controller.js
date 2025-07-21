@@ -1,7 +1,7 @@
 const { Logger } = require("../../config");
 const { CampaignService } = require("../../services");
 const { StatusCodes } = require('http-status-codes');
-const { SuccessReposnse, ErrorReponse } = require("../../utils");
+const { SuccessReposnse, ErrorReponse, CampaignPayment } = require("../../utils");
 
 
 const createCampaign = async (req, res) => {
@@ -220,6 +220,21 @@ const calculateBaseCost = async (req, res) => {
   }
 };
 
+
+const createCampaignOrder = async (req, res) => {
+  try {
+    console.log(CampaignPayment.orders);
+    const order = CampaignService.createOrders();
+    return SuccessReposnse(res, "Order created successfully!", StatusCodes.OK, order);
+
+  } catch (error) {
+    console.error("Error while making the payment:", error);
+    Logger.error("Error while making the payment:", error);
+    return ErrorReponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error);
+  }
+};
+
+
 module.exports = {
   createCampaign,
   updateCampaignStatus,
@@ -230,5 +245,6 @@ module.exports = {
   getLocations,
   updateCampaign,
   deleteCampaign,
-  calculateBaseCost
+  calculateBaseCost,
+  createCampaignOrder
 };

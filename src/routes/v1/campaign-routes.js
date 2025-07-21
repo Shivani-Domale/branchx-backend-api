@@ -310,4 +310,8 @@ router.put(
   CampaignController.updateCampaign
 );
 
+
+router.post('/createCampaignOrder',CampaignController.createCampaignOrder);
+
+
 module.exports = router;
