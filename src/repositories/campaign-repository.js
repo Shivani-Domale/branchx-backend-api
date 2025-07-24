@@ -30,7 +30,8 @@ class CampaignRepository extends crudRepository {
       ],
       attributes: {
         exclude: ['createdAt', 'updatedAt', 'deletedAt', 'productId', 'userId', 'remark', 'isDeleted', 'isDraft'] // Optional: exclude timestamps from Campaign itself
-      }
+      },
+      order: [['createdAt', 'DESC']]
     });
   }
 
@@ -39,7 +40,7 @@ class CampaignRepository extends crudRepository {
 
   async deleteById(campaignId, transaction) {
     const campaign = await Campaign.findOne({
-      where: { id: campaignId, isDeleted: false },
+      where: { id: campaignId, isDeleted: false ,isApproved:'PENDING'},
       transaction
     });
 
@@ -99,7 +100,8 @@ async findByUserId(userId) {
       }],
       attributes: {
         exclude: ['createdAt', 'updatedAt', 'deletedAt', 'productId', 'userId', 'remark', 'isDeleted', 'isDraft']
-      }
+      },
+      order: [['createdAt', 'DESC']]
     });
   }
 

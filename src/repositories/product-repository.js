@@ -11,7 +11,8 @@ class ProductRepository extends crudRepository {
             const product = await this.model.findOne({
                 where: {
                     product_type: productType.trim()
-                }
+                },
+                order: [['createdAt', 'DESC']]
             });
 
             if (!product) {
@@ -29,7 +30,8 @@ class ProductRepository extends crudRepository {
             const product = await this.model.findOne({
                 where: {
                     product_type: productType.trim()
-                }
+                },
+                order: [['createdAt', 'DESC']]
             });
 
             if (!product) {
@@ -53,7 +55,8 @@ class ProductRepository extends crudRepository {
       }
 
       const product = await Product.findOne({
-        where: { product_type: name.trim() }
+        where: { product_type: name.trim() },
+        order: [['createdAt', 'DESC']]
       });
 
       return product;
