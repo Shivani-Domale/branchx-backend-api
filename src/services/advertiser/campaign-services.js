@@ -82,6 +82,7 @@ const createCampaign = async (data, fileBuffer, userId) => {
       endTime,
       userId,
       productId,
+      isApproved: 'PENDING',
     };
     console.log(campaignPayload);
 
@@ -266,6 +267,7 @@ const getLocations = async () => {
     const locations = await locationRepository.findAll();
     const cityPriceList = locations?.map(loc => ({
       city: loc?.city,
+      pincode:loc?.pincode,
     }));
 
     if (!cityPriceList?.length) {

@@ -311,6 +311,34 @@ router.put(
 );
 
 
+/**
+ * @swagger
+ * /campaign/{campaignId}/deleteCampaign:
+ *   delete:
+ *     summary: Delete a campaign (soft delete)
+ *     tags: [Campaign]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - name: campaignId
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the campaign to delete
+ *     responses:
+ *       200:
+ *         description: Campaign soft deleted successfully
+ *       401:
+ *         description: Unauthorized – Please login
+ *       404:
+ *         description: Campaign not found
+ *       500:
+ *         description: Internal server error
+ */
+router.delete('/:campaignId/deleteCampaign', VerifyToken, CampaignController.deleteCampaign);
+
+
 router.post('/createCampaignOrder',CampaignController.createCampaignOrder);
 
 

@@ -24,7 +24,8 @@ async findByDeviceTypes(deviceNames) {
       return await this.model.findAll({
         where: {
           city: cityNames
-        }
+        },
+        order: [['createdAt', 'DESC']]
       });
     } catch (error) {
       console.error("Error in findByCities:", error);

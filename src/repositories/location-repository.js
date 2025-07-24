@@ -13,12 +13,15 @@ class LocationRepository extends crudRepository {
                 city: {
                     [Op.in]: cityNames.map(city => city.trim())
                 }
-            }
+            },
+            order: [['createdAt', 'DESC']]
         });
     }
 
     async getAll() {
-        return await this.model.findAll();
+        return await this.model.findAll({
+            order: [['createdAt', 'DESC']]
+        });
     }
 
     async getLocationWithDevices(cityName) {
@@ -27,7 +30,8 @@ class LocationRepository extends crudRepository {
             include: [{
                 model: Device,
                 attributes: ['deviceType', 'price', 'availableCount'],
-            }]
+            }],
+            order: [['createdAt', 'DESC']]
         });
     }
 
@@ -36,7 +40,8 @@ class LocationRepository extends crudRepository {
       return await this.model.findAll({
         where: {
           deviceType: deviceTypes
-        }
+        },
+        order: [['createdAt', 'DESC']]
       });
     } catch (error) {
       console.error("Error in findByDeviceTypes:", error);

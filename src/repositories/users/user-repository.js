@@ -18,7 +18,7 @@ class UserRepository extends crudRepository {
 
   async findUserByEmail(email) {
     try {
-      return await User.findOne({ where: { email } });
+      return await User.findOne({ where: { email }});
     } catch (error) {
       console.error('Error in findUserByEmail:', error.message);
       throw error;
