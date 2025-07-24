@@ -22,7 +22,8 @@ const getAllApprovedCampaigns = async () => {
                 startTime:data?.startTime,
                 endTime:data?.endTime
                 ,
-                targetDevices
+                targetDevices,
+                isApproved :data?.isApproved,
             };
         });
 
