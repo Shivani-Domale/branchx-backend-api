@@ -1,7 +1,7 @@
 'use strict';
 const { Model } = require('sequelize');
+const { v4: uuidv4 } = require('uuid'); // import UUID
 const { Op } = require("sequelize");
-
 module.exports = (sequelize, DataTypes) => {
   class Campaign extends Model {
     static associate(models) {
@@ -9,19 +9,16 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'productId',
         as: 'product'
       });
-
       Campaign.belongsTo(models.User, {
         foreignKey: 'userId',
         as: 'user'
       });
-
       Campaign.belongsToMany(models.Device, {
         through: 'CampaignDeviceTypes',
         foreignKey: 'campaignId',
         otherKey: 'deviceTypeId',
         as: 'devices'
       });
-
       Campaign.belongsToMany(models.Location, {
         through: 'CampaignLocations',
         foreignKey: 'campaignId',
@@ -30,7 +27,6 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
   }
-
   Campaign.init({
     campaignName: DataTypes.STRING,
     brandName: DataTypes.STRING,
@@ -87,32 +83,15 @@ module.exports = (sequelize, DataTypes) => {
       beforeCreate: async (campaign, options) => {
         if (campaign.campaignName) {
           const name = campaign.campaignName.replace(/\s+/g, '');
-          const first3 = name.substring(0, 3).toUpperCase();
-          const last3 = name.substring(name.length - 3).toUpperCase();
-          const prefix = `${first3}${last3}`;
-
-          const latestCampaign = await Campaign.findOne({
-            where: {
-              campaignCode: {
-                [Op.like]: `${prefix}%`
-              }
-            },
-            paranoid: false,
-            order: [['createdAt', 'DESC']]
-          });
-
-          let nextNumber = '001';
-          if (latestCampaign && latestCampaign.campaignCode) {
-            const lastNumStr = latestCampaign.campaignCode.slice(prefix.length);
-            const lastNum = parseInt(lastNumStr);
-            nextNumber = String(lastNum + 1).padStart(3, '0');
-          }
-
-          campaign.campaignCode = `${prefix}${nextNumber}`;
+          const first2 = name.substring(0, 2).toUpperCase();
+          const random4 = uuidv4().replace(/-/g, '').substring(0, 4).toUpperCase();
+          campaign.campaignCode = `${first2}${random4}`;
         }
       }
     }
   });
-
   return Campaign;
 };
+
+
+
