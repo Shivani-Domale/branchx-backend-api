@@ -20,8 +20,7 @@ const getAllApprovedCampaigns = async () => {
                 startDate:data?.startDate,
                 endDate:data?.endDate,
                 startTime:data?.startTime,
-                endTime:data?.endTime
-                ,
+                endTime:data?.endTime,
                 targetDevices,
                 isApproved :data?.isApproved,
             };
